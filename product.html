@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Product Details</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="refereer" content="strict-origin-when-cross-origin">
 
   <style>
     body{
@@ -39,28 +38,46 @@
       cursor:pointer;
     }
 
-    .buy{
-      background:#ff9f00;
+    .buy{background:#ff9f00;}
+    .cart{background:#2874f0;color:white;}
+
+    input{width:60px;padding:5px;font-size:16px;}
+
+    /* YOU MAY ALSO LIKE */
+    h3{margin-top:25px;}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
     }
 
-    .cart{
-      background:#2874f0;
-      color:white;
+    .mini{
+      background:#fff;
+      padding:10px;
+      border-radius:6px;
+      cursor:pointer;
     }
 
-    input{
-      width:60px;
-      padding:5px;
-      font-size:16px;
+    .mini img{
+      width:100%;
+      height:120px;
+      object-fit:cover;
+    }
+
+    .mini p{
+      margin:5px 0;
+      font-size:14px;
     }
   </style>
 </head>
 
 <body>
 
-<div class="card" id="productBox">
-  <!-- Product loads here -->
-</div>
+<div class="card" id="productBox"></div>
+
+<h3>You May Also Like</h3>
+<div class="grid" id="likeBox"></div>
 
 <script>
 const products = JSON.parse(localStorage.getItem("allProducts")) || [
@@ -72,6 +89,7 @@ const products = JSON.parse(localStorage.getItem("allProducts")) || [
 const pid = localStorage.getItem("pid");
 const p = products.find(x => x.id == pid);
 
+// MAIN PRODUCT
 document.getElementById("productBox").innerHTML = `
   <img src="${p.img}">
   <h2>${p.name}</h2>
@@ -85,6 +103,23 @@ document.getElementById("productBox").innerHTML = `
   <button class="cart" onclick="addCart()">Add to Cart</button>
 `;
 
+// YOU MAY ALSO LIKE (exclude current product)
+const likeBox = document.getElementById("likeBox");
+products.filter(x => x.id != pid).forEach(p2 => {
+  likeBox.innerHTML += `
+    <div class="mini" onclick="openProduct(${p2.id})">
+      <img src="${p2.img}">
+      <p>${p2.name}</p>
+      <b>$${p2.price}</b>
+    </div>
+  `;
+});
+
+function openProduct(id){
+  localStorage.setItem("pid", id);
+  location.reload(); // reload product page with new product
+}
+
 function buy(){
   const qty = document.getElementById("qty").value;
   localStorage.setItem("buy", JSON.stringify({...p, qty}));
@@ -97,7 +132,6 @@ function addCart(){
 
   cart.push({...p, qty});
 
-  // max 10 items rule
   if(cart.length >= 10){
     cart = [];
   }
