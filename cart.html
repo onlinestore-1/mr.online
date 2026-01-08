@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      padding:10px;
+    }
+
+    header{
+      background:#2874f0;
+      color:#fff;
+      padding:12px;
+      text-align:center;
+      font-size:18px;
+    }
+
+    .cart{
+      max-width:600px;
+      margin:auto;
+    }
+
+    .item{
+      background:#fff;
+      padding:10px;
+      margin:10px 0;
+      border-radius:8px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .item img{
+      width:80px;
+      height:80px;
+      object-fit:cover;
+      border-radius:6px;
+    }
+
+    .info{
+      flex:1;
+    }
+
+    .info b{
+      display:block;
+      margin-bottom:4px;
+    }
+
+    .buy{
+      background:#ff9f00;
+      border:none;
+      padding:6px 10px;
+      border-radius:5px;
+      cursor:pointer;
+      width:100%;
+      margin-top:6px;
+    }
+
+    .empty{
+      text-align:center;
+      margin-top:40px;
+      color:#777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>My Cart</header>
+
+<div class="cart" id="cartBox"></div>
+
+<script>
+const cartBox = document.getElementById("cartBox");
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+if(cart.length === 0){
+  cartBox.innerHTML = `
+    <div class="empty">
+      <p>Your cart is empty</p>
+    </div>
+  `;
+}else{
+  cart.forEach((c, i) => {
+    cartBox.innerHTML += `
+      <div class="item">
+        <img src="${c.img}">
+        <div class="info">
+          <b>${c.name}</b>
+          Price: $${c.price}<br>
+          Qty: ${c.qty}
+
+          <button class="buy" onclick="buyNow(${i})">
+            Buy Now
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function buyNow(index){
+  localStorage.setItem("buy", JSON.stringify(cart[index]));
+  location.href = "checkout.html";
+}
+</script>
+
+</body>
+</html>
