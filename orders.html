@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      padding:10px;
+    }
+
+    header{
+      background:#2874f0;
+      color:white;
+      padding:12px;
+      text-align:center;
+      font-size:18px;
+    }
+
+    .orders{
+      max-width:600px;
+      margin:auto;
+    }
+
+    .order{
+      background:#fff;
+      padding:10px;
+      margin:10px 0;
+      border-radius:8px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .order img{
+      width:80px;
+      height:80px;
+      object-fit:cover;
+      border-radius:6px;
+    }
+
+    .order-name{
+      font-size:16px;
+      font-weight:bold;
+    }
+
+    .empty{
+      text-align:center;
+      margin-top:40px;
+      color:#777;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>My Orders</header>
+
+<div class="orders" id="ordersBox"></div>
+
+<script>
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+const box = document.getElementById("ordersBox");
+
+if(orders.length === 0){
+  box.innerHTML = `
+    <div class="empty">
+      <p>No orders yet</p>
+    </div>
+  `;
+}
+
+orders.forEach(o => {
+  box.innerHTML += `
+    <div class="order" onclick="rebuy(${o.id})">
+      <img src="${o.img}">
+      <div class="order-name">${o.name}</div>
+    </div>
+  `;
+});
+
+function rebuy(id){
+  localStorage.setItem("pid", id);
+  location.href = "product.html";
+}
+</script>
+
+</body>
+</html>
