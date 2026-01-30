@@ -1,33 +1,88 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Checkout</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      box-sizing: border-box;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    button {
+      background: #2874f0;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
 </head>
 <body>
 
-<h2>Checkout Form</h2>
-<form action="https://formsubmit.co/youremail@example.com" method="POST">
-  <input type="text" name="Name" required placeholder="Name">
-  <input type="email" name="Email" required placeholder="Email">
-  <input type="tel" name="Phone" required placeholder="Phone">
-  <textarea name="Address" required placeholder="Delivery Address"></textarea>
+  <div class="container">
+    <h2>Checkout</h2>
+    
+    <form action="https://formsubmit.co/youremail@gmail.com" method="POST">
+      
+      <!-- Customer Info -->
+      <input type="text" name="Name" required placeholder="Name">
+      <input type="tel" name="Phone" required placeholder="Phone">
+      <textarea name="Address" required placeholder="Delivery Address"></textarea>
 
-  <!-- Product Info -->
-  <input type="hidden" name="Product" value="Men T-shirt">
-  <input type="hidden" name="Price" value="12,000 TZS">
-  <input type="hidden" name="Quantity" value="1">
+      <!-- Product Info -->
+      <input type="hidden" name="Product" value="Sugar 1kg">
+      <input type="hidden" name="Price" value="12,000 TZS">
+      <input type="hidden" name="Quantity" value="1">
 
-  <!-- Spam Protection -->
-  <input type="text" name="_honey" style="display:none">
-  <input type="hidden" name="_captcha" value="false">
+      <!-- Anti-spam & Captcha -->
+      <input type="text" name="_honey" style="display:none">
+      <input type="hidden" name="_captcha" value="false">
 
-  <!-- Redirect After Submission -->
-  <input type="hidden" name="_next" value="https://yourwebsite.com/success.html">
+      <!-- Redirect after submission -->
+      <input type="hidden" name="_next" value="https://onlinestore-1.github.io/success.html">
 
-  <button type="submit">Place Order</button>
-</form>
+      <button type="submit">Place Order</button>
+    </form>
+  </div>
 
 </body>
 </html>
