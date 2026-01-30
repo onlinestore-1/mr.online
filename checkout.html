@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
 
+<h2>Checkout Form</h2>
+<form action="https://formsubmit.co/youremail@example.com" method="POST">
+  <input type="text" name="Name" required placeholder="Name">
+  <input type="email" name="Email" required placeholder="Email">
+  <input type="tel" name="Phone" required placeholder="Phone">
+  <textarea name="Address" required placeholder="Delivery Address"></textarea>
+
+  <!-- Product Info -->
+  <input type="hidden" name="Product" value="Men T-shirt">
+  <input type="hidden" name="Price" value="12,000 TZS">
+  <input type="hidden" name="Quantity" value="1">
+
+  <!-- Spam Protection -->
+  <input type="text" name="_honey" style="display:none">
+  <input type="hidden" name="_captcha" value="false">
+
+  <!-- Redirect After Submission -->
+  <input type="hidden" name="_next" value="https://yourwebsite.com/success.html">
+
+  <button type="submit">Place Order</button>
+</form>
+
+</body>
+</html>
