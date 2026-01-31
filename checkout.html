@@ -1,88 +1,92 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Checkout</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  
+
   <style>
-    body {
-      margin: 0;
+    body{
+      margin:0;
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
+      background:#f4f4f4;
+      padding:15px;
     }
-
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    .box{
+      background:#fff;
+      padding:15px;
+      border-radius:8px;
+      max-width:500px;
+      margin:auto;
     }
-
-    h2 {
-      text-align: center;
-      margin-top: 0;
+    h3{text-align:center;margin-top:0;}
+    input, textarea, button{
+      width:100%;
+      padding:10px;
+      margin:8px 0;
+      font-size:16px;
+      box-sizing:border-box;
     }
-
-    input, textarea, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      box-sizing: border-box;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    textarea {
-      resize: none;
-      height: 80px;
-    }
-
-    button {
-      background: #2874f0;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      opacity: 0.9;
+    textarea{resize:none;height:80px;}
+    button{
+      background:#2874f0;
+      color:#fff;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="container">
-    <h2>Checkout</h2>
-    
-    <form action="https://formsubmit.co/jafarotto0@gmail.com" method="POST">
-      
-      <!-- Customer Info -->
-      <input type="text" name="Name" required placeholder="Name">
-      <input type="tel" name="Phone" required placeholder="Phone">
-      <textarea name="Address" required placeholder="Delivery Address"></textarea>
+<div class="box">
+  <!-- ✅ HTTPS + NO WWW -->
+  <form action="https://formsubmit.co/jafarotto0@gmail.com" method="POST">
 
-      <!-- Product Info -->
-      <input type="hidden" name="Product" id="pname">
-      <input type="hidden" name="Price" id="pprice">
-      <input type="hidden" name="Quantity" id="pqty">
+    <h3>Customer Info</h3>
 
-      <!-- Anti-spam & Captcha -->
-      <input type="text" name="_honey" style="display:none">
-      <input type="hidden" name="_captcha" value="false">
+    <input name="Name" required placeholder="Name">
+    <input name="Phone" required placeholder="Phone">
+    <textarea name="Address" required placeholder="Delivery Address"></textarea>
 
-      <!-- Redirect after submission -->
-      <input type="hidden" name="_next" value="https://onlinestore-1.github.io/success.html">
+    <!-- PRODUCT INFO -->
+    <input type="hidden" name="Product" id="pname">
+    <input type="hidden" name="Price" id="pprice">
+    <input type="hidden" name="Quantity" id="pqty">
 
-      <button type="submit">Place Order</button>
-    </form>
-  </div>
+    <!-- ✅ FORMSUBMIT SECURITY -->
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_subject" value="New Order">
+
+    <!-- ✅ HTTPS REDIRECT (VERY IMPORTANT) -->
+    <input type="hidden" name="_next" value="https://onlinestore-1.github.io/mr.online/success.html">
+
+    <!-- SPAM PROTECTION -->
+    <input type="text" name="_honey" style="display:none">
+
+    <button type="submit">Place Order</button>
+  </form>
+</div>
+
+<script>
+const o = JSON.parse(localStorage.getItem("buy"));
+
+if(o){
+  document.getElementById("pname").value  = o.name;
+  document.getElementById("pprice").value = o.price;
+  document.getElementById("pqty").value   = o.qty;
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push(o);
+
+  if(orders.length >= 10) orders = [];
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+}
+</script>
 
 </body>
 </html>
