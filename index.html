@@ -114,6 +114,29 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  </div>
 </div>
 
+ <h3>Top Selection</h3>
+<div class="grid">
+  <div class="card" onclick="goTop('speakers.html')">
+    <img src="https://i.imgur.com/8QZ7ZQm.jpeg">
+    <p>Speakers</p>
+  </div>
+
+  <div class="card" onclick="goTop('mop.html')">
+    <img src="https://i.imgur.com/0Z8F0Yt.jpeg">
+    <p>Mop Set</p>
+  </div>
+
+  <div class="card" onclick="goTop('tws.html')">
+    <img src="https://i.imgur.com/7z9ZJ5p.jpeg">
+    <p>True Wireless</p>
+  </div>
+
+  <div class="card" onclick="goTop('women.html')">
+    <img src="https://i.imgur.com/F9T6D7U.jpeg">
+    <p>Women Dress</p>
+  </div>
+</div>
+
 <h3>Products</h3>
 <div id="products" class="grid"></div>
 
@@ -189,6 +212,10 @@ function filter(c){draw(products.filter(p=>p.cat==c),"products")}
 function search(v){draw(products.filter(p=>p.name.toLowerCase().includes(v.toLowerCase())),"products")}
 function openMenu(){drawer.style.left="0";document.querySelector(".overlay").style.display="block"}
 function closeMenu(){drawer.style.left="-260px";document.querySelector(".overlay").style.display="none"}
+
+function goTop(page){
+  location.href = page;
+}
 </script>
 </body>
 </html
