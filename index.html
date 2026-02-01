@@ -2,11 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Shop</title>
+<title>jafar-otto.com</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="stylesheet"
  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="manifest" href="manifest.json">
 
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4}
@@ -89,17 +90,27 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 <!-- ADS -->
 <div class="slider">
- <img src="https://via.placeholder.com/600x200?text=SALE">
- <img src="https://via.placeholder.com/600x200?text=OFFER">
+ <img src="https://i.imgur.com/j6JWI5n.png/600x200?text=SALE">
+ <img src="https://i.imgur.com/3ZFgqAY.png/600x200?text=SALE">
+ <img src="https://i.imgur.com/M4bTgH1.png/600x200?text=OFFER">
 </div>
 
 <!-- CATEGORIES -->
 <div class="categories">
- <div onclick="filter('Clothes')">
-  <img src="https://via.placeholder.com/80"><p>Clothes</p>
+ <div onclick="filter('Fashion')">
+  <img src="https://i.imgur.com/Trbu30c.jpeg/80"><p>Fashion</p>
  </div>
- <div onclick="filter('Shoes')">
-  <img src="https://via.placeholder.com/80"><p>Shoes</p>
+ <div onclick="filter('Chakula & afya')">
+  <img src="https://i.imgur.com/Bx32Xdq.jpeg/80"><p>Chakula & afya</p>
+ </div>
+ <div onclick="filter('Muhimu')">
+  <img src="https://i.imgur.com/mFLFlEV.jpeg/80"><p>Muhimu</p>
+ </div>
+ <div onclick="filter('Ice-cream')">
+  <img src="https://i.imgur.com/GrA2VA5.jpeg/80"><p>Ice-cream</p>
+ </div>
+  <div onclick="filter('Juices & cold drinks')">
+  <img src="https://i.imgur.com/zPFz6LE.jpeg/80"><p>Juices & cold drinks</p>
  </div>
 </div>
 
@@ -114,9 +125,46 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 <script>
 const products=[
- {id:1,name:"Men T-shirt",price:12,img:"https://via.placeholder.com/200",cat:"Clothes",desc:"Cotton T-shirt"},
- {id:2,name:"Dress",price:22,img:"https://via.placeholder.com/200",cat:"Clothes",desc:"Ladies dress"},
- {id:3,name:"Shoes",price:30,img:"https://via.placeholder.com/200",cat:"Shoes",desc:"Running shoes"}
+ {id:1,name:"Men T-shirt",price:12,img:"https://i.imgur.com/b4T6KVn.jpeg/200",cat:"Fashion",desc:"Cotton T-shirt"},
+ {id:2,name:"Dress",price:22,img:"https://i.imgur.com/F9T6D7U.jpeg/200",cat:"Fashion",desc:"Ladies dress"},
+ {id:3,name:"Sukari 1kg",price:30,img:"https://i.imgur.com/1EFgnRl.jpeg/200",cat:"Chakula & afya",desc:"Sukari 1kg"},
+ {id:4,name:"Mafuta ya kupikia",price:45,img:"https://i.imgur.com/4B7cTjc.jpeg/200",cat:"Chakula & afya",desc:"Pika kisasa na korie"},
+ {id:5,name:"Chumvi",price:30,img:"https://i.imgur.com/e4CXmHr.jpeg/200",cat:"Chakula & afya",desc:"chumvi bora"},
+ {id:6,name:"Blue Band",price:30,img:"https://i.imgur.com/PnEvGZN.jpeg/200",cat:"Chakula & afya",desc:"Blue Band bora"},
+ {id:7,name:"Tomato sauce",price:20,img:"https://i.imgur.com/IqhRkL7.jpeg/200",cat:"Chakula & afya",desc:"Tomato sauce tamu"},
+ {id:8,name:"Soy sauce",price:10,img:"https://i.imgur.com/CqraWiO.jpeg/200",cat:"Chakula & afya",desc:"Jipatie soy sauce"},
+ {id:9,name:"Baking powder",price:10,img:"https://i.imgur.com/WlfRjNu.jpeg/200",cat:"Chakula & afya",desc:"kwa mandazi"},
+ {id:10,name:"Royco",price:14,img:"https://i.imgur.com/rmXvXwO.jpeg/200",cat:"Chakula & afya",desc:"Royco mchuzi mix"},
+ {id:11,name:"Coca Cola",price:23,img:"https://i.imgur.com/UYZ1dIH.jpeg/200",cat:"Juices & cold drinks",desc:"Coca Cola"},
+ {id:12,name:"pepsi",price:23,img:"https://i.imgur.com/cGRn5OZ.jpeg/200",cat:"Juices & cold drinks",desc:"pepsi"},
+ {id:13,name:"Splash",price:12,img:"https://i.imgur.com/4ifKGQC.jpeg/200",cat:"Ice-cream",desc:"Splash sweet flavour"},
+ {id:14,name:"Bubble gum",price:15,img:"https://i.imgur.com/jJyMg1u.jpeg/200",cat:"Ice-cream",desc:"Bubble gum flavoured ice lolly"},
+ {id:15,name:"Ballcone",price:13,img:"https://i.imgur.com/YU7yVMc.jpeg/200",cat:"Ice-cream",desc:"Ballcone flavoured ice cream"},
+ {id:16,name:"Cherry",price:13,img:"https://i.imgur.com/Ax4J2uH.jpeg/200",cat:"Ice-cream",desc:"Cherry flavoured ice lolly"},
+ {id:17,name:"Cherry Bar",price:13,img:"https://i.imgur.com/QZ8B1VC.jpeg/200",cat:"Ice-cream",desc:"Cherry flavoured ice bar"},
+ {id:18,name:"Caramello",price:13,img:"https://i.imgur.com/HgeHJvR.jpeg/200",cat:"Ice-cream",desc:"Caramello flavoured ice cream"},
+ {id:19,name:"Doffi",price:17,img:"https://i.imgur.com/hD9g7L2.jpeg/200",cat:"Muhimu",desc:"Washing powder"},
+ {id:20,name:"Jet",price:19,img:"https://i.imgur.com/OoGiHtj.jpeg/200",cat:"Muhimu",desc:"Dish washing liquid soap"},
+ {id:21,name:"Jet",price:18,img:"https://i.imgur.com/q36RjQ2.jpeg/200",cat:"Muhimu",desc:"Dish washing liquid soap"},
+ {id:22,name:"Vaseline Jelly",price:14,img:"https://i.imgur.com/iFw39jh.jpeg/200",cat:"Muhimu",desc:"Body lotion"},
+ {id:23,name:"Rungu",price:14,img:"https://i.imgur.com/KIi9LUL.jpeg/200",cat:"Muhimu",desc:"Ya kuua wadudu warukao na wanaotambaa"},
+ {id:24,name:"Professor",price:15,img:"https://i.imgur.com/okplIfF.jpeg/200",cat:"Muhimu",desc:"Professor Counter Book 3Q"},
+ {id:25,name:"Vaseline",price:16,img:"https://i.imgur.com/2V7rzh7.jpeg/200",cat:"Muhimu",desc:"Pure petroleum jelly"},
+ {id:26,name:"Rexa",price:17,img:"https://i.imgur.com/3EPfv80.jpeg/200",cat:"Muhimu",desc:"Rexa toilet paper soft and white"},
+ {id:27,name:"Msomi",price:15,img:"https://i.imgur.com/zU2mjIE.jpeg/200",cat:"Muhimu",desc:"Msomi Exercise Book"},
+ {id:28,name:"OMO",price:18,img:"https://i.imgur.com/v0eeorr.jpeg/200",cat:"Muhimu",desc:"Ondoa madoa sugu"},
+ {id:29,name:"Niceone",price:18,img:"https://i.imgur.com/7nmPGbq.jpeg/200",cat:"Muhimu",desc:"Ondoa madoa sugu"},
+ {id:30,name:"Hiper razor",price:19,img:"https://i.imgur.com/zIJlaP3.jpeg/200",cat:"Muhimu",desc:"kiwembe bora"},
+ {id:31,name:"Afya Maji",price:23,img:"https://i.imgur.com/u9dkajs.jpeg/200",cat:"Juices & cold drinks",desc:"Afya maji ya kunywa Baridi au Ya moto eka idadi HAPO chini"},
+ {id:32,name:"u-fresh orange",price:23,img:"https://i.imgur.com/k42X2gl.jpeg/200",cat:"Juices & cold drinks",desc:"u-fresh baridi ipo weka idadi hapo chini"},
+ {id:33,name:"u-fresh power",price:23,img:"https://i.imgur.com/y1qJelw.jpeg/200",cat:"Juices & cold drinks",desc:"u-fresh baridi ipo weka idadi hapo chini"},
+ {id:34,name:"u-fresh pineapple",price:23,img:"https://i.imgur.com/GcVEME3.jpeg/200",cat:"Juices & cold drinks",desc:"u-fresh baridi ipo weka idadi hapo chini"},
+ {id:35,name:"Exercise Book",price:19,img:"https://i.imgur.com/AQrSAGW.jpeg/200",cat:"Muhimu",desc:"Daftari mistali mikubwa na midogo"},
+ {id:36,name:"Exercise Book",price:19,img:"https://i.imgur.com/ihIcg3h.jpeg/200",cat:"Muhimu",desc:"Daftari la kuandikia page 100"},
+ {id:37,name:"Exercise Book",price:17,img:"https://i.imgur.com/Hg8Aeea.jpeg/200",cat:"Muhimu",desc:"Daftari la kuandikia page 32"},
+ {id:38,name:"Hand soap",price:17,img:"https://i.imgur.com/Mi3AaMB.jpeg/200",cat:"Muhimu",desc:"Liduid hand wash"},
+ {id:39,name:"u-fresh passion",price:20,img:"https://i.imgur.com/9uhn4hj.jpeg/200",cat:"Juices & cold drinks",desc:"u-fresh baridi ipo weka idadi hapo chini"},
+ {id:40,name:"u-fresh cola",price:21,img:"https://i.imgur.com/FvMtoAL.jpeg/200",cat:"Juices & cold drinks",desc:"u-fresh baridi ipo weka idadi hapo chini"}
 ];
 
 function draw(list,id){
@@ -128,7 +176,7 @@ function draw(list,id){
   <button class="buy" onclick="openProduct(${p.id})">Buy Now</button>
  </div>`).join("");
 }
-
+ 
 draw(products,"products");
 draw(products.slice(0,2),"suggested");
 draw(products.slice(1),"like");
@@ -143,4 +191,4 @@ function openMenu(){drawer.style.left="0";document.querySelector(".overlay").sty
 function closeMenu(){drawer.style.left="-260px";document.querySelector(".overlay").style.display="none"}
 </script>
 </body>
-</html>
+</html
