@@ -51,6 +51,40 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 }
 .categories div{text-align:center;min-width:80px}
 
+ /* DISCOUNT */
+.discount-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px;
+}
+.discount-card{
+ background:#fff;
+ border-radius:6px;
+ overflow:hidden;
+ cursor:pointer;
+}
+.discount-img{
+ position:relative;
+}
+.discount-img img{
+ width:100%;
+}
+.offer-badge{
+ position:absolute;
+ top:8px;
+ left:8px;
+ background:#e53935;
+ color:#fff;
+ font-size:12px;
+ padding:3px 6px;
+ border-radius:4px;
+}
+.discount-card p{
+ margin:8px;
+ font-weight:bold;
+}
+
 /* PRODUCTS */
 .grid{
  display:grid;grid-template-columns:repeat(2,1fr);
@@ -111,6 +145,46 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  </div>
   <div onclick="filter('Juices & cold drinks')">
   <img src="https://i.imgur.com/zPFz6LE.jpeg/80"><p>Juices & cold drinks</p>
+ </div>
+</div>
+
+ <h3>Discount For You</h3>
+
+<div class="discount-grid">
+ <!-- Mop -->
+ <div class="discount-card" onclick="location.href='mop-set.html'">
+  <div class="discount-img">
+   <span class="offer-badge">-20%</span>
+   <img src="https://i.imgur.com/5sZ4FvA.jpeg">
+  </div>
+  <p>Mop Sets</p>
+ </div>
+
+ <!-- Speakers -->
+ <div class="discount-card" onclick="location.href='speaker.html'">
+  <div class="discount-img">
+   <span class="offer-badge">-25%</span>
+   <img src="https://i.imgur.com/8QfZ7Yb.jpeg">
+  </div>
+  <p>Speakers</p>
+ </div>
+
+ <!-- True Wireless -->
+ <div class="discount-card" onclick="location.href='true-wireless.html'">
+  <div class="discount-img">
+   <span class="offer-badge">-30%</span>
+   <img src="https://i.imgur.com/4LQyq7T.jpeg">
+  </div>
+  <p>True Wireless</p>
+ </div>
+
+ <!-- Women Dresses -->
+ <div class="discount-card" onclick="location.href='women-dresses.html'">
+  <div class="discount-img">
+   <span class="offer-badge">-15%</span>
+   <img src="https://i.imgur.com/F9T6D7U.jpeg">
+  </div>
+  <p>Women Dresses</p>
  </div>
 </div>
 
