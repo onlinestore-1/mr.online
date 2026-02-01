@@ -7,36 +7,38 @@
 <style>
 body{font-family:Arial;background:#f4f4f4;padding:15px}
 .card{background:#fff;padding:15px;border-radius:6px}
-button{width:100%;padding:10px;background:#2874f0;color:#fff;border:none}
-input{width:100%;padding:8px;margin-bottom:10px}
+input,button{width:100%;padding:10px;margin-bottom:10px}
+button{background:#2874f0;color:#fff;border:none}
 </style>
 </head>
 
 <body>
 
 <h2>Checkout</h2>
-<div class="card" id="box"></div>
+<div class="card">
+<form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+
+<input type="hidden" name="_subject" value="New Order">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+
+<input name="name" placeholder="Full Name" required>
+<input name="phone" placeholder="Phone Number" required>
+<input name="address" placeholder="Delivery Address" required>
+
+<textarea name="order" readonly id="order"></textarea>
+
+<button type="submit">Place Order</button>
+</form>
+</div>
 
 <script>
-const item = JSON.parse(localStorage.getItem("buy"));
-
-document.getElementById("box").innerHTML = `
- <p><b>${item.name}</b></p>
- <p>Price: $${item.price}</p>
- <p>Qty: ${item.qty}</p>
- <p>Total: $${item.price * item.qty}</p>
-
- <input placeholder="Full Name">
- <input placeholder="Phone Number">
- <input placeholder="Delivery Address">
-
- <button onclick="done()">Place Order</button>
-`;
-
-function done(){
- alert("Order placed successfully ✅");
- localStorage.removeItem("buy");
-}
+const buy = JSON.parse(localStorage.getItem("buy"));
+document.getElementById("order").value =
+`${buy.name}
+Price: $${buy.price}
+Qty: ${buy.qty}
+Total: $${buy.price * buy.qty}`;
 </script>
 
 </body>
