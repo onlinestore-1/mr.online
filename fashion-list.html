@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Fashion Items</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:Arial;background:#f4f4f4}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
+.card{background:#fff;padding:10px;border-radius:6px}
+.card img{width:100%}
+</style>
+</head>
+
+<body>
+
+<h3 style="padding:10px">Products</h3>
+<div class="grid" id="box"></div>
+
+<script>
+const type=localStorage.getItem("fashionType");
+const products=JSON.parse(localStorage.getItem("allProducts"))||[];
+
+document.getElementById("box").innerHTML=products
+ .filter(p=>p.type==type)
+ .map(p=>`
+  <div class="card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <b>$${p.price}</b>
+  </div>`).join("");
+
+function openProduct(id){
+ localStorage.setItem("pid",id);
+ location.href="product.html";
+}
+</script>
+
+</body>
+</html>
