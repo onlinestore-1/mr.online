@@ -4,39 +4,104 @@
 <meta charset="UTF-8">
 <title>Fashion</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
-.card{background:#fff;padding:10px;border-radius:6px}
-.card img{width:100%}
-.buy{background:#ff9f00;border:none;width:100%;padding:6px}
+
+/* TOP BAR */
+.topbar{
+ display:flex;
+ align-items:center;
+ background:#2874f0;
+ padding:10px;
+ color:white;
+ gap:10px;
+}
+.topbar input{flex:1;padding:8px;border:none;border-radius:4px}
+.cart{font-size:22px}
+
+/* SLIDER */
+.slider img{width:100%;display:none}
+.slider img:first-child{display:block}
+
+/* CATEGORY GRID */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ padding:10px
+}
+.card{
+ background:#fff;
+ padding:10px;
+ text-align:center;
+ border-radius:6px;
+ cursor:pointer
+}
+.card img{width:100%;height:90px;object-fit:cover}
 </style>
 </head>
 
 <body>
 
-<h3 style="padding:10px">Fashion</h3>
-<div id="list" class="grid"></div>
+<div class="topbar">
+ <input type="search" placeholder="Search fashion...">
+ <span class="cart" onclick="location.href='cart.html'">🛒</span>
+</div>
+
+<!-- ADS -->
+<div class="slider">
+ <img src="https://i.imgur.com/j6JWI5n.png">
+ <img src="https://i.imgur.com/3ZFgqAY.png">
+ <img src="https://i.imgur.com/M4bTgH1.png">
+</div>
+
+<h3 style="padding:10px">Fashion Categories</h3>
+
+<div class="grid">
+ <div class="card" onclick="openType('tshirt')">
+  <img src="https://i.imgur.com/b4T6KVn.jpeg">
+  <p>T-Shirts</p>
+ </div>
+
+ <div class="card">
+  <img src="https://i.imgur.com/9Z9Z9Z9.jpeg">
+  <p>Jeans</p>
+ </div>
+
+ <div class="card">
+  <img src="https://i.imgur.com/4F4F4F4.jpeg">
+  <p>Sunglasses</p>
+ </div>
+
+ <div class="card">
+  <img src="https://i.imgur.com/7S7S7S7.jpeg">
+  <p>Sneakers</p>
+ </div>
+
+ <div class="card">
+  <img src="https://i.imgur.com/2K2K2K2.jpeg">
+  <p>Kids Shoes</p>
+ </div>
+
+ <div class="card">
+  <img src="https://i.imgur.com/6SP6SP6.jpeg">
+  <p>Sports Shoes</p>
+ </div>
+</div>
 
 <script>
-const products = JSON.parse(localStorage.getItem("allProducts")) || [];
-const category = "Fashion";
+let slide=0;
+setInterval(()=>{
+ let imgs=document.querySelectorAll(".slider img");
+ imgs.forEach(i=>i.style.display="none");
+ slide=(slide+1)%imgs.length;
+ imgs[slide].style.display="block";
+},3000);
 
-const list = products.filter(p => p.cat === category);
-
-document.getElementById("list").innerHTML =
-list.map(p=>`
- <div class="card">
-  <img src="${p.img}" onclick="openProduct(${p.id})">
-  <p>${p.name}</p>
-  <b>$${p.price}</b>
-  <button class="buy" onclick="openProduct(${p.id})">View</button>
- </div>
-`).join("");
-
-function openProduct(id){
- localStorage.setItem("pid",id);
- location.href="product.html";
+function openType(type){
+ localStorage.setItem("fashionType",type);
+ location.href="fashion-products.html";
 }
 </script>
 
