@@ -198,6 +198,7 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 <div id="like" class="grid"></div>
 
 <script>
+ localStorage.setItem("allProducts", JSON.stringify(products));
 const products=[
  {id:1,name:"Men T-shirt",price:12,img:"https://i.imgur.com/b4T6KVn.jpeg/200",cat:"Fashion",desc:"Cotton T-shirt"},
  {id:2,name:"Dress",price:22,img:"https://i.imgur.com/F9T6D7U.jpeg/200",cat:"Fashion",desc:"Ladies dress"},
