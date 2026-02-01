@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mop Sets</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+body{margin:0;font-family:Arial;background:#f4f4f4}
+.topbar{display:flex;gap:10px;padding:10px;background:#2874f0;color:#fff}
+.topbar input{flex:1;padding:8px;border:none;border-radius:4px}
+.categories{display:flex;gap:12px;padding:10px;background:#fff;overflow-x:auto}
+.categories div{min-width:100px;text-align:center;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
+.card{background:#fff;border-radius:6px;padding:8px}
+.card img{width:100%}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+ <input placeholder="Search mop...">
+ <i class="fa fa-cart-shopping" onclick="location.href='cart.html'"></i>
+</div>
+
+<div class="categories">
+ <div>Spin Mop</div>
+ <div>Flat Mop</div>
+ <div>Spray Mop</div>
+ <div>Deluxe Set</div>
+</div>
+
+<div class="grid">
+ <div class="card" onclick="openProduct(101)">
+  <img src="https://i.imgur.com/5sZ4FvA.jpeg">
+  <p>Spin Mop Set</p>
+ </div>
+
+ <div class="card" onclick="openProduct(102)">
+  <img src="https://i.imgur.com/7wZ6XZm.jpeg">
+  <p>Flat Mop</p>
+ </div>
+
+ <div class="card" onclick="openProduct(103)">
+  <img src="https://i.imgur.com/6X0n5yA.jpeg">
+  <p>Spray Mop</p>
+ </div>
+
+ <div class="card" onclick="openProduct(104)">
+  <img src="https://i.imgur.com/4JvGzYz.jpeg">
+  <p>Deluxe Mop</p>
+ </div>
+</div>
+
+<script>
+function openProduct(id){
+ localStorage.setItem("pid",id);
+ location.href="product.html";
+}
+</script>
+
+</body>
+</html>
