@@ -125,7 +125,7 @@ const products = JSON.parse(localStorage.getItem("allProducts")) || [
 ];
 
 const pid = localStorage.getItem("pid");
-const p = products.find(x => x.id == pid);
+const p = products.find(x => x.id == pid) || products[0];
 
 // MAIN PRODUCT
 document.getElementById("productBox").innerHTML = `
