@@ -2,41 +2,135 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Chakula & afya</title>
+<title>Fashion</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
-.card{background:#fff;padding:10px;border-radius:6px}
+
+/* TOP */
+.top{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ background:#2874f0;
+ padding:10px;
+ color:#fff
+}
+.top input{flex:1;padding:8px;border:none;border-radius:4px}
+.cart{font-size:22px;cursor:pointer}
+
+/* SLIDER */
+.slider img{width:100%;display:none}
+.slider img:first-child{display:block}
+
+/* CATEGORY GRID */
+.grid3{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ padding:10px
+}
+.cat{
+ background:#fff;
+ padding:10px;
+ text-align:center;
+ border-radius:6px;
+ cursor:pointer
+}
+.cat img{width:100%;height:90px;object-fit:cover}
+
+/* PRODUCTS */
+.grid2{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px
+}
+.card{
+ background:#fff;
+ padding:10px;
+ border-radius:6px
+}
 .card img{width:100%}
-.buy{background:#ff9f00;border:none;width:100%;padding:6px}
 </style>
 </head>
 
 <body>
 
-<h3 style="padding:10px">Fashion</h3>
-<div id="list" class="grid"></div>
+<div class="top">
+ <input type="search" placeholder="Search fashion..." onkeyup="search(this.value)">
+ <span class="cart" onclick="location.href='cart.html'">🛒</span>
+</div>
+
+<!-- ADS -->
+<div class="slider">
+ <img src="https://i.imgur.com/j6JWI5n.png">
+ <img src="https://i.imgur.com/3ZFgqAY.png">
+ <img src="https://i.imgur.com/M4bTgH1.png">
+</div>
+
+<h3 style="padding:10px">Fashion Categories</h3>
+
+<div class="grid3">
+ <div class="cat" onclick="openType('tshirt')"><img src="https://i.imgur.com/b4T6KVn.jpeg"><p>T-Shirts</p></div>
+ <div class="cat" onclick="openType('jeans')"><img src="https://i.imgur.com/F9T6D7U.jpeg"><p>Jeans</p></div>
+ <div class="cat" onclick="openType('sunglasses')"><img src="https://i.imgur.com/QZ8B1VC.jpeg"><p>Sunglasses</p></div>
+ <div class="cat" onclick="openType('sneakers')"><img src="https://i.imgur.com/YU7yVMc.jpeg"><p>Sneakers</p></div>
+ <div class="cat" onclick="openType('kids')"><img src="https://i.imgur.com/okplIfF.jpeg"><p>Kids Shoes</p></div>
+ <div class="cat" onclick="openType('sports')"><img src="https://i.imgur.com/zIJlaP3.jpeg"><p>Sports Shoes</p></div>
+</div>
+
+<h3 style="padding:10px">Suggested For You</h3>
+<div class="grid2" id="suggested"></div>
+
+<h3 style="padding:10px">You May Also Like</h3>
+<div class="grid2" id="like"></div>
 
 <script>
-const products = JSON.parse(localStorage.getItem("allProducts")) || [];
-const category = "Fashion";
+/* SLIDER */
+let s=0;
+setInterval(()=>{
+ let imgs=document.querySelectorAll(".slider img");
+ imgs.forEach(i=>i.style.display="none");
+ s=(s+1)%imgs.length;
+ imgs[s].style.display="block";
+},3000);
 
-const list = products.filter(p => p.cat === category);
+/* FASHION DATA */
+const fashion=[
+ {id:101,name:"Black T-Shirt",price:12,img:"https://i.imgur.com/b4T6KVn.jpeg",type:"tshirt"},
+ {id:102,name:"White T-Shirt",price:14,img:"https://i.imgur.com/F9T6D7U.jpeg",type:"tshirt"},
+ {id:103,name:"Blue Jeans",price:25,img:"https://i.imgur.com/QZ8B1VC.jpeg",type:"jeans"},
+ {id:104,name:"Sneakers",price:40,img:"https://i.imgur.com/YU7yVMc.jpeg",type:"sneakers"}
+];
 
-document.getElementById("list").innerHTML =
-list.map(p=>`
- <div class="card">
-  <img src="${p.img}" onclick="openProduct(${p.id})">
-  <p>${p.name}</p>
-  <b>$${p.price}</b>
-  <button class="buy" onclick="openProduct(${p.id})">View</button>
- </div>
-`).join("");
+localStorage.setItem("allProducts",JSON.stringify(fashion));
+
+function draw(list,id){
+ document.getElementById(id).innerHTML=list.map(p=>`
+  <div class="card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <b>$${p.price}</b>
+  </div>`).join("");
+}
+
+draw(fashion.slice(0,2),"suggested");
+draw(fashion.slice(1),"like");
+
+function openType(t){
+ localStorage.setItem("fashionType",t);
+ location.href="fashion-list.html";
+}
 
 function openProduct(id){
  localStorage.setItem("pid",id);
  location.href="product.html";
+}
+
+function search(v){
+ draw(fashion.filter(p=>p.name.toLowerCase().includes(v.toLowerCase())),"suggested");
 }
 </script>
 
