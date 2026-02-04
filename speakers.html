@@ -19,16 +19,26 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 <script>
 const speakers = [
- {id:101,name:"Mini Boost",price:35,img:"https://i.imgur.com/DKQ0LxO.jpeg",desc:"Portable speaker"},
- {id:102,name:"Samsung Mix",price:55,img:"https://i.imgur.com/6ZJ4nZy.jpeg",desc:"Deep bass speaker"},
- {id:103,name:"Fitric M3",price:42,img:"https://i.imgur.com/VZ9z9lL.jpeg",desc:"Wireless speaker"},
- {id:104,name:"JBL Go",price:38,img:"https://i.imgur.com/jxZpFfK.jpeg",desc:"Mini powerful sound"}
+ {id:101,name:"Mini Boost",price:35,img:"https://i.imgur.com/DKQ0LxO.jpeg",desc:"Portable speaker",cat:"Speakers"},
+ {id:102,name:"Samsung Mix",price:55,img:"https://i.imgur.com/6ZJ4nZy.jpeg",desc:"Deep bass speaker",cat:"Speakers"},
+ {id:103,name:"Fitric M3",price:42,img:"https://i.imgur.com/VZ9z9lL.jpeg",desc:"Wireless speaker",cat:"Speakers"},
+ {id:104,name:"JBL Go",price:38,img:"https://i.imgur.com/jxZpFfK.jpeg",desc:"Mini powerful sound",cat:"Speakers"}
 ];
 
-// SAVE ALL PRODUCTS FOR product.html
+// LOAD EXISTING PRODUCTS
 let all = JSON.parse(localStorage.getItem("allProducts")) || [];
-localStorage.setItem("allProducts", JSON.stringify([...all, ...speakers]));
 
+// MERGE WITHOUT DUPLICATES
+speakers.forEach(sp => {
+  if (!all.some(p => p.id === sp.id)) {
+    all.push(sp);
+  }
+});
+
+// SAVE ONCE
+localStorage.setItem("allProducts", JSON.stringify(all));
+
+// DISPLAY SPEAKERS
 document.getElementById("box").innerHTML = speakers.map(p=>`
  <div class="card" onclick="openProduct(${p.id})">
   <img src="${p.img}">
