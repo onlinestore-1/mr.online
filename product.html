@@ -150,7 +150,7 @@ document.getElementById("productBox").innerHTML = `
 
 // YOU MAY ALSO LIKE (exclude current product)
 const likeBox = document.getElementById("likeBox");
-products.filter(x => x.id != pid).forEach(p2 => {
+products.filter(x => x.cat === p.cat && x.id != p.id).forEach(p2 => {
   likeBox.innerHTML += `
     <div class="mini" onclick="openProduct(${p2.id})">
       <img src="${p2.img}">
