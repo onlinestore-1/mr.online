@@ -85,30 +85,30 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  font-weight:bold;
 }
 
- /* SPOTLIGHT */
-.spotlight-wrapper{
-  border:2px solid #e53935;
+ /* SPOTLIGHT SECTION */
+.spotlight-section{
+  background:#e53935; /* red surroundings */
   margin:10px;
   border-radius:6px;
-  background:#fff;
 }
 
-.spotlight-title{
-  color:#e53935;
-  font-weight:bold;
+.spotlight-header{
   padding:10px;
-  border-bottom:2px solid #e53935;
+  font-weight:bold;
+  color:#fff; /* white text */
+  text-align:left;
 }
 
 .spotlight-grid{
+  background:#e53935; /* red side space */
+  padding:10px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:10px;
-  padding:10px;
 }
 
 .spotlight-card{
-  border:2px solid #e53935;
+  background:#fff; /* product grid NOT red */
   border-radius:6px;
   overflow:hidden;
   cursor:pointer;
@@ -226,9 +226,11 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  </div>
 </div>
 
- <div class="spotlight-wrapper">
+ <div class="spotlight-section">
 
-  <div class="spotlight-title">Spotlight’s On</div>
+  <div class="spotlight-header">
+    Spotlight’s On
+  </div>
 
   <div class="spotlight-grid">
 
