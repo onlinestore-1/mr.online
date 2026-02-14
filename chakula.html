@@ -115,7 +115,7 @@ localStorage.setItem("allProducts",JSON.stringify(fashion));
 function draw(list,id){
  document.getElementById(id).innerHTML=list.map(p=>`
   <div class="card" onclick="openProduct(${p.id})">
-   <img src="${p.img}">
+   <img src="${p.imgs ? p.imgs[0] : p.img}">
    <p>${p.name}</p>
    <b>$${p.price}</b>
   </div>`).join("");
