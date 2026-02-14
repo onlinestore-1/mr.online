@@ -44,39 +44,23 @@
 
     input{width:60px;padding:5px;font-size:16px;}
 
-/* PRODUCT IMAGE SLIDER */
+/* SWIPE IMAGE SLIDER */
 .slider{
-  position:relative;
-  width:100%;
   overflow:hidden;
+  position:relative;
   border-radius:6px;
 }
 
-.slider img{
+.slides{
+  display:flex;
+  transition:transform 0.3s ease;
+}
+
+.slides img{
   width:100%;
-  display:none;
+  flex-shrink:0;
   border-radius:6px;
 }
-
-.slider img.active{
-  display:block;
-}
-
-.arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  background:rgba(0,0,0,0.5);
-  color:#fff;
-  border:none;
-  font-size:20px;
-  padding:8px 12px;
-  cursor:pointer;
-  border-radius:50%;
-}
-
-.left{left:5px;}
-.right{right:5px;}
 
     /* YOU MAY ALSO LIKE */
     h3{margin-top:25px;}
@@ -177,13 +161,12 @@ const p = products.find(x => x.id == pid) || products[0];
 
 // MAIN PRODUCT
 document.getElementById("productBox").innerHTML = `
-  <div class="slider">
- ${(p.imgs || [p.img]).map((im,i)=>`
-   <img src="${im}" class="${i==0?'active':''}">
- `).join("")}
- 
- <button class="arrow left" onclick="prevImg()">❮</button>
- <button class="arrow right" onclick="nextImg()">❯</button>
+  <div class="slider" id="slider">
+  <div class="slides" id="slides">
+    ${(p.imgs || [p.img]).map(img=>`
+      <img src="${img}">
+    `).join("")}
+  </div>
 </div>
   <h2>${p.name}</h2>
   <p>${p.desc}</p>
@@ -233,37 +216,39 @@ function addCart(){
   alert("Added to cart ✅");
 }
 
-  let current = 0;
+  let currentIndex = 0;
+let startX = 0;
 
-function showImage(index){
-  const images = document.querySelectorAll(".slider img");
-  const leftBtn = document.querySelector(".left");
-  const rightBtn = document.querySelector(".right");
+const slider = document.getElementById("slider");
+const slides = document.getElementById("slides");
 
-  images.forEach(img=>img.classList.remove("active"));
-  images[index].classList.add("active");
-
-  // Show/hide arrows
-  leftBtn.style.display = index === 0 ? "none" : "block";
-  rightBtn.style.display = index === images.length-1 ? "none" : "block";
+function showSlide(index){
+  slides.style.transform = `translateX(-${index * 100}%)`;
 }
 
-function nextImg(){
-  const images = document.querySelectorAll(".slider img");
-  if(current < images.length-1){
-    current++;
-    showImage(current);
+/* TOUCH EVENTS */
+slider.addEventListener("touchstart", e=>{
+  startX = e.touches[0].clientX;
+});
+
+slider.addEventListener("touchend", e=>{
+  let endX = e.changedTouches[0].clientX;
+  let diff = startX - endX;
+
+  if(diff > 50){ // swipe left → next
+    if(currentIndex < slides.children.length - 1){
+      currentIndex++;
+      showSlide(currentIndex);
+    }
   }
-}
 
-function prevImg(){
-  if(current > 0){
-    current--;
-    showImage(current);
+  if(diff < -50){ // swipe right → previous
+    if(currentIndex > 0){
+      currentIndex--;
+      showSlide(currentIndex);
+    }
   }
-}
-
-window.onload = () => showImage(0);
+});
 </script>
 
 </body>
