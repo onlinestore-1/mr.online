@@ -170,7 +170,7 @@ document.getElementById("productBox").innerHTML = `
 </div>
   <h2>${p.name}</h2>
   <p>${p.desc}</p>
-  <b>$${p.price}</b><br><br>
+  <b>${formatPrice(p.price)}</b><br><br>
 
   Qty:
   <input id="qty" type="number" value="1" min="1"><br><br>
@@ -186,7 +186,7 @@ products.filter(x => x.cat === p.cat && x.id != p.id).forEach(p2 => {
     <div class="mini" onclick="openProduct(${p2.id})">
       <img src="${p2.img}">
       <p>${p2.name}</p>
-      <b>$${p2.price}</b>
+      <b>${formatPrice(p2.price)}</b>
     </div>
   `;
 });
