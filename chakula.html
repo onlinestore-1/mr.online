@@ -112,6 +112,10 @@ const fashion=[
 
 localStorage.setItem("allProducts",JSON.stringify(fashion));
 
+ function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString();
+}
+
 function draw(list,id){
  document.getElementById(id).innerHTML=list.map(p=>`
   <div class="card" onclick="openProduct(${p.id})">
