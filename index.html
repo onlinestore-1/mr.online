@@ -297,12 +297,16 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  {id:104,name:"Sneakers",price:40,img:"https://i.imgur.com/YU7yVMc.jpeg",type:"sneakers"}
 ];
 
+ function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString();
+}
+
 function draw(list,id){
  document.getElementById(id).innerHTML=list.map(p=>`
  <div class="card">
   <img src="${p.img}" onclick="openProduct(${p.id})">
   <p>${p.name}</p>
-  <b>$${p.price}</b>
+  <b>${formatPrice(p.price)}</b>
  </div>`).join("");
 }
  
