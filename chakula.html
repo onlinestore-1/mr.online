@@ -117,7 +117,7 @@ function draw(list,id){
   <div class="card" onclick="openProduct(${p.id})">
    <img src="${p.imgs ? p.imgs[0] : p.img}">
    <p>${p.name}</p>
-   <b>$${p.price}</b>
+   <b>${formatPrice(p.price)}</b>
   </div>`).join("");
 }
 
