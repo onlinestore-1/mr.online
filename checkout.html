@@ -34,11 +34,16 @@ button{background:#2874f0;color:#fff;border:none}
 
 <script>
 const buy = JSON.parse(localStorage.getItem("buy"));
+
+function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString();
+}
+
 document.getElementById("order").value =
 `${buy.name}
-Price: $${buy.price}
+Price: ${formatPrice(buy.price)}
 Qty: ${buy.qty}
-Total: $${buy.price * buy.qty}`;
+Total: ${formatPrice(buy.price * buy.qty)}`;
 </script>
 
 </body>
