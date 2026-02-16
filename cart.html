@@ -154,6 +154,10 @@ let products = JSON.parse(localStorage.getItem("allProducts")) || [
   {id:40,name:"u-fresh cola",price:21,img:"https://i.imgur.com/FvMtoAL.jpeg/200"}
 ];
 
+ function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString();
+}
+
 let recent = JSON.parse(localStorage.getItem("recent")) || [];
 
 /* CART */
@@ -170,7 +174,7 @@ if(cart.length === 0){
         <img src="${c.img}">
         <div class="info">
           <b>${c.name}</b>
-          Price: $${c.price}<br>
+          Price: ${formatPrice(c.price)}<br>
           Qty: ${c.qty}
           <button class="buy" onclick="buyNow(${i})">Buy Now</button>
         </div>
@@ -185,7 +189,7 @@ products.slice(0,2).forEach(p=>{
     <div class="mini" onclick="openProduct(${p.id})">
       <img src="${p.img}">
       <p>${p.name}</p>
-      <b>$${p.price}</b>
+      <b>${formatPrice(p.price)}</b>
     </div>
   `;
 });
@@ -196,7 +200,7 @@ recent.slice(-4).forEach(p=>{
     <div class="mini" onclick="openProduct(${p.id})">
       <img src="${p.img}">
       <p>${p.name}</p>
-      <b>$${p.price}</b>
+      <b>${formatPrice(p.price)}</b>
     </div>
   `;
 });
