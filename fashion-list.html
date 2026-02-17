@@ -27,8 +27,12 @@ document.getElementById("box").innerHTML=products
   <div class="card" onclick="openProduct(${p.id})">
    <img src="${p.img}">
    <p>${p.name}</p>
-   <b>$${p.price}</b>
+   <b>${formatPrice(p.price)}</b>
   </div>`).join("");
+
+ function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString();
+}
 
 function openProduct(id){
  localStorage.setItem("pid",id);
