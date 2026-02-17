@@ -155,7 +155,7 @@ let products = JSON.parse(localStorage.getItem("allProducts")) || [
 ];
 
  function formatPrice(price){
-  return "TZS " + Number(price).toLocaleString();
+  return "TZS " + Number(price).toLocaleString() + "/=";
 }
 
 let recent = JSON.parse(localStorage.getItem("recent")) || [];
