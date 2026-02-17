@@ -81,6 +81,12 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  <div class="cat" onclick="openType('sports')"><img src="https://i.imgur.com/ALj8i2X.jpeg"><p>Shoes</p></div>
 </div>
 
+ <h3 style="padding:10px;background:#000;color:#fff">
+ Top Deals Of The Week
+</h3>
+
+<div class="grid2" id="topDeals"></div>
+
 <h3 style="padding:10px">Suggested For You</h3>
 <div class="grid2" id="suggested"></div>
 
@@ -105,6 +111,14 @@ const fashion=[
  {id:104,name:"Sneakers",price:40,img:"https://i.imgur.com/YU7yVMc.jpeg",type:"sneakers"}
 ];
 
+ /* TOP DEALS DATA */
+const topDeals = [
+ {id:201,name:"OnePlus Nord 5",price:32499,old:34999,img:"https://i.imgur.com/DKQ0LxO.jpeg"},
+ {id:202,name:"iQOO Z10R",price:19999,old:23499,img:"https://i.imgur.com/6ZJ4nZy.jpeg"},
+ {id:203,name:"Samsung Galaxy M17",price:13999,old:16499,img:"https://i.imgur.com/VZ9z9lL.jpeg"},
+ {id:204,name:"OnePlus 13S",price:47999,old:57999,img:"https://i.imgur.com/jxZpFfK.jpeg"}
+];
+
 localStorage.setItem("allProducts",JSON.stringify(fashion));
 
  function formatPrice(price){
@@ -120,8 +134,23 @@ function draw(list,id){
   </div>`).join("");
 }
 
+ function drawDeals(list,id){
+ document.getElementById(id).innerHTML=list.map(p=>`
+  <div class="card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <small style="text-decoration:line-through;color:red">
+    ${formatPrice(p.old)}
+   </small>
+   <br>
+   <b style="color:green">${formatPrice(p.price)}</b>
+  </div>
+ `).join("");
+}
+
 draw(fashion.slice(0,2),"suggested");
 draw(fashion.slice(1),"like");
+drawDeals(topDeals,"topDeals");
 
 function openType(t){
  localStorage.setItem("fashionType",t);
