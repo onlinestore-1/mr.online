@@ -36,7 +36,7 @@ button{background:#2874f0;color:#fff;border:none}
 const buy = JSON.parse(localStorage.getItem("buy"));
 
 function formatPrice(price){
-  return "TZS " + Number(price).toLocaleString();
+  return "TZS " + Number(price).toLocaleString() + "/=";
 }
 
 document.getElementById("order").value =
