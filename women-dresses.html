@@ -2,61 +2,112 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Mop Sets</title>
+<title>Gloves</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
 body{margin:0;font-family:Arial;background:#f4f4f4}
-.topbar{display:flex;gap:10px;padding:10px;background:#2874f0;color:#fff}
-.topbar input{flex:1;padding:8px;border:none;border-radius:4px}
-.categories{display:flex;gap:12px;padding:10px;background:#fff;overflow-x:auto}
-.categories div{min-width:100px;text-align:center;font-weight:bold}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
-.card{background:#fff;border-radius:6px;padding:8px}
+
+/* TOP BAR */
+.topbar{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ background:#2874f0;
+ padding:10px;
+ color:#fff;
+}
+.topbar input{
+ flex:1;
+ padding:8px;
+ border:none;
+ border-radius:4px;
+}
+.cart{
+ font-size:22px;
+ cursor:pointer;
+}
+
+/* GRID */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px;
+}
+.card{
+ background:#fff;
+ padding:10px;
+ border-radius:6px;
+}
 .card img{width:100%}
 </style>
 </head>
 
 <body>
 
+<!-- SEARCH + CART -->
 <div class="topbar">
- <input placeholder="Search mop...">
- <i class="fa fa-cart-shopping" onclick="location.href='cart.html'"></i>
+ <input type="search" placeholder="Search products..." onkeyup="search(this.value)">
+ <span class="cart" onclick="location.href='cart.html'">🛒</span>
 </div>
 
-<div class="categories">
- <div>Spin Mop</div>
- <div>Flat Mop</div>
- <div>Spray Mop</div>
- <div>Deluxe Set</div>
-</div>
-
-<div class="grid">
- <div class="card" onclick="openProduct(101)">
-  <img src="https://i.imgur.com/5sZ4FvA.jpeg">
-  <p>Spin Mop Set</p>
- </div>
-
- <div class="card" onclick="openProduct(102)">
-  <img src="https://i.imgur.com/7wZ6XZm.jpeg">
-  <p>Flat Mop</p>
- </div>
-
- <div class="card" onclick="openProduct(103)">
-  <img src="https://i.imgur.com/6X0n5yA.jpeg">
-  <p>Spray Mop</p>
- </div>
-
- <div class="card" onclick="openProduct(104)">
-  <img src="https://i.imgur.com/4JvGzYz.jpeg">
-  <p>Deluxe Mop</p>
- </div>
-</div>
+<h2 style="padding:10px">Gloves</h2>
+<div id="box" class="grid"></div>
 
 <script>
+const speakers = [
+ {id:101,name:"Mini Boost",price:35000,img:"https://i.imgur.com/DKQ0LxO.jpeg",desc:"Portable speaker",cat:"Speakers"},
+ {id:102,name:"Samsung Mix",price:55000,img:"https://i.imgur.com/6ZJ4nZy.jpeg",desc:"Deep bass speaker",cat:"Speakers"},
+ {id:103,name:"Fitric M3",price:42000,img:"https://i.imgur.com/VZ9z9lL.jpeg",desc:"Wireless speaker",cat:"Speakers"},
+ {id:104,name:"JBL Go",price:38000,img:"https://i.imgur.com/jxZpFfK.jpeg",desc:"Mini powerful sound",cat:"Speakers"},
+ {id:10,name:"Royco",price:14000,img:"https://i.imgur.com/rmXvXwO.jpeg/200",cat:"Chakula & afya"},
+ {id:3,name:"Sukari 1kg",price:30000,img:"https://i.imgur.com/1EFgnRl.jpeg"}
+];
+
+// FORMAT PRICE (TZS + comma)
+function formatPrice(price){
+ return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+// LOAD EXISTING PRODUCTS
+let all = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+// MERGE WITHOUT DUPLICATES
+speakers.forEach(sp => {
+ if (!all.some(p => p.id === sp.id)) {
+  all.push(sp);
+ }
+});
+
+localStorage.setItem("allProducts", JSON.stringify(all));
+
+// DISPLAY FUNCTION
+function draw(list){
+ document.getElementById("box").innerHTML = list.map(p=>`
+  <div class="card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <b>${formatPrice(p.price)}</b>
+  </div>
+ `).join("");
+}
+
+// INITIAL LOAD
+draw(speakers);
+
+// SEARCH FUNCTION
+function search(value){
+ const filtered = speakers.filter(p =>
+  p.name.toLowerCase().includes(value.toLowerCase())
+ );
+ draw(filtered);
+}
+
+// OPEN PRODUCT
 function openProduct(id){
- localStorage.setItem("pid",id);
- location.href="product.html";
+ localStorage.setItem("pid", id);
+ location.href = "product.html";
 }
 </script>
 
