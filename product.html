@@ -192,7 +192,7 @@ products.filter(x => x.cat === p.cat && x.id != p.id).forEach(p2 => {
 });
 
   function formatPrice(price){
-  return "TZS " + Number(price).toLocaleString();
+  return "TZS " + Number(price).toLocaleString() + "/=";
 }
 
 function openProduct(id){
