@@ -107,12 +107,16 @@ const fashion=[
 
 localStorage.setItem("allProducts",JSON.stringify(fashion));
 
+ function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
 function draw(list,id){
  document.getElementById(id).innerHTML=list.map(p=>`
   <div class="card" onclick="openProduct(${p.id})">
    <img src="${p.img}">
    <p>${p.name}</p>
-   <b>$${p.price}</b>
+   <b>${formatPrice(p.price)}</b>
   </div>`).join("");
 }
 
