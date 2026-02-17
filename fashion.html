@@ -119,6 +119,17 @@ const topDeals = [
  {id:204,name:"OnePlus 13S",price:47999,img:"https://i.imgur.com/jxZpFfK.jpeg",desc:"Premium flagship phone"}
 ];
 
+ let allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+// Merge without duplicates
+topDeals.forEach(d=>{
+ if(!allProducts.some(p=>p.id===d.id)){
+   allProducts.push(d);
+ }
+});
+
+localStorage.setItem("allProducts", JSON.stringify(allProducts));
+
 localStorage.setItem("allProducts",JSON.stringify(fashion));
 
  function formatPrice(price){
@@ -134,23 +145,21 @@ function draw(list,id){
   </div>`).join("");
 }
 
- function drawDeals(list,id){
- document.getElementById(id).innerHTML=list.map(p=>`
-  <div class="card" onclick="openProduct(${p.id})">
-   <img src="${p.img}">
-   <p>${p.name}</p>
-   <small style="text-decoration:line-through;color:red">
-    ${formatPrice(p.old)}
-   </small>
-   <br>
-   <b style="color:green">${formatPrice(p.price)}</b>
-  </div>
- `).join("");
+ function drawTopDeals(){
+ document.getElementById("topDeals").innerHTML =
+  topDeals.map(p=>`
+   <div class="card" onclick="openProduct(${p.id})">
+    <img src="${p.img}">
+    <p>${p.name}</p>
+    <b>TZS ${Number(p.price).toLocaleString()}/=</b>
+   </div>
+  `).join("");
 }
+
+drawTopDeals();
 
 draw(fashion.slice(0,2),"suggested");
 draw(fashion.slice(1),"like");
-drawDeals(topDeals,"topDeals");
 
 function openType(t){
  localStorage.setItem("fashionType",t);
