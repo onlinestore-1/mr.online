@@ -40,6 +40,44 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 }
 .cat img{width:100%;height:90px;object-fit:cover}
 
+ /* SPOTLIGHT SECTION */
+.spotlight-section{
+  background:#e53935; /* red surroundings */
+  margin:10px;
+  border-radius:6px;
+}
+
+.spotlight-header{
+  padding:10px;
+  font-weight:bold;
+  color:#fff; /* white text */
+  text-align:left;
+}
+
+.spotlight-grid{
+  background:#e53935; /* red side space */
+  padding:10px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.spotlight-card{
+  background:#fff; /* product grid NOT red */
+  border-radius:6px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.spotlight-card img{
+  width:100%;
+}
+
+.spotlight-card p{
+  margin:8px;
+  font-weight:bold;
+}
+
 /* PRODUCTS */
 .grid2{
  display:grid;
@@ -79,6 +117,37 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  <div class="cat" onclick="openType('cream')"><img src="https://i.postimg.cc/8Chjtcqw/ice9.jpg"><p>Ice cream</p></div>
  <div class="cat" onclick="openType('drinks')"><img src="https://i.postimg.cc/4xvg0cxw/peps1.jpg"><p>Cold Drinks</p></div>
  <div class="cat" onclick="openType('extra')"><img src="https://i.postimg.cc/15rSC6tG/blue-ban1.jpg"><p>Mengineyo</p></div>
+</div>
+
+ <div class="spotlight-section">
+
+  <div class="spotlight-header">
+    Spotlight’s On
+  </div>
+
+  <div class="spotlight-grid">
+
+    <div class="spotlight-card" onclick="location.href='speaker.html'">
+      <img src="https://i.imgur.com/vcPvjSB.jpeg">
+      <p>Bluetooth Speaker</p>
+    </div>
+
+    <div class="spotlight-card" onclick="location.href='women-dresses.html'">
+      <img src="https://i.imgur.com/F9T6D7U.jpeg">
+      <p>Women Dress</p>
+    </div>
+
+    <div class="spotlight-card" onclick="location.href='true-wireless.html'">
+      <img src="https://i.imgur.com/Zs4J5KE.jpeg">
+      <p>True Wireless</p>
+    </div>
+
+    <div class="spotlight-card" onclick="location.href='mop-set.html'">
+      <img src="https://i.imgur.com/L9ebSwq.jpeg">
+      <p>Gym Gloves</p>
+    </div>
+
+  </div>
 </div>
 
 <h3 style="padding:10px">Suggested For You</h3>
