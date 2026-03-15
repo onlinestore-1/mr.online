@@ -326,6 +326,23 @@ function closeMenu(){drawer.style.left="-260px";document.querySelector(".overlay
 function goTop(page){
   location.href = page;
 }
+
+ /* ADS SLIDER */
+let slideIndex = 0;
+const slides = document.querySelectorAll(".slider img");
+
+function showSlides(){
+  slides.forEach(img => img.style.display = "none");
+
+  slideIndex++;
+  if(slideIndex > slides.length){slideIndex = 1}
+
+  slides[slideIndex-1].style.display = "block";
+
+  setTimeout(showSlides,3000); // change every 3 seconds
+}
+
+showSlides();
 </script>
 </body>
 </html
