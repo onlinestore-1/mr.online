@@ -123,6 +123,39 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   font-weight:bold;
 }
 
+ /* TOP DEALS SECTION */
+.deal-title{
+  background:yellow;
+  color:white;
+  padding:10px;
+  margin:0;
+  border-left:6px solid #2874f0;
+}
+
+.deal-wrapper{
+  background:yellow;
+  padding:10px;
+}
+
+.deal-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.deal-card{
+  background:#fff;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.deal-card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
 /* PRODUCTS */
 .grid{
  display:grid;grid-template-columns:repeat(2,1fr);
@@ -280,6 +313,12 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   </div>
 </div>
 
+ <h3 class="deal-title">Top Deals Of The Week</h3>
+
+<div class="deal-wrapper">
+  <div class="deal-grid" id="topDeals"></div>
+</div>
+
 <h3>Products</h3>
 <div id="products" class="grid"></div>
 
@@ -298,6 +337,46 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  {id:102,name:"Freedom Counter Book",price:14,img:"https://i.postimg.cc/50JG0SpM/free1.jpg",type:"book",desc:"Freedom Counter Book-2 Quire"},
  {id:103,name:"Vaseline",price:25,img:"https://i.postimg.cc/TY2znxmq/a21.jpg",type:"oil",desc:"Vaseline Petroleum Jelly"}
 ];
+
+ /* TOP DEALS DATA */
+const topDeals = [
+ {id:501,name:"OnePlus Nord 5",price:324990,img:"https://i.imgur.com/DKQ0LxO.jpeg",desc:"Fast 5G smartphone"},
+ {id:502,name:"iQOO Z10R",price:199990,img:"https://i.imgur.com/6ZJ4nZy.jpeg",desc:"Sony 4K Camera"},
+ {id:503,name:"Samsung Galaxy M17",price:139990,img:"https://i.imgur.com/VZ9z9lL.jpeg",desc:"50MP Camera"},
+ {id:504,name:"OnePlus 13S",price:479990,img:"https://i.imgur.com/jxZpFfK.jpeg",desc:"Premium performance"}
+];
+
+/* MERGE INTO allProducts */
+let allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+topDeals.forEach(d=>{
+ if(!allProducts.some(p=>p.id===d.id)){
+   allProducts.push(d);
+ }
+});
+
+localStorage.setItem("allProducts", JSON.stringify(allProducts));
+
+/* FORMAT PRICE */
+function formatPrice(price){
+ return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+/* DRAW TOP DEALS */
+document.getElementById("topDeals").innerHTML =
+ topDeals.map(p=>`
+  <div class="deal-card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <b>${formatPrice(p.price)}</b>
+  </div>
+ `).join("");
+
+/* OPEN PRODUCT */
+function openProduct(id){
+ localStorage.setItem("pid", id);
+ location.href="product.html";
+}
 
  function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
