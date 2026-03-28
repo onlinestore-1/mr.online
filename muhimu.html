@@ -40,6 +40,39 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 }
 .cat img{width:100%;height:90px;object-fit:cover}
 
+ /* TOP DEALS SECTION */
+.deal-title{
+  background:yellow;
+  color:white;
+  padding:10px;
+  margin:0;
+  border-left:6px solid #2874f0;
+}
+
+.deal-wrapper{
+  background:yellow;
+  padding:10px;
+}
+
+.deal-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.deal-card{
+  background:#fff;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.deal-card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
 /* PRODUCTS */
 .grid2{
  display:grid;
@@ -70,7 +103,7 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  <img src="https://i.imgur.com/M4bTgH1.png">
 </div>
 
-<h3 style="padding:10px">Fashion Categories</h3>
+<h3 style="padding:10px">Muhimu Categories</h3>
 
 <div class="grid3">
  <div class="cat" onclick="openType('sabuni')"><img src="https://i.postimg.cc/52JB1cfY/muh7.jpg"><p>Sabuni</p></div>
@@ -79,6 +112,12 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  <div class="cat" onclick="openType('oil')"><img src="https://i.postimg.cc/2SkSqgjJ/a20.jpg"><p>Mafuta</p></div>
  <div class="cat" onclick="openType('kids')"><img src="https://i.postimg.cc/nrssK2Z0/kia10.jpg"><p>Kids Shoes</p></div>
  <div class="cat" onclick="openType('ziada')"><img src="https://i.postimg.cc/T3PPnQ92/crocs2.jpg"><p>Ziada</p></div>
+</div>
+
+ <h3 class="deal-title">Top Deals Of The Week</h3>
+
+<div class="deal-wrapper">
+  <div class="deal-grid" id="topDeals"></div>
 </div>
 
 <h3 style="padding:10px">Suggested For You</h3>
@@ -121,6 +160,46 @@ const fashion=[
  {id:219,name:"VESTLINE",price:17,img:"https://i.imgur.com/I9zrvTV.jpeg/200",type:"oil",desc:"Vestline Pure Petroleum Jelly"},
  {id:220,name:"Whitedent",price:17,img:"https://i.imgur.com/U3VDK5W.jpeg/200",type:"tooth",desc:"Whitedent Herbal"}
 ];
+
+ /* TOP DEALS DATA */
+const topDeals = [
+ {id:501,name:"OnePlus Nord 5",price:324990,img:"https://i.imgur.com/DKQ0LxO.jpeg",desc:"Fast 5G smartphone"},
+ {id:502,name:"iQOO Z10R",price:199990,img:"https://i.imgur.com/6ZJ4nZy.jpeg",desc:"Sony 4K Camera"},
+ {id:503,name:"Samsung Galaxy M17",price:139990,img:"https://i.imgur.com/VZ9z9lL.jpeg",desc:"50MP Camera"},
+ {id:504,name:"OnePlus 13S",price:479990,img:"https://i.imgur.com/jxZpFfK.jpeg",desc:"Premium performance"}
+];
+
+/* MERGE INTO allProducts */
+let allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+topDeals.forEach(d=>{
+ if(!allProducts.some(p=>p.id===d.id)){
+   allProducts.push(d);
+ }
+});
+
+localStorage.setItem("allProducts", JSON.stringify(allProducts));
+
+/* FORMAT PRICE */
+function formatPrice(price){
+ return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+/* DRAW TOP DEALS */
+document.getElementById("topDeals").innerHTML =
+ topDeals.map(p=>`
+  <div class="deal-card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <b>${formatPrice(p.price)}</b>
+  </div>
+ `).join("");
+
+/* OPEN PRODUCT */
+function openProduct(id){
+ localStorage.setItem("pid", id);
+ location.href="product.html";
+}
 
 localStorage.setItem("allProducts",JSON.stringify(fashion));
 
