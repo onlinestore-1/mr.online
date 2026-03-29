@@ -125,7 +125,7 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 /* PRODUCTS */
 .grid{
- display:grid;grid-template-columns:repeat(2,1fr);
+ display:grid;grid-template-columns:repeat(3,1fr);
  gap:10px;padding:10px
 }
 .card{
@@ -280,14 +280,14 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   </div>
 </div>
 
-<h3>Products</h3>
-<div id="products" class="grid"></div>
+<h3>You May Also Like</h3>
+<div id="like" class="grid"></div>
 
 <h3>Suggested For You</h3>
 <div id="suggested" class="grid"></div>
 
-<h3>You May Also Like</h3>
-<div id="like" class="grid"></div>
+ <h3>Products</h3>
+<div id="products" class="grid"></div>
 
 <script>
  const products = JSON.parse(localStorage.getItem("allProducts")) || [
@@ -314,7 +314,19 @@ function draw(list,id){
  
 draw(products,"products");
 draw(products.slice(0,2),"suggested");
-draw(products.slice(1),"like");
+/* 6 products from different categories */
+const different = [];
+const usedTypes = new Set();
+
+for(let p of products){
+  if(!usedTypes.has(p.type)){
+    different.push(p);
+    usedTypes.add(p.type);
+  }
+  if(different.length === 6) break;
+}
+
+draw(different,"like");
 
 function openProduct(id){
  localStorage.setItem("pid",id);
