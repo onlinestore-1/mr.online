@@ -123,39 +123,6 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   font-weight:bold;
 }
 
- /* TOP DEALS SECTION */
-.deal-title{
-  background:red;
-  color:white;
-  padding:10px;
-  margin:0;
-  border-left:6px solid #2874f0;
-}
-
-.deal-wrapper{
-  background:red;
-  padding:10px;
-}
-
-.deal-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.deal-card{
-  background:#fff;
-  padding:10px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.deal-card img{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-}
-
 /* PRODUCTS */
 .grid{
  display:grid;grid-template-columns:repeat(2,1fr);
@@ -313,12 +280,6 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   </div>
 </div>
 
- <h3 class="deal-title">Value For Your Money</h3>
-
-<div class="deal-wrapper">
-  <div class="deal-grid" id="topDeals"></div>
-</div>
-
 <h3>Products</h3>
 <div id="products" class="grid"></div>
 
@@ -335,46 +296,6 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  {id:35,name:"Atlético Madrid",price:10000,img:"https://i.postimg.cc/kGz2FDJ2/dr7.jpg",type:"jezi",desc:"Atlético Madrid 2025/26"},
  {id:309,name:"Google Pixel",price:40,img:"https://i.imgur.com/OrdCEN6.jpeg",type:"google",desc:"Google Pixel 6a 128GB"}
 ];
-
- /* TOP DEALS DATA */
-const topDeals = JSON.parse(localStorage.getItem("allProducts")) || [
- {id:4,name:"Buda Jeans Co",price:25500,img:"https://i.imgur.com/HPRwTKJ.jpeg",type:"jeans",desc:"Men Slim Fit Mid-Rise Cargo Pants"},
- {id:203,name:"Niceone",price:18,img:"https://i.imgur.com/7nmPGbq.jpeg/200",type:"sabuni",desc:"Ondoa madoa sugu"},
- {id:300,name:"Samsung Galaxy",price:480000,img:"https://i.postimg.cc/hG4NXd49/sam6.jpg",type:"samsung",desc:"Samsung Galaxy Note 20 Ultra 128Gb Black"},
- {id:33,name:"Manchester City",price:10000,img:"https://i.postimg.cc/vT9tjP1f/sport2.jpg",type:"jezi",desc:"Manchester City Home Shirt 25/26"}
-];
-
-/* MERGE INTO allProducts */
-let allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
-
-topDeals.forEach(d=>{
- if(!allProducts.some(p=>p.id===d.id)){
-   allProducts.push(d);
- }
-});
-
-localStorage.setItem("allProducts", JSON.stringify(allProducts));
-
-/* FORMAT PRICE */
-function formatPrice(price){
- return "TZS " + Number(price).toLocaleString() + "/=";
-}
-
-/* DRAW TOP DEALS */
-document.getElementById("topDeals").innerHTML =
- topDeals.map(p=>`
-  <div class="deal-card" onclick="openProduct(${p.id})">
-   <img src="${p.img}">
-   <p>${p.name}</p>
-   <b>${formatPrice(p.price)}</b>
-  </div>
- `).join("");
-
-/* OPEN PRODUCT */
-function openProduct(id){
-  localStorage.setItem("pid", id);
-  location.href="product.html";
-}
 
 localStorage.setItem("allProducts", JSON.stringify(products));
 
