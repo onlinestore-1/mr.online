@@ -337,7 +337,7 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 ];
 
  /* TOP DEALS DATA */
-const topDeals = [
+const topDeals = JSON.parse(localStorage.getItem("allProducts")) || [
  {id:4,name:"Buda Jeans Co",price:25500,img:"https://i.imgur.com/HPRwTKJ.jpeg",type:"jeans",desc:"Men Slim Fit Mid-Rise Cargo Pants"},
  {id:203,name:"Niceone",price:18,img:"https://i.imgur.com/7nmPGbq.jpeg/200",type:"sabuni",desc:"Ondoa madoa sugu"},
  {id:300,name:"Samsung Galaxy",price:480000,img:"https://i.postimg.cc/hG4NXd49/sam6.jpg",type:"samsung",desc:"Samsung Galaxy Note 20 Ultra 128Gb Black"},
