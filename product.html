@@ -237,16 +237,20 @@ document.getElementById("productBox").innerHTML = `
 `;
 
 // YOU MAY ALSO LIKE (exclude current product)
-const likeBox = document.getElementById("likeBox");
-products.filter(x => x.cat === p.cat && x.id != p.id).forEach(p2 => {
-  likeBox.innerHTML += `
-    <div class="mini" onclick="openProduct(${p2.id})">
-      <img src="${p2.img}">
-      <p>${p2.name}</p>
-      <b>${formatPrice(p2.price)}</b>
-    </div>
-  `;
-});
+ const likeBox = document.getElementById("likeBox");
+
+/* get only 6 products from same category */
+const similar = products
+  .filter(x => x.type === p.type && x.id != p.id)
+  .slice(0,6); // only 6 products
+
+likeBox.innerHTML = similar.map(p2 => `
+  <div class="mini" onclick="openProduct(${p2.id})">
+    <img src="${p2.img}">
+    <p>${p2.name}</p>
+    <b>${formatPrice(p2.price)}</b>
+  </div>
+`).join("");
 
   function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
