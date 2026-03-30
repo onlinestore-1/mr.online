@@ -51,6 +51,28 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 }
 .categories div{text-align:center;min-width:80px}
 
+ .recent-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  padding:10px;
+}
+
+.recent-card{
+  width:18%;
+  background:#fff;
+  border:2px solid red;
+  border-radius:6px;
+  padding:8px;
+  margin:5px;
+  box-sizing:border-box;
+}
+
+.recent-card img{
+  width:100%;
+  border-radius:4px;
+}
+
  /* DISCOUNT */
 .discount-grid{
  display:grid;
@@ -194,6 +216,9 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  </div>
 </div>
 
+ <h3>Still looking for these?</h3>
+<div id="recentProducts" class="recent-row"></div>
+
  <h3>Discount For You</h3>
 
 <div class="discount-grid">
@@ -335,6 +360,32 @@ for(let p of products){
 }
 
 draw(different,"like");
+
+ function drawRecent(){
+  const fashion = products.filter(p => p.type === "tshirt").slice(0,2);
+  const chakula = products.filter(p => p.type === "food").slice(0,2);
+  const muhimu = products.filter(p => p.type === "important").slice(0,2);
+  const mobile = products.filter(p => p.type === "google").slice(0,2);
+  const electronics = products.filter(p => p.type === "laptop").slice(0,2);
+
+  const finalList = [
+    ...fashion,
+    ...chakula,
+    ...muhimu,
+    ...mobile,
+    ...electronics
+  ];
+
+  document.getElementById("recentProducts").innerHTML = finalList.map(p => `
+    <div class="recent-card">
+      <img src="${p.img}" onclick="openProduct(${p.id})">
+      <p>${p.name}</p>
+      <b>${formatPrice(p.price)}</b>
+    </div>
+  `).join("");
+}
+
+drawRecent();
 
 function openProduct(id){
  localStorage.setItem("pid",id);
