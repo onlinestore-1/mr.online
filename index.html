@@ -51,42 +51,26 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 }
 .categories div{text-align:center;min-width:80px}
 
-  /* STILL LOOKING SECTION */
-.recent-section{
-  background:#e53935; /* red surroundings */
-  margin:10px;
-  border-radius:6px;
-}
-
-.recent-header{
-  padding:10px;
-  font-weight:bold;
-  color:#fff; /* white text */
-  text-align:left;
-}
-
-.recent-grid{
-  background:#e53935; /* red side space */
-  padding:10px;
-  display:grid;
-  grid-template-columns:repeat(10,1fr);
+ .recent-row{
+  display:flex;
+  flex-wrap:wrap;
   gap:10px;
+  padding:10px;
 }
 
 .recent-card{
-  background:#fff; /* product grid NOT red */
+  width:18%;
+  background:#fff;
+  border:2px solid red;
   border-radius:6px;
-  overflow:hidden;
-  cursor:pointer;
+  padding:8px;
+  margin:5px;
+  box-sizing:border-box;
 }
 
 .recent-card img{
   width:100%;
-}
-
-.recent-card p{
-  margin:8px;
-  font-weight:bold;
+  border-radius:4px;
 }
 
  /* DISCOUNT */
