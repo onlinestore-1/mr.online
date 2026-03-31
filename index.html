@@ -362,11 +362,11 @@ for(let p of products){
 draw(different,"like");
 
  function drawRecent(){
-  const fashion = products.filter(p => p.type === "tshirt").slice(0,10);
-  const chakula = products.filter(p => p.type === "food").slice(0,10);
-  const muhimu = products.filter(p => p.type === "important").slice(0,10);
-  const mobile = products.filter(p => p.type === "google").slice(0,10);
-  const electronics = products.filter(p => p.type === "laptop").slice(0,10);
+  const fashion = products.filter(p => p.type === "tshirt").slice(0,3);
+  const chakula = products.filter(p => p.type === "food").slice(0,3);
+  const muhimu = products.filter(p => p.type === "important").slice(0,3);
+  const mobile = products.filter(p => p.type === "google").slice(0,3);
+  const electronics = products.filter(p => p.type === "laptop").slice(0,3);
 
   const finalList = [
     ...fashion,
