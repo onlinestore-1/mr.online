@@ -51,26 +51,48 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 }
 .categories div{text-align:center;min-width:80px}
 
- .recent-row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  padding:10px;
+ /* MAIN BOX (title + products inside one border) */
+.still-box{
+  margin: 20px;
+  border: 2px solid black;
+  padding: 15px;
 }
 
-.recent-card{
-  width:18%;
-  background:#fff;
-  border:2px solid red;
-  border-radius:6px;
-  padding:8px;
-  margin:5px;
-  box-sizing:border-box;
+/* TITLE */
+.still-title{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
 }
 
-.recent-card img{
-  width:100%;
-  border-radius:4px;
+/* PRODUCT ROW */
+.still-row{
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* 10 products in one row */
+  gap: 8px; /* RED SPACE BETWEEN PRODUCTS */
+  background: red; /* empty space color */
+  padding: 8px;
+}
+
+/* SINGLE PRODUCT */
+.still-item{
+  background: white;
+  text-align: center;
+  padding: 6px;
+  border-radius: 5px;
+}
+
+/* IMAGE */
+.still-item img{
+  width: 100%;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* TEXT */
+.still-item p{
+  font-size: 12px;
+  margin-top: 5px;
 }
 
  /* DISCOUNT */
@@ -216,8 +238,35 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  </div>
 </div>
 
- <h3>Still looking for these?</h3>
-<div id="recentProducts" class="recent-row"></div>
+ <!-- STILL LOOKING FOR THESE -->
+<div class="still-box">
+
+  <div class="still-title">Still looking for these?</div>
+
+  <div class="still-row">
+
+    <!-- Fashion products -->
+    <div class="still-item"><img src="fashion1.jpg"><p>Women Dress</p></div>
+    <div class="still-item"><img src="fashion2.jpg"><p>Men Shirt</p></div>
+
+    <!-- Chakula products -->
+    <div class="still-item"><img src="chakula1.jpg"><p>Rice 5kg</p></div>
+    <div class="still-item"><img src="chakula2.jpg"><p>Cooking Oil</p></div>
+
+    <!-- Muhimu products -->
+    <div class="still-item"><img src="muhimu1.jpg"><p>School Bag</p></div>
+    <div class="still-item"><img src="muhimu2.jpg"><p>Water Bottle</p></div>
+
+    <!-- Mobile.html products -->
+    <div class="still-item"><img src="mobile1.jpg"><p>Smart Phone</p></div>
+    <div class="still-item"><img src="mobile2.jpg"><p>Phone Cover</p></div>
+
+    <!-- Electronics.html products -->
+    <div class="still-item"><img src="electronics1.jpg"><p>Bluetooth Speaker</p></div>
+    <div class="still-item"><img src="electronics2.jpg"><p>Headphones</p></div>
+
+  </div>
+</div>
 
  <h3>Discount For You</h3>
 
@@ -360,32 +409,6 @@ for(let p of products){
 }
 
 draw(different,"like");
-
- function drawRecent(){
-  const fashion = products.filter(p => p.type === "jezi").slice(0,4);
-  const chakula = products.filter(p => p.type === "drinks").slice(0,4);
-  const muhimu = products.filter(p => p.type === "oil").slice(0,4);
-  const mobile = products.filter(p => p.type === "samsung").slice(0,4);
-  const electronics = products.filter(p => p.type === "laptop").slice(0,4);
-
-  const finalList = [
-    ...fashion,
-    ...chakula,
-    ...muhimu,
-    ...mobile,
-    ...electronics
-  ];
-
-  document.getElementById("recentProducts").innerHTML = finalList.map(p => `
-    <div class="recent-card">
-      <img src="${p.img}" onclick="openProduct(${p.id})">
-      <p>${p.name}</p>
-      <b>${formatPrice(p.price)}</b>
-    </div>
-  `).join("");
-}
-
-drawRecent();
 
 function openProduct(id){
  localStorage.setItem("pid",id);
