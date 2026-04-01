@@ -398,33 +398,44 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 localStorage.setItem("allProducts", JSON.stringify(products));
 
- /* STILL LOOKING PRODUCTS (10 products from different categories) */
- function showLastViewed(){
+ /* DEFAULT 10 PRODUCTS (used when user never clicked anything) */
+const defaultStill = products.slice(0,10).map(p=>p.id);
+function showStillProducts(){
 
- let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+  let viewed = JSON.parse(localStorage.getItem("lastViewed"));
 
- // if nothing visited yet show default products
- if(viewed.length === 0){
-   viewed = products.map(p=>p.id).slice(0,10);
- }
+  /* if nothing visited yet → use default products */
+  if(!viewed || viewed.length === 0){
+    viewed = defaultStill;
+  }
 
- let html = "";
+  /* if less than 10 → fill with default products */
+  if(viewed.length < 10){
+    defaultStill.forEach(id=>{
+      if(!viewed.includes(id)){
+        viewed.push(id);
+      }
+      if(viewed.length === 10) return;
+    });
+  }
 
- viewed.forEach(id=>{
-   const p = products.find(x=>x.id==id);
-   if(!p) return;
+  let html = "";
 
-   html += `
-   <div class="still-card" onclick="openProduct(${p.id})">
-     <img src="${p.img}">
-     <p>${p.name}</p>
-   </div>`;
- });
+  viewed.forEach(id=>{
+    const p = products.find(x=>x.id==id);
+    if(!p) return;
 
- document.getElementById("stillProducts").innerHTML = html;
+    html += `
+    <div class="still-card" onclick="openProduct(${p.id})">
+      <img src="${p.img}">
+      <p>${p.name}</p>
+    </div>`;
+  });
+
+  document.getElementById("stillProducts").innerHTML = html;
 }
 
-showLastViewed();
+showStillProducts(); 
 
 /* SHOW 10 SCROLL PRODUCTS */
 document.getElementById("stillProducts").innerHTML =
@@ -482,24 +493,24 @@ for(let p of products){
 
 draw(different,"like");
 
-function openProduct(id){
- localStorage.setItem("pid",id);
- saveLastViewed(id);
- location.href="product.html";
-}
-function saveLastViewed(id){
- let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+ function openProduct(id){
 
- // remove if already exists
- viewed = viewed.filter(p => p != id);
+  localStorage.setItem("pid",id);
 
- // put newest product first
- viewed.unshift(id);
+  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
 
- // keep only last 10 products
- viewed = viewed.slice(0,10);
+  /* remove if already exists */
+  viewed = viewed.filter(p => p != id);
 
- localStorage.setItem("lastViewed",JSON.stringify(viewed));
+  /* put newest first */
+  viewed.unshift(id);
+
+  /* keep only 10 */
+  viewed = viewed.slice(0,10);
+
+  localStorage.setItem("lastViewed",JSON.stringify(viewed));
+
+  location.href="product.html";
 }
 function filter(c){draw(products.filter(p=>p.cat==c),"products")}
 function search(v){draw(products.filter(p=>p.name.toLowerCase().includes(v.toLowerCase())),"products")}
