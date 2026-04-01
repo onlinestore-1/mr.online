@@ -76,24 +76,27 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   display:none;
 }
 
-.still-card{
-  min-width:32%;
+ .still-card{
+  min-width:90px;
+  max-width:90px;
   background:#fff;
-  border-radius:14px;
-  padding:10px;
+  border-radius:12px;
+  padding:6px;
   text-align:center;
   flex-shrink:0;
   cursor:pointer;
 }
 
 .still-card img{
-  width:100%;
-  border-radius:12px;
+  width:80px;
+  height:80px;
+  object-fit:cover;
+  border-radius:10px;
 }
 
 .still-card p{
-  margin-top:6px;
-  font-weight:500;
+  font-size:12px;
+  margin-top:4px;
 }
 
 /* 3 PRODUCTS BELOW */
@@ -396,18 +399,32 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 localStorage.setItem("allProducts", JSON.stringify(products));
 
  /* STILL LOOKING PRODUCTS (10 products from different categories) */
-const stillProducts = [
- {id:301,name:"Technosport T-shirt",img:"https://i.postimg.cc/0jWSdvtM/cream1.jpg"},
- {id:302,name:"Women Shirt",img:"https://i.postimg.cc/ZY2K30HR/a11.png"},
- {id:303,name:"Gym Gloves",img:"https://i.postimg.cc/W1tB7741/cm3.png"},
- {id:304,name:"Sendals",img:"https://i.postimg.cc/qRQwY9br/fasn1.jpg"},
- {id:305,name:"Shoes",img:"https://i.postimg.cc/W1tB7741/cm3.png"},
- {id:306,name:"Bags",img:"https://i.postimg.cc/ZY2K30HR/a11.png"},
- {id:307,name:"True Wireless",img:"https://i.postimg.cc/0jWSdvtM/cream1.jpg"},
- {id:308,name:"Samsung Galaxy",img:"https://i.postimg.cc/ZY2K30HR/a11.png"},
- {id:309,name:"Vaseline",img:"https://i.postimg.cc/qRQwY9br/fasn1.jpg"},
- {id:310,name:"Sugar (Sukari)",img:"https://i.postimg.cc/qRQwY9br/fasn1.jpg"}
-];
+ function showLastViewed(){
+
+ let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
+ // if nothing visited yet show default products
+ if(viewed.length === 0){
+   viewed = products.map(p=>p.id).slice(0,10);
+ }
+
+ let html = "";
+
+ viewed.forEach(id=>{
+   const p = products.find(x=>x.id==id);
+   if(!p) return;
+
+   html += `
+   <div class="still-card" onclick="openProduct(${p.id})">
+     <img src="${p.img}">
+     <p>${p.name}</p>
+   </div>`;
+ });
+
+ document.getElementById("stillProducts").innerHTML = html;
+}
+
+showLastViewed();
 
 /* SHOW 10 SCROLL PRODUCTS */
 document.getElementById("stillProducts").innerHTML =
@@ -467,7 +484,22 @@ draw(different,"like");
 
 function openProduct(id){
  localStorage.setItem("pid",id);
+ saveLastViewed(id);
  location.href="product.html";
+}
+function saveLastViewed(id){
+ let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
+ // remove if already exists
+ viewed = viewed.filter(p => p != id);
+
+ // put newest product first
+ viewed.unshift(id);
+
+ // keep only last 10 products
+ viewed = viewed.slice(0,10);
+
+ localStorage.setItem("lastViewed",JSON.stringify(viewed));
 }
 function filter(c){draw(products.filter(p=>p.cat==c),"products")}
 function search(v){draw(products.filter(p=>p.name.toLowerCase().includes(v.toLowerCase())),"products")}
