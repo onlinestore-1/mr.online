@@ -437,17 +437,6 @@ function showStillProducts(){
 
 showStillProducts(); 
 
-/* SHOW 10 SCROLL PRODUCTS */
-document.getElementById("stillProducts").innerHTML =
-stillProducts.map(p=>`
-<div class="still-card" onclick="openProduct(${p.id})">
-<img src="${p.img}">
-<p>${p.name}</p>
-</div>
-`).join("");
-
-
-
 /* 3 PRODUCTS BELOW (Chakula + Mobile + Electronics) */
 const still3Products = [
  {id:401,name:"Samsung Phone",img:"https://i.postimg.cc/yNCwsb2s/sam3.jpg",text:"Shop now",sub:"Cooling redefined"},
