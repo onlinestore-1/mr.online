@@ -281,7 +281,30 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 
 <!-- 3 PRODUCTS FROM CHAKULA / MOBILE / ELECTRONICS -->
-<div class="still-3-products" id="still3"></div>
+ <div class="still-3-products">
+
+  <!-- FRIDGE -->
+  <div class="still-box" onclick="location.href='fridge.html'">
+    <img src="https://i.postimg.cc/yNCwsb2s/sam3.jpg">
+    <h4>Shop now</h4>
+    <p>Cooling redefined</p>
+  </div>
+
+  <!-- EARPOD -->
+  <div class="still-box" onclick="location.href='earpod.html'">
+    <img src="https://i.postimg.cc/x1RgkjdF/aa46.jpg">
+    <h4>Flat 66% Off</h4>
+    <p>Limited time deal</p>
+  </div>
+
+  <!-- GOWN -->
+  <div class="still-box" onclick="location.href='gown.html'">
+    <img src="https://i.postimg.cc/J4v212Sy/aa10.jpg">
+    <h4>Up to 25% Off</h4>
+    <p>Fresh & matte</p>
+  </div>
+
+</div>
 
 </div>
 
@@ -436,22 +459,6 @@ function showStillProducts(){
 }
 
 showStillProducts(); 
-
-/* 3 PRODUCTS BELOW (Chakula + Mobile + Electronics) */
- const still3Products = [
- {id:401,name:"Samsung Phone",img:"https://i.postimg.cc/yNCwsb2s/sam3.jpg",text:"Shop now",sub:"Cooling redefined",link:"samsung.html"},
- {id:402,name:"True Wireless",img:"https://i.postimg.cc/x1RgkjdF/aa46.jpg",text:"Flat 66% Off",sub:"Limited time deal",link:"wireless.html"},
- {id:403,name:"Sugar (Sukari)",img:"https://i.imgur.com/e4CXmHr.jpeg",text:"Up to 25% Off",sub:"Fresh & matte",link:"sugar.html"}
-];
-
-document.getElementById("still3").innerHTML =
-still3Products.map(p=>`
-<div class="still-box"  onclick="goPage('${p.link}')">
-<img src="${p.img}">
-<h4>${p.text}</h4>
-<p>${p.sub}</p>
-</div>
-`).join("");
 
  function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
