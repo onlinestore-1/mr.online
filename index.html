@@ -129,6 +129,52 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   color:#555;
 }
 
+ /* BRANDS IN SPOTLIGHT */
+.brands-section{
+  background:#e53935; /* red surroundings */
+  margin:12px;
+  border-radius:8px;
+  padding:10px;
+}
+
+.brands-title{
+  font-size:22px;
+  font-weight:bold;
+  color:#000; /* black text */
+  margin-bottom:10px;
+}
+
+.brands-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr); /* 2 per row */
+  gap:12px;
+}
+
+.brand-card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  text-align:center;
+  cursor:pointer;
+  padding-bottom:8px;
+}
+
+.brand-card img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+}
+
+.brand-card h4{
+  margin:6px 0 2px;
+  color:#000;
+}
+
+.brand-card p{
+  font-size:13px;
+  color:#000;
+}
+
  /* DISCOUNT */
 .discount-grid{
  display:grid;
@@ -306,6 +352,52 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 
 </div>
 
+</div>
+
+ <!-- BRANDS IN SPOTLIGHT -->
+<div class="brands-section">
+
+  <div class="brands-title">Brands in Spotlight</div>
+
+  <div class="brands-grid">
+
+    <div class="brand-card" onclick="location.href='brand-headphone.html'">
+      <img src="https://i.postimg.cc/x1RgkjdF/aa46.jpg">
+      <h4>Just TZS 20,000</h4>
+      <p>Lowest price ever</p>
+    </div>
+
+    <div class="brand-card" onclick="location.href='brand-boat.html'">
+      <img src="https://i.postimg.cc/9fZ55hfn/aa56.jpg">
+      <h4>Special Price</h4>
+      <p>Grab now</p>
+    </div>
+
+    <div class="brand-card" onclick="location.href='brand-noise.html'">
+      <img src="https://i.postimg.cc/x1RgkjdF/aa46.jpg">
+      <h4>Flat 70% Off</h4>
+      <p>Limited deal</p>
+    </div>
+
+    <div class="brand-card" onclick="location.href='brand-watch.html'">
+      <img src="https://i.postimg.cc/tT45d38v/kia3.jpg">
+      <h4>Just TZS 50,000</h4>
+      <p>AMOLED Display</p>
+    </div>
+
+    <div class="brand-card" onclick="location.href='brand-bag.html'">
+      <img src="https://i.postimg.cc/Kz35sGvV/bag1.jpg">
+      <h4>Min 70% Off</h4>
+      <p>Strong & durable</p>
+    </div>
+
+    <div class="brand-card" onclick="location.href='brand-smartwatch.html'">
+      <img src="https://i.postimg.cc/4xCbmkPT/kof2.jpg">
+      <h4>Flat 80% Off</h4>
+      <p>Today’s deal</p>
+    </div>
+
+  </div>
 </div>
 
  <h3>Discount For You</h3>
