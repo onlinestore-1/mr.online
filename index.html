@@ -259,11 +259,45 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
 .card img{width:100%}
 .buy{background:#ff9f00;border:none;width:100%;padding:6px}
 
- .like-grid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:10px;
- padding:10px;
+ /* NEW YOU MAY ALSO LIKE */
+.like-section{
+  background:#e53935; /* red surrounding */
+  margin:12px;
+  border-radius:10px;
+  padding:10px;
+}
+
+.like-title{
+  color:#000; /* black header */
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.like-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr); /* 3 columns */
+  gap:10px;
+}
+
+.like-card{
+  background:#fff;
+  border-radius:8px;
+  padding:6px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.like-card img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.like-card p{
+  font-size:12px;
+  margin:4px 0;
 }
 </style>
 </head>
@@ -494,8 +528,14 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
   </div>
 </div>
 
-<h3>You May Also Like</h3>
-<div id="like" class="grid"></div>
+<!-- NEW YOU MAY ALSO LIKE -->
+<div class="like-section">
+
+  <div class="like-title">You May Also Like</div>
+
+  <div id="like" class="like-grid"></div>
+
+</div>
 
 <h3>Suggested For You</h3>
 <div id="suggested" class="grid"></div>
@@ -567,19 +607,47 @@ function draw(list,id){
  
 draw(products,"products");
 draw(products.slice(0,2),"suggested");
-/* 6 products from different categories */
-const different = [];
-const usedTypes = new Set();
+function showYouMayAlsoLike(){
 
-for(let p of products){
-  if(!usedTypes.has(p.type)){
-    different.push(p);
-    usedTypes.add(p.type);
+  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
+  let list = [];
+
+  viewed.forEach(id=>{
+    const p = products.find(x=>x.id == id);
+    if(p && !list.find(x=>x.id == p.id)){
+      list.push(p);
+    }
+  });
+
+  /* limit to 6 */
+  list = list.slice(0,6);
+
+  /* if less than 6 → fill with products */
+  if(list.length < 6){
+    products.forEach(p=>{
+      if(!list.find(x=>x.id == p.id)){
+        list.push(p);
+      }
+      if(list.length === 6) return;
+    });
   }
-  if(different.length === 6) break;
+
+  document.getElementById("like").innerHTML = list.map(p=>`
+    <div class="like-card" onclick="openProduct(${p.id})">
+      <img src="${p.img}">
+      <p>${p.name}</p>
+      <b>${formatPrice(p.price)}</b>
+    </div>
+  `).join("");
 }
 
-draw(different,"like");
+showYouMayAlsoLike();
+
+ function openCategory(type,page){
+  localStorage.setItem("lastType", type);
+  location.href = page;
+}
 
  function openProduct(id){
 
