@@ -607,33 +607,49 @@ function draw(list,id){
  
 draw(products,"products");
 draw(products.slice(0,2),"suggested");
-function showYouMayAlsoLike(){
+ function showYouMayAlsoLike(){
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+  let lastType = localStorage.getItem("lastType");
 
-  let list = [];
+  let result = [];
 
-  viewed.forEach(id=>{
-    const p = products.find(x=>x.id == id);
-    if(p && !list.find(x=>x.id == p.id)){
-      list.push(p);
-    }
-  });
+  /* ------------------------------
+     CASE 1: USER HAS VIEWED PRODUCTS
+  --------------------------------*/
+  if(viewed.length > 0){
 
-  /* limit to 6 */
-  list = list.slice(0,6);
+    viewed.forEach(id=>{
+      let p = products.find(x=>x.id == id);
 
-  /* if less than 6 → fill with products */
-  if(list.length < 6){
-    products.forEach(p=>{
-      if(!list.find(x=>x.id == p.id)){
-        list.push(p);
+      /* prioritize same type */
+      if(p && (!lastType || p.type === lastType)){
+        if(!result.find(x=>x.id === p.id)){
+          result.push(p);
+        }
       }
-      if(list.length === 6) return;
     });
   }
 
-  document.getElementById("like").innerHTML = list.map(p=>`
+  /* ------------------------------
+     CASE 2: FILL REMAINING (MIX TYPES)
+  --------------------------------*/
+  let shuffled = [...products].sort(()=>0.5 - Math.random());
+
+  shuffled.forEach(p=>{
+    if(!result.find(x=>x.id === p.id)){
+      result.push(p);
+    }
+    if(result.length === 6) return;
+  });
+
+  /* ALWAYS LIMIT TO 6 */
+  result = result.slice(0,6);
+
+  /* ------------------------------
+     RENDER
+  --------------------------------*/
+  document.getElementById("like").innerHTML = result.map(p=>`
     <div class="like-card" onclick="openProduct(${p.id})">
       <img src="${p.img}">
       <p>${p.name}</p>
