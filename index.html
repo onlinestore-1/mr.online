@@ -555,29 +555,27 @@ localStorage.setItem("allProducts", JSON.stringify(products));
 
  /* DEFAULT 10 PRODUCTS (used when user never clicked anything) */
 const defaultStill = products.slice(0,10).map(p=>p.id);
-function showStillProducts(){
+ function showStillProducts(){
 
-  let viewed = JSON.parse(localStorage.getItem("lastViewed"));
+  let viewed = getDefaultStill();
 
-  /* if nothing visited yet → use default products */
-  if(!viewed || viewed.length === 0){
-    viewed = defaultStill;
-  }
-
-  /* if less than 10 → fill with default products */
+  /* ensure always 10 */
   if(viewed.length < 10){
-    defaultStill.forEach(id=>{
-      if(!viewed.includes(id)){
-        viewed.push(id);
-      }
-      if(viewed.length === 10) return;
-    });
+
+    let extra = products
+      .map(p=>p.id)
+      .filter(id => !viewed.includes(id));
+
+    for(let id of extra){
+      viewed.push(id);
+      if(viewed.length === 10) break;
+    }
   }
 
   let html = "";
 
   viewed.forEach(id=>{
-    const p = products.find(x=>x.id==id);
+    const p = products.find(x=>x.id == id);
     if(!p) return;
 
     html += `
@@ -590,7 +588,21 @@ function showStillProducts(){
   document.getElementById("stillProducts").innerHTML = html;
 }
 
-showStillProducts(); 
+showStillProducts();
+
+ function getDefaultStill(){
+
+  let viewed = JSON.parse(localStorage.getItem("lastViewed"));
+
+  /* if no history → generate NEW random 10 */
+  if(!viewed || viewed.length === 0){
+    let random = getRandomProducts(products,10).map(p=>p.id);
+    localStorage.setItem("lastViewed", JSON.stringify(random));
+    return random;
+  }
+
+  return viewed;
+}
 
  function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
@@ -674,20 +686,25 @@ showYouMayAlsoLike();
   /* remove if already exists */
   viewed = viewed.filter(p => p != id);
 
-  /* put newest first */
+  /* add to front */
   viewed.unshift(id);
 
   /* keep only 10 */
   viewed = viewed.slice(0,10);
 
-  localStorage.setItem("lastViewed",JSON.stringify(viewed));
+  localStorage.setItem("lastViewed", JSON.stringify(viewed));
 
-  location.href="product.html";
+  location.href = "product.html";
 }
 function filter(c){draw(products.filter(p=>p.cat==c),"products")}
 function search(v){draw(products.filter(p=>p.name.toLowerCase().includes(v.toLowerCase())),"products")}
 function openMenu(){drawer.style.left="0";document.querySelector(".overlay").style.display="block"}
 function closeMenu(){drawer.style.left="-260px";document.querySelector(".overlay").style.display="none"}
+
+ function getRandomProducts(arr, count){
+  let shuffled = [...arr].sort(()=>0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
 
 function goTop(page){
   location.href = page;
