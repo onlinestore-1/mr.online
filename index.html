@@ -590,18 +590,53 @@ const defaultStill = products.slice(0,10).map(p=>p.id);
 
 showStillProducts();
 
- function getDefaultStill(){
+ function showStillProducts(){
 
-  let viewed = JSON.parse(localStorage.getItem("lastViewed"));
+  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
 
-  /* if no history → generate NEW random 10 */
-  if(!viewed || viewed.length === 0){
-    let random = getRandomProducts(products,10).map(p=>p.id);
-    localStorage.setItem("lastViewed", JSON.stringify(random));
-    return random;
-  }
+  let result = [];
 
-  return viewed;
+  /* ----------------------------------
+     STEP 1: ADD VIEWED PRODUCTS FIRST
+  ----------------------------------*/
+  viewed.forEach(id=>{
+    let p = products.find(x=>x.id == id);
+    if(p && !result.find(r=>r.id === p.id)){
+      result.push(p);
+    }
+  });
+
+  /* ----------------------------------
+     STEP 2: ALWAYS FILL TO 10 PRODUCTS
+     (INDEPENDENT OF VIEWING)
+  ----------------------------------*/
+  let shuffled = [...products].sort(()=>0.5 - Math.random());
+
+  shuffled.forEach(p=>{
+    if(!result.find(r=>r.id === p.id)){
+      result.push(p);
+    }
+    if(result.length === 10) return;
+  });
+
+  /* LIMIT TO 10 ALWAYS */
+  result = result.slice(0,10);
+
+  /* ----------------------------------
+     RENDER
+  ----------------------------------*/
+  let html = "";
+
+  result.forEach(p=>{
+    html += `
+      <div class="still-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+      </div>
+    `;
+  });
+
+  document.getElementById("stillProducts").innerHTML = html;
 }
 
  function formatPrice(price){
