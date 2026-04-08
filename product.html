@@ -114,6 +114,30 @@
       margin:5px 0;
       font-size:14px;
     }
+
+.explore-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.explore-item{
+  background:#fff;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.explore-item img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+}
+
+.explore-item p{
+  font-size:14px;
+  margin:5px 0;
+}
   </style>
 </head>
 
@@ -126,6 +150,9 @@
 
 <h3>You May Also Like</h3>
 <div class="grid" id="likeBox"></div>
+
+<h3>Explore More Like This</h3>
+<div class="explore-grid" id="exploreBox"></div>
 
 <script>
 const products = JSON.parse(localStorage.getItem("allProducts")) || [
@@ -266,14 +293,32 @@ document.getElementById("productBox").innerHTML = `
 `;
 
 // YOU MAY ALSO LIKE (exclude current product)
- const likeBox = document.getElementById("likeBox");
+const likeBox = document.getElementById("likeBox");
+const similarBox = document.getElementById("similarBox");
 
-/* get only 6 products from same category */
-const similar = products
+ /* SIMILAR PRODUCTS (8) */
+const similar8 = products
   .filter(x => x.type === p.type && x.id != p.id)
-  .slice(0,6); // only 6 products
+  .slice(0,8);
 
-likeBox.innerHTML = similar.map(p2 => `
+/* YOU MAY ALSO LIKE (DIFFERENT FROM SIMILAR) */
+const similarIds = similar8.map(x => x.id);
+
+const likeProducts = products
+  .filter(x => x.type === p.type && x.id != p.id && !similarIds.includes(x.id))
+  .slice(0,6);
+
+/* RENDER SIMILAR */
+similarBox.innerHTML = similar8.map(p2 => `
+  <div class="similar-item" onclick="openProductPage(${p2.id})">
+    <img src="${p2.img}">
+    <p>${p2.name}</p>
+    <b>${formatPrice(p2.price)}</b>
+  </div>
+`).join("");
+
+/* RENDER YOU MAY ALSO LIKE */
+likeBox.innerHTML = likeProducts.map(p2 => `
   <div class="mini" onclick="openProductPage(${p2.id})">
     <img src="${p2.img}">
     <p>${p2.name}</p>
@@ -281,15 +326,24 @@ likeBox.innerHTML = similar.map(p2 => `
   </div>
 `).join("");
 
-const similarBox = document.getElementById("similarBox");
+const exploreBox = document.getElementById("exploreBox");
 
-/* 8 products from same category */
-const similar8 = products
-  .filter(x => x.type === p.type && x.id != p.id)
-  .slice(0,8);
+/* collect ALL used IDs */
+const usedIds = [
+  p.id,
+  ...similar8.map(x=>x.id),
+  ...likeProducts.map(x=>x.id)
+];
 
-similarBox.innerHTML = similar8.map(p2 => `
-  <div class="similar-item" onclick="openProductPage(${p2.id})">
+/* pick completely different products */
+const exploreProducts = products
+  .filter(x => !usedIds.includes(x.id))
+  .sort(() => 0.5 - Math.random()) // optional randomness
+  .slice(0,10);
+
+/* render */
+exploreBox.innerHTML = exploreProducts.map(p2 => `
+  <div class="explore-item" onclick="openProductPage(${p2.id})">
     <img src="${p2.img}">
     <p>${p2.name}</p>
     <b>${formatPrice(p2.price)}</b>
