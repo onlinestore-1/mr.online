@@ -100,15 +100,22 @@ body{
  font-weight:bold;
 }
 
-/* SLIDER */
+/* SLIDER FIX */
+.slider{
+  width:100%;
+  margin-top:10px;
+}
+
 .slider img{
   width:100%;
-  height:auto;           /* keeps full image */
-  max-height:200px;      /* prevents too large images */
-  object-fit:contain;    /* shows FULL image */
-  background:#fff;       /* fills empty space nicely */
-  border-radius:12px;
+  height:180px;          /* control banner height */
+  object-fit:cover;      /* fills nicely (no distortion) */
+  border-radius:12px;    /* optional: smooth corners like your image */
   display:none;
+}
+
+.slider img:first-child{
+  display:block;
 }
 
  /* STILL LOOKING FOR THESE */
