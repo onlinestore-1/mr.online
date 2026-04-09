@@ -101,8 +101,15 @@ body{
 }
 
 /* SLIDER */
-.slider img{width:100%;display:none}
-.slider img:first-child{display:block}
+.slider img{
+  width:100%;
+  height:auto;           /* keeps full image */
+  max-height:200px;      /* prevents too large images */
+  object-fit:contain;    /* shows FULL image */
+  background:#fff;       /* fills empty space nicely */
+  border-radius:12px;
+  display:none;
+}
 
  /* STILL LOOKING FOR THESE */
 .still-section{
