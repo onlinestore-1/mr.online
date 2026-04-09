@@ -10,16 +10,27 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-body{margin:0;font-family:Arial;background:#f4f4f4}
+body{
+ margin:0;
+ font-family:Arial;
+ background:#f4f4f4;
+ padding-top:120px; /* space for topbar + categories */
+}
 
 /* TOP BAR */
-.topbar{
+ .topbar{
  display:flex;
  align-items:center;
  background:#2874f0;
  padding:10px;
  color:white;
  gap:10px;
+
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ z-index:1000;
 }
 .menu-btn{font-size:22px;cursor:pointer}
 .topbar input{
