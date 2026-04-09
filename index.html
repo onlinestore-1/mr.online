@@ -53,6 +53,25 @@ body{
 }
 
 /* CATEGORIES */
+ .categories div{
+ text-align:center;
+ min-width:80px;
+ transition:0.3s;
+}
+
+.categories img{
+ width:50px;
+ height:50px;
+ display:block;
+ margin:auto;
+ transition:0.3s;
+}
+
+.categories p{
+ font-size:12px;
+ margin-top:4px;
+}
+ 
 .categories{
  display:flex;
  overflow-x:auto;
@@ -65,8 +84,21 @@ body{
  left:0;
  width:100%;
  z-index:999;
+ transition:0.3s;
 }
-.categories div{text-align:center;min-width:80px}
+
+.categories.hide-images img{
+ display:none;
+}
+
+.categories.hide-images div{
+ min-width:auto;
+}
+
+.categories.hide-images p{
+ font-size:14px;
+ font-weight:bold;
+}
 
 /* SLIDER */
 .slider img{width:100%;display:none}
@@ -782,6 +814,26 @@ function showSlides(){
 }
 
 showSlides();
+
+let lastScroll = 0;
+
+window.addEventListener("scroll", function(){
+
+  let currentScroll = window.pageYOffset;
+  let categories = document.querySelector(".categories");
+
+  // SCROLLING DOWN
+  if(currentScroll > lastScroll){
+    categories.classList.add("hide-images");
+  }
+  
+  // SCROLLING UP
+  else{
+    categories.classList.remove("hide-images");
+  }
+
+  lastScroll = currentScroll;
+});
 </script>
 </body>
 </html
