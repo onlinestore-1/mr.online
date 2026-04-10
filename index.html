@@ -707,8 +707,6 @@ const defaultStill = products.slice(0,10).map(p=>p.id);
 
 showStillProducts();
 
- function showStillProducts(){
-
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
 
   let result = [];
@@ -908,6 +906,32 @@ window.addEventListener("scroll", function(){
     categories.classList.remove("hide-images");
   }
 
+});
+
+ function refreshHome(){
+
+  // reload viewed products
+  showStillProducts();
+
+  // reload "You May Also Like"
+  showYouMayAlsoLike();
+
+  // OPTIONAL: refresh suggested/products if needed
+  draw(products,"products");
+  draw(products.slice(0,2),"suggested");
+
+}
+
+ // 🔥 WHEN USER COMES BACK TO PAGE (VERY IMPORTANT)
+window.addEventListener("pageshow", function(){
+  refreshHome();
+});
+
+// 🔥 ALSO HANDLE APP SWITCH / BACK BUTTON
+document.addEventListener("visibilitychange", function(){
+  if(!document.hidden){
+    refreshHome();
+  }
 });
 </script>
 </body>
