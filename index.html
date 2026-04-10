@@ -17,46 +17,56 @@ body{
  padding-top:120px; /* space for topbar + categories */
 }
 
-/* TOP BAR */
- .topbar{
- display:flex;
- align-items:center;
- background:linear-gradient(180deg, #87c7f3, #a8d8f8);
- padding:10px;
- color:white;
- gap:10px;
-
+ /* HEADER WRAPPER */
+.header{
  position:fixed;
  top:0;
  left:0;
  width:100%;
  z-index:1000;
+ background:linear-gradient(180deg, #87c7f3, #a8d8f8);
 }
-.menu-btn{font-size:22px;cursor:pointer}
-.topbar input{
- flex:1;padding:8px;border:none;border-radius:4px
-}
-.cart-icon{font-size:22px}
 
-/* DRAWER */
-.drawer{
- position:fixed;top:0;left:-260px;
- width:260px;height:100%;
- background:#fff;transition:.3s;z-index:1000
+/* TOPBAR */
+.topbar{
+ display:flex;
+ align-items:center;
+ padding:10px;
+ gap:10px;
+ color:white;
 }
-.drawer-header{background:#2874f0;color:#fff;padding:15px}
-.drawer a{display:block;padding:12px;color:#000;text-decoration:none}
-.drawer a:hover{background:#f2f2f2}
-.overlay{
- position:fixed;top:0;left:0;width:100%;height:100%;
- background:rgba(0,0,0,.4);display:none
+
+.topbar input{
+ flex:1;
+ padding:8px;
+ border:none;
+ border-radius:20px;
 }
 
 /* CATEGORIES */
- .categories div{
+.categories{
+ display:flex;
+ overflow-x:auto;
+ gap:15px;
+ padding:8px 10px;
+
+ background:white;
+
+ /* IMPORTANT: no gap effect */
+ border-top-left-radius:20px;
+ border-top-right-radius:20px;
+
+ scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+ display:none;
+}
+
+.categories div{
  text-align:center;
  min-width:80px;
- transition:0.3s;
+ flex-shrink:0;
 }
 
 .categories img{
@@ -70,34 +80,36 @@ body{
 .categories p{
  font-size:12px;
  margin-top:4px;
-}
- 
-.categories{
- display:flex;
- overflow-x:auto;
- background:#fff;
- padding:10px;
- gap:15px;
-
- position:fixed;
- top:60px; /* height of topbar */
- left:0;
- width:100%;
- z-index:999;
- transition:0.3s;
+ white-space:nowrap;
 }
 
+/* SCROLL EFFECT */
 .categories.hide-images img{
  display:none;
-}
-
-.categories.hide-images div{
- min-width:auto;
 }
 
 .categories.hide-images p{
  font-size:14px;
  font-weight:bold;
+}
+
+/* BODY SPACE FIX */
+body{
+ padding-top:120px;
+}
+
+/* DRAWER */
+.drawer{
+ position:fixed;top:0;left:-260px;
+ width:260px;height:100%;
+ background:#fff;transition:.3s;z-index:1000
+}
+.drawer-header{background:#2874f0;color:#fff;padding:15px}
+.drawer a{display:block;padding:12px;color:#000;text-decoration:none}
+.drawer a:hover{background:#f2f2f2}
+.overlay{
+ position:fixed;top:0;left:0;width:100%;height:100%;
+ background:rgba(0,0,0,.4);display:none
 }
 
  /* ADS CONTAINER (SIDE SPACE LIKE IMAGE) */
@@ -396,12 +408,36 @@ body{
 
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
- <span class="menu-btn" onclick="openMenu()">☰</span>
- <input type="search" placeholder="Search products..." onkeyup="search(this.value)">
- <i class="fa fa-cart-shopping cart-icon"
-  onclick="location.href='cart.html'"></i>
+ <!-- HEADER (TOPBAR + CATEGORIES COMBINED) -->
+<div class="header">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <span class="menu-btn" onclick="openMenu()">☰</span>
+    <input type="search" placeholder="Search products..." onkeyup="search(this.value)">
+    <i class="fa fa-cart-shopping cart-icon"
+      onclick="location.href='cart.html'"></i>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="categories">
+    <div onclick="location.href='fashion.html'">
+      <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg"><p>Fashion</p>
+    </div>
+    <div onclick="location.href='chakula.html'">
+      <img src="https://i.postimg.cc/xCjXcgBj/safi5.jpg"><p>Chakula & afya</p>
+    </div>
+    <div onclick="location.href='muhimu.html'">
+      <img src="https://i.postimg.cc/rpMGBtqB/a11.png"><p>Muhimu</p>
+    </div>
+    <div onclick="openCategory('mobile','mobile.html')">
+      <img src="https://i.postimg.cc/1RrZWsn9/cm3.png"><p>Mobile</p>
+    </div>
+    <div onclick="location.href='electronics.html'">
+      <img src="https://i.postimg.cc/xjz5hmm5/a12.png"><p>Electronics</p>
+    </div>
+  </div>
+
 </div>
 
 <!-- DRAWER -->
@@ -417,25 +453,6 @@ body{
  <a href="#">Legal</a>
 </div>
 <div class="overlay" onclick="closeMenu()"></div>
-
-<!-- CATEGORIES -->
-<div class="categories">
- <div onclick="location.href='fashion.html'">
-  <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg/80"><p>Fashion</p>
- </div>
- <div onclick="location.href='chakula.html'">
-  <img src="https://i.postimg.cc/xCjXcgBj/safi5.jpg/80"><p>Chakula & afya</p>
- </div>
- <div onclick="location.href='muhimu.html'">
-  <img src="https://i.postimg.cc/rpMGBtqB/a11.png/80"><p>Muhimu</p>
- </div>
- <div onclick="openCategory('mobile','mobile.html')">
-  <img src="https://i.postimg.cc/1RrZWsn9/cm3.png/80"><p>Mobile</p>
- </div>
-  <div onclick="location.href='electronics.html'">
-  <img src="https://i.postimg.cc/xjz5hmm5/a12.png/80"><p>Electronics</p>
- </div>
-</div>
 
  <!-- ADS -->
 <div class="ads-container">
@@ -878,24 +895,19 @@ function slideAds(){
 /* AUTO SLIDE */
 setInterval(slideAds, 3000);
 
-let lastScroll = 0;
+ let lastScroll = 0;
 
 window.addEventListener("scroll", function(){
 
   let currentScroll = window.pageYOffset;
   let categories = document.querySelector(".categories");
 
-  // SCROLLING DOWN
-  if(currentScroll > lastScroll){
+  if(currentScroll > 50){
     categories.classList.add("hide-images");
-  }
-  
-  // SCROLLING UP
-  else{
+  }else{
     categories.classList.remove("hide-images");
   }
 
-  lastScroll = currentScroll;
 });
 </script>
 </body>
