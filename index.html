@@ -707,6 +707,8 @@ const defaultStill = products.slice(0,10).map(p=>p.id);
 
 showStillProducts();
 
+ function showStillProducts(){
+
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
 
   let result = [];
