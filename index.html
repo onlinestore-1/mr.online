@@ -907,32 +907,6 @@ window.addEventListener("scroll", function(){
   }
 
 });
-
- function refreshHome(){
-
-  // reload viewed products
-  showStillProducts();
-
-  // reload "You May Also Like"
-  showYouMayAlsoLike();
-
-  // OPTIONAL: refresh suggested/products if needed
-  draw(products,"products");
-  draw(products.slice(0,2),"suggested");
-
-}
-
- // 🔥 WHEN USER COMES BACK TO PAGE (VERY IMPORTANT)
-window.addEventListener("pageshow", function(){
-  refreshHome();
-});
-
-// 🔥 ALSO HANDLE APP SWITCH / BACK BUTTON
-document.addEventListener("visibilitychange", function(){
-  if(!document.hidden){
-    refreshHome();
-  }
-});
 </script>
 </body>
 </html
