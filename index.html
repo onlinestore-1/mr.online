@@ -848,7 +848,7 @@ window.addEventListener("scroll", function(){
  function autoUpdateAll(){
 
   // reload products from storage
-  const products = JSON.parse(localStorage.getItem("allProducts")) || [];
+   let products = JSON.parse(localStorage.getItem("allProducts")) || [];
 
   // re-render everything
   draw(products,"products");
@@ -865,6 +865,29 @@ window.addEventListener("scroll", function(){
  window.addEventListener("storage", function(){
   autoUpdateAll();
 });
+
+ /* AUTO LIVE UPDATE (NO SCROLL NEEDED) */
+let lastViewedCache = "";
+let lastTypeCache = "";
+
+function smartAutoUpdate(){
+
+  let currentViewed = localStorage.getItem("lastViewed") || "";
+  let currentType = localStorage.getItem("lastType") || "";
+
+  // ONLY update when something changes (prevents lag)
+  if(currentViewed !== lastViewedCache || currentType !== lastTypeCache){
+
+    lastViewedCache = currentViewed;
+    lastTypeCache = currentType;
+
+    showStillProducts();
+    showYouMayAlsoLike();
+  }
+}
+
+/* RUN EVERY 1 SECOND (LIVE UPDATE) */
+setInterval(smartAutoUpdate, 1000);
 </script>
 </body>
 </html
