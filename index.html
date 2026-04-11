@@ -126,11 +126,16 @@ body{
 }
 
 /* IMAGES */
-.ads-slider img{
+ .ads-slider img{
   width:100%;
-  flex-shrink:0;   /* keeps images side by side */
-  height:160px;
-  object-fit:cover;
+  flex-shrink:0;
+
+  height:auto;              /* ✅ allow full height */
+  max-height:180px;         /* optional control */
+  
+  object-fit:contain;       /* ✅ show FULL image */
+  background:#fff;          /* clean background like Flipkart */
+  
   border-radius:16px;
 }
 
