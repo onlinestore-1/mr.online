@@ -676,9 +676,7 @@ localStorage.setItem("allProducts", JSON.stringify(products));
 
   let result = [];
 
-  /* ----------------------------------
-     STEP 1: ADD VIEWED PRODUCTS FIRST
-  ----------------------------------*/
+  // PRIORITY: LAST VIEWED
   viewed.forEach(id=>{
     let p = products.find(x=>x.id == id);
     if(p && !result.find(r=>r.id === p.id)){
@@ -686,10 +684,7 @@ localStorage.setItem("allProducts", JSON.stringify(products));
     }
   });
 
-  /* ----------------------------------
-     STEP 2: ALWAYS FILL TO 10 PRODUCTS
-     (INDEPENDENT OF VIEWING)
-  ----------------------------------*/
+  // FILL RANDOM TO ALWAYS 10
   let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
@@ -699,24 +694,15 @@ localStorage.setItem("allProducts", JSON.stringify(products));
     if(result.length === 10) return;
   });
 
-  /* LIMIT TO 10 ALWAYS */
   result = result.slice(0,10);
 
-  /* ----------------------------------
-     RENDER
-  ----------------------------------*/
-  let html = "";
-
-  result.forEach(p=>{
-    html += `
+  document.getElementById("stillProducts").innerHTML =
+    result.map(p=>`
       <div class="still-card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <p>${p.name}</p>
       </div>
-    `;
-  });
-
-  document.getElementById("stillProducts").innerHTML = html;
+    `).join("");
 }
 
  function formatPrice(price){
@@ -741,26 +727,17 @@ draw(products.slice(0,2),"suggested");
 
   let result = [];
 
-  /* ------------------------------
-     CASE 1: USER HAS VIEWED PRODUCTS
-  --------------------------------*/
-  if(viewed.length > 0){
-
-    viewed.forEach(id=>{
-      let p = products.find(x=>x.id == id);
-
-      /* prioritize same type */
-      if(p && (!lastType || p.type === lastType)){
-        if(!result.find(x=>x.id === p.id)){
-          result.push(p);
-        }
+  // PRIORITY: SAME CATEGORY
+  viewed.forEach(id=>{
+    let p = products.find(x=>x.id == id);
+    if(p && (!lastType || p.type === lastType)){
+      if(!result.find(x=>x.id === p.id)){
+        result.push(p);
       }
-    });
-  }
+    }
+  });
 
-  /* ------------------------------
-     CASE 2: FILL REMAINING (MIX TYPES)
-  --------------------------------*/
+  // FILL RANDOM
   let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
@@ -770,19 +747,16 @@ draw(products.slice(0,2),"suggested");
     if(result.length === 6) return;
   });
 
-  /* ALWAYS LIMIT TO 6 */
   result = result.slice(0,6);
 
-  /* ------------------------------
-     RENDER
-  --------------------------------*/
-  document.getElementById("like").innerHTML = result.map(p=>`
-    <div class="like-card" onclick="openProduct(${p.id})">
-      <img src="${p.img}">
-      <p>${p.name}</p>
-      <b>${formatPrice(p.price)}</b>
-    </div>
-  `).join("");
+  document.getElementById("like").innerHTML =
+    result.map(p=>`
+      <div class="like-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
 }
 
  function openCategory(type,page){
