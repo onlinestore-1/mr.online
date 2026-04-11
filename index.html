@@ -672,16 +672,26 @@ localStorage.setItem("allProducts", JSON.stringify(products));
 
  function showStillProducts(){
 
+  let lastType = localStorage.getItem("lastType");
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
   let result = [];
 
+  // 🔥 PRIORITY 1: CATEGORY PRODUCTS
+  if(lastType){
+    let categoryProducts = products.filter(p => p.type === lastType);
+    result.push(...categoryProducts);
+  }
+
+  // 🔥 PRIORITY 2: LAST VIEWED
   viewed.forEach(id=>{
     let p = products.find(x=>x.id == id);
     if(p && !result.find(r=>r.id === p.id)){
-      result.push(p);
+      result.unshift(p); // put on top
     }
   });
 
+  // 🔥 FILL REMAINING
   let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
@@ -693,19 +703,13 @@ localStorage.setItem("allProducts", JSON.stringify(products));
 
   result = result.slice(0,10);
 
-  let container = document.getElementById("stillProducts");
-
-  // 🔥 FORCE FULL RESET (KEY FIX)
-  container.innerHTML = "";
-
-  setTimeout(()=>{
-    container.innerHTML = result.map(p=>`
+  document.getElementById("stillProducts").innerHTML =
+    result.map(p=>`
       <div class="still-card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <p>${p.name}</p>
       </div>
     `).join("");
-  },0);
 }
 
  function formatPrice(price){
@@ -725,45 +729,31 @@ draw(products,"products");
 draw(products.slice(0,2),"suggested");
  function showYouMayAlsoLike(){
 
-  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
   let lastType = localStorage.getItem("lastType");
 
   let result = [];
 
-  viewed.forEach(id=>{
-    let p = products.find(x=>x.id == id);
-    if(p && (!lastType || p.type === lastType)){
-      if(!result.find(x=>x.id === p.id)){
-        result.push(p);
-      }
-    }
-  });
+  // 🔥 STRICT CATEGORY MATCH
+  if(lastType){
+    result = products.filter(p => p.type === lastType);
+  }
 
-  let shuffled = [...products].sort(()=>0.5 - Math.random());
+  // 🔥 FALLBACK RANDOM
+  if(result.length === 0){
+    result = [...products];
+  }
 
-  shuffled.forEach(p=>{
-    if(!result.find(x=>x.id === p.id)){
-      result.push(p);
-    }
-    if(result.length === 6) return;
-  });
+  // RANDOMIZE
+  result = result.sort(()=>0.5 - Math.random()).slice(0,6);
 
-  result = result.slice(0,6);
-
-  let container = document.getElementById("like");
-
-  // 🔥 FORCE UI REFRESH
-  container.innerHTML = "";
-
-  setTimeout(()=>{
-    container.innerHTML = result.map(p=>`
+  document.getElementById("like").innerHTML =
+    result.map(p=>`
       <div class="like-card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <p>${p.name}</p>
         <b>${formatPrice(p.price)}</b>
       </div>
     `).join("");
-  },0);
 }
 
  function openCategory(type,page){
@@ -865,32 +855,12 @@ window.addEventListener("scroll", function(){
 
 }
  window.addEventListener("load", autoUpdateAll);
- window.addEventListener("pageshow", function(event){
+ window.addEventListener("pageshow", function(){
   autoUpdateAll();
 });
  window.addEventListener("storage", function(){
   autoUpdateAll();
 });
-
- /* AUTO LIVE UPDATE (NO SCROLL NEEDED) */
-let lastViewedCache = "";
-let lastTypeCache = "";
-
-function smartAutoUpdate(){
-
-  let currentViewed = localStorage.getItem("lastViewed") || "";
-  let currentType = localStorage.getItem("lastType") || "";
-
-  // ONLY update when something changes (prevents lag)
-  if(currentViewed !== lastViewedCache || currentType !== lastTypeCache){
-
-    lastViewedCache = currentViewed;
-    lastTypeCache = currentType;
-
-    showStillProducts();
-    showYouMayAlsoLike();
-  }
-}
 </script>
 </body>
 </html
