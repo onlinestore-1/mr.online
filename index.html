@@ -670,43 +670,6 @@ body{
 
 localStorage.setItem("allProducts", JSON.stringify(products));
 
- /* DEFAULT 10 PRODUCTS (used when user never clicked anything) */
-const defaultStill = products.slice(0,10).map(p=>p.id);
- function showStillProducts(){
-
-  let viewed = getDefaultStill();
-
-  /* ensure always 10 */
-  if(viewed.length < 10){
-
-    let extra = products
-      .map(p=>p.id)
-      .filter(id => !viewed.includes(id));
-
-    for(let id of extra){
-      viewed.push(id);
-      if(viewed.length === 10) break;
-    }
-  }
-
-  let html = "";
-
-  viewed.forEach(id=>{
-    const p = products.find(x=>x.id == id);
-    if(!p) return;
-
-    html += `
-    <div class="still-card" onclick="openProduct(${p.id})">
-      <img src="${p.img}">
-      <p>${p.name}</p>
-    </div>`;
-  });
-
-  document.getElementById("stillProducts").innerHTML = html;
-}
-
-showStillProducts();
-
  function showStillProducts(){
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
@@ -822,8 +785,6 @@ draw(products.slice(0,2),"suggested");
   `).join("");
 }
 
-showYouMayAlsoLike();
-
  function openCategory(type,page){
   localStorage.setItem("lastType", type);
   location.href = page;
@@ -908,6 +869,24 @@ window.addEventListener("scroll", function(){
     categories.classList.remove("hide-images");
   }
 
+});
+
+ function autoUpdateAll(){
+
+  // reload products from storage
+  const products = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+  // re-render everything
+  draw(products,"products");
+  draw(products.slice(0,2),"suggested");
+
+  showStillProducts();
+  showYouMayAlsoLike();
+
+}
+ window.addEventListener("load", autoUpdateAll);
+ window.addEventListener("pageshow", function(event){
+  autoUpdateAll();
 });
 </script>
 </body>
