@@ -909,6 +909,25 @@ window.addEventListener("scroll", function(){
   }
 
 });
+
+ function refreshHome(){
+
+  showStillProducts();
+  showYouMayAlsoLike();
+
+  draw(getByType(),"products");
+  draw(getByType().slice(0,2),"suggested");
+
+}
+
+/* 🔥 instant update when coming back */
+window.addEventListener("pageshow", refreshHome);
+
+document.addEventListener("visibilitychange", function(){
+  if(!document.hidden){
+    refreshHome();
+  }
+});
 </script>
 </body>
 </html
