@@ -727,7 +727,8 @@ showStillProducts();
      STEP 2: ALWAYS FILL TO 10 PRODUCTS
      (INDEPENDENT OF VIEWING)
   ----------------------------------*/
-  let shuffled = [...products].sort(()=>0.5 - Math.random());
+  let base = getByType();
+let shuffled = [...base].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
     if(!result.find(r=>r.id === p.id)){
@@ -769,8 +770,8 @@ function draw(list,id){
  </div>`).join("");
 }
  
-draw(products,"products");
-draw(products.slice(0,2),"suggested");
+draw(getByType(),"products");
+draw(getByType().slice(0,2),"suggested");
  function showYouMayAlsoLike(){
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
@@ -798,7 +799,8 @@ draw(products.slice(0,2),"suggested");
   /* ------------------------------
      CASE 2: FILL REMAINING (MIX TYPES)
   --------------------------------*/
-  let shuffled = [...products].sort(()=>0.5 - Math.random());
+  let base = getByType();
+let shuffled = [...base].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
     if(!result.find(x=>x.id === p.id)){
