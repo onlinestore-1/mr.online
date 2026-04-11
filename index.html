@@ -421,19 +421,19 @@ body{
 
   <!-- CATEGORIES -->
   <div class="categories">
-   <div onclick="openCategory('fashion','fashion.html')">
+    <div onclick="location.href='fashion.html'">
       <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg"><p>Fashion</p>
     </div>
-    <div onclick="openCategory('chakula','chakula.html')">
+    <div onclick="location.href='chakula.html'">
       <img src="https://i.postimg.cc/xCjXcgBj/safi5.jpg"><p>Chakula & afya</p>
     </div>
-    <div onclick="openCategory('muhimu','muhimu.html')">
+    <div onclick="location.href='muhimu.html'">
       <img src="https://i.postimg.cc/rpMGBtqB/a11.png"><p>Muhimu</p>
     </div>
     <div onclick="openCategory('mobile','mobile.html')">
       <img src="https://i.postimg.cc/1RrZWsn9/cm3.png"><p>Mobile</p>
     </div>
-    <div onclick="openCategory('electronics','electronics.html')">
+    <div onclick="location.href='electronics.html'">
       <img src="https://i.postimg.cc/xjz5hmm5/a12.png"><p>Electronics</p>
     </div>
   </div>
@@ -727,8 +727,7 @@ showStillProducts();
      STEP 2: ALWAYS FILL TO 10 PRODUCTS
      (INDEPENDENT OF VIEWING)
   ----------------------------------*/
-  let base = getByType();
-let shuffled = [...base].sort(()=>0.5 - Math.random());
+  let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
     if(!result.find(r=>r.id === p.id)){
@@ -770,8 +769,8 @@ function draw(list,id){
  </div>`).join("");
 }
  
-draw(getByType(),"products");
-draw(getByType().slice(0,2),"suggested");
+draw(products,"products");
+draw(products.slice(0,2),"suggested");
  function showYouMayAlsoLike(){
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
@@ -799,8 +798,7 @@ draw(getByType().slice(0,2),"suggested");
   /* ------------------------------
      CASE 2: FILL REMAINING (MIX TYPES)
   --------------------------------*/
-  let base = getByType();
-let shuffled = [...base].sort(()=>0.5 - Math.random());
+  let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
     if(!result.find(x=>x.id === p.id)){
@@ -910,37 +908,6 @@ window.addEventListener("scroll", function(){
     categories.classList.remove("hide-images");
   }
 
-});
-
- function getByType(){
-
-  let lastType = localStorage.getItem("lastType");
-
-  // if no category visited → return all
-  if(!lastType) return products;
-
-  // filter by category type
-  return products.filter(p => p.type === lastType);
-
-}
-
- function refreshHome(){
-
-  showStillProducts();
-  showYouMayAlsoLike();
-
-  draw(getByType(),"products");
-  draw(getByType().slice(0,2),"suggested");
-
-}
-
-/* 🔥 instant update when coming back */
-window.addEventListener("pageshow", refreshHome);
-
-document.addEventListener("visibilitychange", function(){
-  if(!document.hidden){
-    refreshHome();
-  }
 });
 </script>
 </body>
