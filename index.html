@@ -673,10 +673,8 @@ localStorage.setItem("allProducts", JSON.stringify(products));
  function showStillProducts(){
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
-
   let result = [];
 
-  // PRIORITY: LAST VIEWED
   viewed.forEach(id=>{
     let p = products.find(x=>x.id == id);
     if(p && !result.find(r=>r.id === p.id)){
@@ -684,7 +682,6 @@ localStorage.setItem("allProducts", JSON.stringify(products));
     }
   });
 
-  // FILL RANDOM TO ALWAYS 10
   let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
@@ -696,13 +693,19 @@ localStorage.setItem("allProducts", JSON.stringify(products));
 
   result = result.slice(0,10);
 
-  document.getElementById("stillProducts").innerHTML =
-    result.map(p=>`
+  let container = document.getElementById("stillProducts");
+
+  // 🔥 FORCE FULL RESET (KEY FIX)
+  container.innerHTML = "";
+
+  setTimeout(()=>{
+    container.innerHTML = result.map(p=>`
       <div class="still-card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <p>${p.name}</p>
       </div>
     `).join("");
+  },0);
 }
 
  function formatPrice(price){
@@ -727,7 +730,6 @@ draw(products.slice(0,2),"suggested");
 
   let result = [];
 
-  // PRIORITY: SAME CATEGORY
   viewed.forEach(id=>{
     let p = products.find(x=>x.id == id);
     if(p && (!lastType || p.type === lastType)){
@@ -737,7 +739,6 @@ draw(products.slice(0,2),"suggested");
     }
   });
 
-  // FILL RANDOM
   let shuffled = [...products].sort(()=>0.5 - Math.random());
 
   shuffled.forEach(p=>{
@@ -749,14 +750,20 @@ draw(products.slice(0,2),"suggested");
 
   result = result.slice(0,6);
 
-  document.getElementById("like").innerHTML =
-    result.map(p=>`
+  let container = document.getElementById("like");
+
+  // 🔥 FORCE UI REFRESH
+  container.innerHTML = "";
+
+  setTimeout(()=>{
+    container.innerHTML = result.map(p=>`
       <div class="like-card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <p>${p.name}</p>
         <b>${formatPrice(p.price)}</b>
       </div>
     `).join("");
+  },0);
 }
 
  function openCategory(type,page){
@@ -770,16 +777,15 @@ draw(products.slice(0,2),"suggested");
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
 
-  /* remove if already exists */
   viewed = viewed.filter(p => p != id);
-
-  /* add to front */
   viewed.unshift(id);
-
-  /* keep only 10 */
   viewed = viewed.slice(0,10);
 
   localStorage.setItem("lastViewed", JSON.stringify(viewed));
+
+  // 🔥 INSTANT UPDATE BEFORE PAGE CHANGE
+  showStillProducts();
+  showYouMayAlsoLike();
 
   location.href = "product.html";
 }
@@ -885,9 +891,6 @@ function smartAutoUpdate(){
     showYouMayAlsoLike();
   }
 }
-
-/* RUN EVERY 1 SECOND (LIVE UPDATE) */
-setInterval(smartAutoUpdate, 1000);
 </script>
 </body>
 </html
