@@ -910,6 +910,18 @@ window.addEventListener("scroll", function(){
 
 });
 
+ function getByType(){
+
+  let lastType = localStorage.getItem("lastType");
+
+  // if no category visited → return all
+  if(!lastType) return products;
+
+  // filter by category type
+  return products.filter(p => p.type === lastType);
+
+}
+
  function refreshHome(){
 
   showStillProducts();
