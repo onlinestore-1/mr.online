@@ -130,12 +130,10 @@ body{
   width:100%;
   flex-shrink:0;
 
-  height:auto;              /* ✅ allow full height */
-  max-height:180px;         /* optional control */
-  
-  object-fit:contain;       /* ✅ show FULL image */
-  background:#fff;          /* clean background like Flipkart */
-  
+  aspect-ratio:16/7;   /* ✅ consistent banner shape */
+  object-fit:contain;  /* show full ad */
+
+  background:#fff;
   border-radius:16px;
 }
 
