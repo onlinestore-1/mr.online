@@ -6,11 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body{
+ body{
  margin:0;
  font-family:Arial;
  background:#f4f4f4;
- padding-top:120px; /* space for topbar + categories */
+ padding-top:70px;
 }
 
 /* TOP */
@@ -28,7 +28,12 @@ body{
  width:100%;
  z-index:1000;
 }
-.top input{flex:1;padding:8px;border:none;border-radius:4px}
+.topbar input{
+ flex:1;
+ padding:8px;
+ border:none;
+ border-radius:4px;
+}
 .cart{font-size:22px;cursor:pointer}
 
 /* SLIDER */
@@ -102,7 +107,7 @@ body{
 
 <body>
 
-<div class="top">
+ <div class="topbar">
  <input type="search" placeholder="Search fashion..." onkeyup="search(this.value)">
  <span class="cart" onclick="location.href='cart.html'">🛒</span>
 </div>
