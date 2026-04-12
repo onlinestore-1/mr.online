@@ -129,11 +129,9 @@ body{
  .ads-slider img{
   width:100%;
   flex-shrink:0;
-
-  aspect-ratio:16/7;   /* ✅ consistent banner shape */
-  object-fit:contain;  /* show full ad */
-
-  background:#fff;
+  height:auto;          /* ✅ auto height */
+  max-height:300px;     /* optional limit */
+  object-fit:cover;
   border-radius:16px;
 }
 
