@@ -6,16 +6,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body{margin:0;font-family:Arial;background:#f4f4f4}
+body{
+ margin:0;
+ font-family:Arial;
+ background:#f4f4f4;
+ padding-top:70px;
+}
 
 /* TOP BAR */
 .topbar{
  display:flex;
  align-items:center;
- gap:10px;
  background:linear-gradient(180deg, #87c7f3, #a8d8f8);
  padding:10px;
- color:#fff;
+ color:white;
+ gap:10px;
+
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ z-index:1000;
 }
 .topbar input{
  flex:1;
@@ -23,10 +34,7 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  border:none;
  border-radius:4px;
 }
-.cart{
- font-size:22px;
- cursor:pointer;
-}
+.cart{font-size:22px;cursor:pointer}
 
 /* GRID */
 .grid{
