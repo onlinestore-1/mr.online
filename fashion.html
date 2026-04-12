@@ -12,17 +12,19 @@ body{margin:0;font-family:Arial;background:#f4f4f4}
  .topbar{
  display:flex;
  align-items:center;
+ background:#2874f0;
  padding:10px;
- gap:10px;
  color:white;
-}
+ gap:10px;
 
-.topbar input{
- flex:1;
- padding:8px;
- border:none;
- border-radius:20px;
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ z-index:1000;
 }
+.top input{flex:1;padding:8px;border:none;border-radius:4px}
+.cart{font-size:22px;cursor:pointer}
 
 /* SLIDER */
 .slider img{width:100%;display:none}
