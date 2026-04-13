@@ -330,25 +330,24 @@ function setActiveNav(){
 window.addEventListener("load", setActiveNav);
 </script>
 
- <!-- BOTTOM NAVIGATION -->
-<div class="bottom-nav">
+ <div class="bottom-nav">
 
-  <div id="nav-home" onclick="goPage('index.html')">
+  <div onclick="goPage('index.html')">
     <i class="fa fa-home"></i>
     Home
   </div>
 
-  <div id="nav-category" onclick="goPage('category.html')">
+  <div class="active" onclick="goPage('category.html')">
     <i class="fa fa-th-large"></i>
     Categories
   </div>
 
-  <div id="nav-account" onclick="goPage('account.html')">
+  <div onclick="goPage('account.html')">
     <i class="fa fa-user"></i>
     Account
   </div>
 
-  <div id="nav-cart" onclick="goPage('cart.html')">
+  <div onclick="goPage('cart.html')">
     <i class="fa fa-shopping-cart"></i>
     Cart
   </div>
