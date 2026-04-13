@@ -68,18 +68,26 @@
       margin:20px 0 10px;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-    }
+     .grid{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  padding-bottom:10px;
+  scroll-behavior:smooth;
+}
+
+.grid::-webkit-scrollbar{
+  display:none; /* hide scrollbar */
+}
 
     .mini{
-      background:#fff;
-      padding:10px;
-      border-radius:6px;
-      cursor:pointer;
-    }
+  min-width:140px; /* controls card size */
+  background:#fff;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+  flex-shrink:0; /* prevents shrinking */
+}
 
     .mini img{
       width:100%;
@@ -104,7 +112,7 @@
 <h3>Suggested For You</h3>
 <div class="grid" id="suggestedBox"></div>
 
-<h3>Recently Viewed</h3>
+<h3>Next Deal For You</h3>
 <div class="grid" id="recentBox"></div>
 
 <script>
@@ -183,8 +191,18 @@ if(cart.length === 0){
   });
 }
 
-/* SUGGESTED (random products) */
-products.slice(0,2).forEach(p=>{
+ /* SHUFFLE FUNCTION */
+function shuffle(array){
+  return array.sort(() => 0.5 - Math.random());
+}
+
+/* SHUFFLED PRODUCTS */
+let shuffled = shuffle([...products]);
+
+/* SUGGESTED FOR YOU (8 PRODUCTS) */
+let suggestedProducts = shuffled.slice(0,8);
+
+suggestedProducts.forEach(p=>{
   suggestedBox.innerHTML += `
     <div class="mini" onclick="openProduct(${p.id})">
       <img src="${p.img}">
@@ -194,8 +212,10 @@ products.slice(0,2).forEach(p=>{
   `;
 });
 
-/* RECENTLY VIEWED */
-recent.slice(-4).forEach(p=>{
+/* NEXT DEAL FOR YOU (7 DIFFERENT PRODUCTS) */
+let nextDeals = shuffled.slice(8,15);
+
+nextDeals.forEach(p=>{
   recentBox.innerHTML += `
     <div class="mini" onclick="openProduct(${p.id})">
       <img src="${p.img}">
