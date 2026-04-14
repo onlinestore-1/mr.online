@@ -157,8 +157,33 @@ speakers.forEach(sp => {
 
 localStorage.setItem("allProducts", JSON.stringify(all));
 
- function drawThisProduct(){
- let selected = speakers.slice(0,2);
+  function drawThisProduct(){
+
+  // ✅ MANUAL PRODUCTS (YOU CONTROL THESE)
+  let selected = [
+    {
+      id:102,
+      name:"Sukari 1kg",
+      price:30,
+      img:"https://i.postimg.cc/WbBkpG8D/1kg.jpg"
+    },
+    {
+      id:103,
+      name:"Chumvi",
+      price:30,
+      img:"https://i.imgur.com/e4CXmHr.jpeg"
+    }
+  ];
+
+  document.getElementById("thisProduct").innerHTML =
+    selected.map(p=>`
+      <div class="card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
+}
 
  document.getElementById("thisProduct").innerHTML =
   selected.map(p=>`
@@ -170,32 +195,46 @@ localStorage.setItem("allProducts", JSON.stringify(all));
   `).join("");
 }
 
+ let usedIds = []; // global tracker
+
 function drawSimilar(){
 
- let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+  usedIds = []; // reset
 
- document.getElementById("similar").innerHTML =
-  shuffled.slice(0,7).map(p=>`
-   <div class="scroll-card" onclick="openProduct(${p.id})">
-    <img src="${p.img}">
-    <p>${p.name}</p>
-    <b>${formatPrice(p.price)}</b>
-   </div>
-  `).join("");
+  let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+
+  let selected = shuffled.slice(0,7);
+
+  // store used IDs
+  usedIds = selected.map(p => p.id);
+
+  document.getElementById("similar").innerHTML =
+    selected.map(p=>`
+      <div class="scroll-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
 }
+
 
 function drawTrending(){
 
- let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+  let remaining = speakers.filter(p => !usedIds.includes(p.id));
 
- document.getElementById("trending").innerHTML =
-  shuffled.slice(0,6).map(p=>`
-   <div class="scroll-card" onclick="openProduct(${p.id})">
-    <img src="${p.img}">
-    <p>${p.name}</p>
-    <b>${formatPrice(p.price)}</b>
-   </div>
-  `).join("");
+  let shuffled = [...remaining].sort(()=>0.5 - Math.random());
+
+  let selected = shuffled.slice(0,6);
+
+  document.getElementById("trending").innerHTML =
+    selected.map(p=>`
+      <div class="scroll-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
 }
 
 // SEARCH FUNCTION
