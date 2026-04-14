@@ -807,31 +807,53 @@ function draw(list,id){
  
 draw(products,"products");
 draw(products.slice(0,2),"suggested");
- function showYouMayAlsoLike(){
+  function showYouMayAlsoLike(){
 
-  let lastType = localStorage.getItem("lastType");
+  const categories = [
 
-  let result = [];
+    {
+      name: "Fashion",
+      img: "https://i.postimg.cc/9QQD1LLR/fasn1.jpg",
+      page: "fashion.html"
+    },
 
-  // 🔥 STRICT CATEGORY MATCH
-  if(lastType){
-    result = products.filter(p => p.type === lastType);
-  }
+    {
+      name: "Electronics",
+      img: "https://i.postimg.cc/xjz5hmm5/a12.png",
+      page: "electronics.html"
+    },
 
-  // 🔥 FALLBACK RANDOM
-  if(result.length === 0){
-    result = [...products];
-  }
+    {
+      name: "Mobile Phones",
+      img: "https://i.postimg.cc/1RrZWsn9/cm3.png",
+      page: "mobile.html"
+    },
 
-  // RANDOMIZE
-  result = result.sort(()=>0.5 - Math.random()).slice(0,6);
+    {
+      name: "Chakula & Afya",
+      img: "https://i.postimg.cc/xCjXcgBj/safi5.jpg",
+      page: "chakula.html"
+    },
+
+    {
+      name: "Accessories",
+      img: "https://i.postimg.cc/Kz35sGvV/bag1.jpg",
+      page: "bags.html"
+    },
+
+    {
+      name: "Smart Gadgets",
+      img: "https://i.postimg.cc/4xCbmkPT/kof2.jpg",
+      page: "smart.html"
+    }
+
+  ];
 
   document.getElementById("like").innerHTML =
-    result.map(p=>`
-      <div class="like-card" onclick="openProduct(${p.id})">
-        <img src="${p.img}">
-        <p>${p.name}</p>
-        <b>${formatPrice(p.price)}</b>
+    categories.map(c=>`
+      <div class="like-card" onclick="location.href='${c.page}'">
+        <img src="${c.img}">
+        <p>${c.name}</p>
       </div>
     `).join("");
 }
