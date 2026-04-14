@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gloves</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+body{
+ margin:0;
+ font-family:Arial;
+ background:#f4f4f4;
+ padding-top:70px;
+}
+
+/* TOP BAR */
+.topbar{
+ display:flex;
+ align-items:center;
+ background:linear-gradient(180deg, #87c7f3, #a8d8f8);
+ padding:10px;
+ color:white;
+ gap:10px;
+
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ z-index:1000;
+}
+.topbar input{
+ flex:1;
+ padding:8px;
+ border:none;
+ border-radius:4px;
+}
+.cart{font-size:22px;cursor:pointer}
+
+/* GRID */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px;
+}
+.card{
+ background:#fff;
+ padding:10px;
+ border-radius:6px;
+}
+.card img{width:100%}
+</style>
+</head>
+
+<body>
+
+<!-- SEARCH + CART -->
+<div class="topbar">
+ <input type="search" placeholder="Search products..." onkeyup="search(this.value)">
+ <span class="cart" onclick="location.href='cart.html'">🛒</span>
+</div>
+
+<h2 style="padding:10px">Gloves</h2>
+<div id="box" class="grid"></div>
+
+<script>
+const speakers = [
+ {id:23,name:"Gloves",price:15000,img:"https://i.imgur.com/bnxAhsJ.jpeg",type:"gloves",desc:"ZaySoo Anti-Slip Gym  Gloves for Professional Weightlifting,fitness Training and workout"},
+ {id:24,name:"Gloves",price:40,img:"https://i.imgur.com/SEkRfCe.jpeg",type:"gloves",desc:"Adidas Essential Training Gloves"},
+ {id:25,name:"Gloves",price:40,img:"https://i.imgur.com/bdRBRBf.jpeg",type:"gloves",desc:"Riding Gloves"}
+];
+
+// FORMAT PRICE (TZS + comma)
+function formatPrice(price){
+ return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+// LOAD EXISTING PRODUCTS
+let all = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+// MERGE WITHOUT DUPLICATES
+speakers.forEach(sp => {
+ if (!all.some(p => p.id === sp.id)) {
+  all.push(sp);
+ }
+});
+
+localStorage.setItem("allProducts", JSON.stringify(all));
+
+// DISPLAY FUNCTION
+function draw(list){
+ document.getElementById("box").innerHTML = list.map(p=>`
+  <div class="card" onclick="openProduct(${p.id})">
+   <img src="${p.img}">
+   <p>${p.name}</p>
+   <b>${formatPrice(p.price)}</b>
+  </div>
+ `).join("");
+}
+
+// INITIAL LOAD
+draw(speakers);
+
+// SEARCH FUNCTION
+function search(value){
+ const filtered = speakers.filter(p =>
+  p.name.toLowerCase().includes(value.toLowerCase())
+ );
+ draw(filtered);
+}
+
+// OPEN PRODUCT
+function openProduct(id){
+ localStorage.setItem("pid", id);
+ location.href = "product.html";
+}
+</script>
+
+</body>
+</html>
