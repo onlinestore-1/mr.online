@@ -181,32 +181,49 @@ localStorage.setItem("allProducts", JSON.stringify(all));
   `).join("");
 }
 
+ let similarIds = []; // store IDs used in Similar
+
 function drawSimilar(){
 
- let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+  // shuffle all products
+  let shuffled = [...speakers].sort(()=>0.5 - Math.random());
 
- document.getElementById("similar").innerHTML =
-  shuffled.slice(0,7).map(p=>`
-   <div class="scroll-card" onclick="openProduct(${p.id})">
-    <img src="${p.img}">
-    <p>${p.name}</p>
-    <b>${formatPrice(p.price)}</b>
-   </div>
-  `).join("");
+  // pick 7
+  let selected = shuffled.slice(0,7);
+
+  // store their IDs
+  similarIds = selected.map(p => p.id);
+
+  document.getElementById("similar").innerHTML =
+    selected.map(p=>`
+      <div class="scroll-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
 }
+
 
 function drawTrending(){
 
- let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+  // ❌ REMOVE products already used in Similar
+  let remaining = speakers.filter(p => !similarIds.includes(p.id));
 
- document.getElementById("trending").innerHTML =
-  shuffled.slice(0,6).map(p=>`
-   <div class="scroll-card" onclick="openProduct(${p.id})">
-    <img src="${p.img}">
-    <p>${p.name}</p>
-    <b>${formatPrice(p.price)}</b>
-   </div>
-  `).join("");
+  // shuffle remaining only
+  let shuffled = [...remaining].sort(()=>0.5 - Math.random());
+
+  // pick 6
+  let selected = shuffled.slice(0,6);
+
+  document.getElementById("trending").innerHTML =
+    selected.map(p=>`
+      <div class="scroll-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
 }
 
 // SEARCH FUNCTION
@@ -228,10 +245,10 @@ drawSimilar();
 drawTrending();
 
 /* AUTO UPDATE */
-setInterval(()=>{
- drawSimilar();
- drawTrending();
-},100000);
+ setInterval(()=>{
+ drawSimilar();   // must run first
+ drawTrending();  // uses filtered data
+},5000);
 </script>
 
 </body>
