@@ -484,7 +484,7 @@ body{
   <!-- TOP BAR -->
   <div class="topbar">
     <span class="menu-btn" onclick="openMenu()">☰</span>
-    <input type="search" placeholder="Search products..." onkeyup="search(this.value)">
+     <input type="search" placeholder="Search products..." onclick="openSearchPage()" readonly>
     <i class="fa fa-cart-shopping cart-icon"
       onclick="location.href='cart.html'"></i>
   </div>
@@ -876,6 +876,10 @@ draw(products.slice(0,2),"suggested");
         <b>${formatPrice(p.price)}</b>
       </div>
     `).join("");
+}
+
+ function openSearchPage(){
+  location.href = "search.html";
 }
 
  function openCategory(type,page){
