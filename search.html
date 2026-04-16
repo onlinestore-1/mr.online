@@ -78,6 +78,23 @@ function openResult(type){
  location.href = "results.html";
 }
 
+ window.onload = function(){
+
+ let defaultList = [
+  "tshirt",
+  "shoes",
+  "school bag",
+  "kids shoes"
+ ];
+
+ document.getElementById("suggestions").innerHTML =
+  defaultList.map(item=>`
+   <div onclick="openResult('${item}')">
+     ${item}
+   </div>
+  `).join("");
+}
+
 </script>
 
 </body>
