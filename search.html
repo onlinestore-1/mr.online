@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+ font-family:Arial;
+ margin:0;
+ background:#f4f4f4;
+}
+
+.top{
+ display:flex;
+ padding:10px;
+ background:#2874f0;
+}
+
+.top input{
+ flex:1;
+ padding:10px;
+ border:none;
+ border-radius:20px;
+}
+
+.suggestions{
+ background:#fff;
+}
+
+.suggestions div{
+ padding:12px;
+ border-bottom:1px solid #eee;
+ cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <input type="text" id="searchBox"
+   placeholder="Search for Products, Brands and More"
+   onkeyup="liveSearch(this.value)">
+</div>
+
+<div id="suggestions" class="suggestions"></div>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+function liveSearch(value){
+
+ value = value.toLowerCase();
+
+ let result = products.filter(p =>
+   p.name.toLowerCase().startsWith(value)
+   || p.type.toLowerCase().startsWith(value)
+ );
+
+ showSuggestions(result);
+}
+
+function showSuggestions(list){
+
+ document.getElementById("suggestions").innerHTML =
+  list.map(p=>`
+   <div onclick="openResult('${p.type}')">
+     ${p.name}
+   </div>
+  `).join("");
+}
+
+function openResult(type){
+ localStorage.setItem("searchType", type);
+ location.href = "results.html";
+}
+
+</script>
+
+</body>
+</html>
