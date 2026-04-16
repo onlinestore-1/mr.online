@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Results</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+ font-family:Arial;
+ margin:0;
+ background:#f4f4f4;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px;
+}
+
+.card{
+ background:#fff;
+ padding:10px;
+ border-radius:6px;
+}
+
+.card img{
+ width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<h3 style="padding:10px;">Search Results</h3>
+
+<div id="results" class="grid"></div>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("allProducts")) || [];
+let type = localStorage.getItem("searchType");
+
+let filtered = products.filter(p => p.type === type);
+
+document.getElementById("results").innerHTML =
+ filtered.map(p=>`
+  <div class="card" onclick="openProduct(${p.id})">
+    <img src="${p.img}">
+    <p>${p.name}</p>
+    <b>TZS ${p.price}</b>
+  </div>
+ `).join("");
+
+function openProduct(id){
+ localStorage.setItem("pid", id);
+ location.href = "product.html";
+}
+
+</script>
+
+</body>
+</html>
