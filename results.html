@@ -7,8 +7,8 @@
 
 <style>
 body{
- font-family:Arial;
  margin:0;
+ font-family:Arial;
  background:#f4f4f4;
 }
 
@@ -40,10 +40,13 @@ body{
 <script>
 
 let products = JSON.parse(localStorage.getItem("allProducts")) || [];
-let type = localStorage.getItem("searchType");
 
-/* 🔥 FILTER PRODUCTS */
+let keyword = localStorage.getItem("searchKeyword") || "";
+let type = localStorage.getItem("searchType") || "";
+
+/* 🔥 SHOW ALL MATCHING PRODUCTS */
 let filtered = products.filter(p =>
+ p.name.toLowerCase().includes(keyword.toLowerCase()) ||
  p.type.toLowerCase().includes(type.toLowerCase())
 );
 
