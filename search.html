@@ -129,6 +129,13 @@ function openResult(type){
  location.href = "results.html";
 }
 
+ function saveSearch(text){
+ let history = JSON.parse(localStorage.getItem("searchHistory")) || [];
+ history.unshift(text);
+ history = [...new Set(history)].slice(0,5);
+ localStorage.setItem("searchHistory", JSON.stringify(history));
+}
+
 </script>
 
 </body>
