@@ -7,15 +7,19 @@
 
 <style>
 body{
- font-family:Arial;
  margin:0;
+ font-family:Arial;
  background:#f4f4f4;
 }
 
+/* TOP SEARCH BAR */
 .top{
  display:flex;
+ align-items:center;
+ gap:10px;
  padding:10px;
  background:#2874f0;
+ color:#fff;
 }
 
 .top input{
@@ -25,14 +29,43 @@ body{
  border-radius:20px;
 }
 
+/* SUGGESTIONS LIST */
 .suggestions{
  background:#fff;
 }
 
-.suggestions div{
- padding:12px;
+.item{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ padding:10px;
  border-bottom:1px solid #eee;
  cursor:pointer;
+}
+
+.item img{
+ width:40px;
+ height:40px;
+ object-fit:cover;
+ border-radius:6px;
+}
+
+.item .text{
+ flex:1;
+}
+
+.item .text p{
+ margin:0;
+ font-size:14px;
+}
+
+.item .text span{
+ font-size:12px;
+ color:#777;
+}
+
+.icon{
+ color:#999;
 }
 </style>
 </head>
@@ -40,6 +73,7 @@ body{
 <body>
 
 <div class="top">
+  <span onclick="history.back()">←</span>
   <input type="text" id="searchBox"
    placeholder="Search for Products, Brands and More"
    onkeyup="liveSearch(this.value)">
@@ -51,48 +85,48 @@ body{
 
 let products = JSON.parse(localStorage.getItem("allProducts")) || [];
 
+/* 🔥 LIVE SEARCH */
 function liveSearch(value){
 
- value = value.toLowerCase();
+ value = value.toLowerCase().trim();
+
+ if(value === ""){
+   document.getElementById("suggestions").innerHTML = "";
+   return;
+ }
 
  let result = products.filter(p =>
-   p.name.toLowerCase().startsWith(value)
-   || p.type.toLowerCase().startsWith(value)
+   p.name.toLowerCase().includes(value) ||
+   p.type.toLowerCase().includes(value)
  );
 
- showSuggestions(result);
+ showSuggestions(result.slice(0,10)); // limit results
 }
 
+/* 🔥 SHOW SUGGESTIONS WITH IMAGE */
 function showSuggestions(list){
 
  document.getElementById("suggestions").innerHTML =
   list.map(p=>`
-   <div onclick="openResult('${p.type}')">
-     ${p.name}
+   <div class="item" onclick="openResult('${p.type}')">
+
+     <img src="${p.img}">
+
+     <div class="text">
+       <p>${p.name}</p>
+       <span>in ${p.type}</span>
+     </div>
+
+     <div class="icon">↗</div>
+
    </div>
   `).join("");
 }
 
+/* 🔥 OPEN CATEGORY RESULT */
 function openResult(type){
  localStorage.setItem("searchType", type);
  location.href = "results.html";
-}
-
- window.onload = function(){
-
- let defaultList = [
-  "tshirt",
-  "shoes",
-  "school bag",
-  "kids shoes"
- ];
-
- document.getElementById("suggestions").innerHTML =
-  defaultList.map(item=>`
-   <div onclick="openResult('${item}')">
-     ${item}
-   </div>
-  `).join("");
 }
 
 </script>
