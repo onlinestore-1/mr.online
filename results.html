@@ -7,8 +7,8 @@
 
 <style>
 body{
- margin:0;
  font-family:Arial;
+ margin:0;
  background:#f4f4f4;
 }
 
@@ -40,15 +40,9 @@ body{
 <script>
 
 let products = JSON.parse(localStorage.getItem("allProducts")) || [];
+let type = localStorage.getItem("searchType");
 
-let keyword = localStorage.getItem("searchKeyword") || "";
-let type = localStorage.getItem("searchType") || "";
-
-/* 🔥 SHOW ALL MATCHING PRODUCTS */
-let filtered = products.filter(p =>
- p.name.toLowerCase().includes(keyword.toLowerCase()) ||
- p.type.toLowerCase().includes(type.toLowerCase())
-);
+let filtered = products.filter(p => p.type === type);
 
 document.getElementById("results").innerHTML =
  filtered.map(p=>`
