@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gloves</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+ margin:0;
+ font-family:Arial;
+ background:#f4f4f4;
+ padding-top:70px;
+}
+
+/* TOP BAR */
+.topbar{
+ display:flex;
+ align-items:center;
+ background:white;
+ padding:10px;
+ color:black;
+ gap:10px;
+
+ position:fixed;
+ top:0;
+ left:0;
+ width:100%;
+ z-index:1000;
+
+ box-sizing:border-box;
+}
+.topbar input{
+ flex:1;
+ padding:8px;
+ border:none;
+ border-radius:4px;
+}
+.cart{font-size:22px;cursor:pointer}
+
+ .title{
+ flex:1;
+ font-size:16px;
+ font-weight:bold;
+}
+
+/* SMALL GAP */
+.section-title{
+ padding:6px 10px;
+ margin:0;
+ font-size:18px;
+}
+
+/* THIS PRODUCT (2 COLUMN) */
+.two-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px;
+}
+
+/* HORIZONTAL SCROLL ROW */
+.scroll-row{
+ display:flex;
+ overflow-x:auto;
+ gap:12px;
+ padding:10px;
+}
+.scroll-row::-webkit-scrollbar{
+ display:none;
+}
+
+.scroll-card{
+ min-width:130px;
+ max-width:130px;
+ background:#fff;
+ border-radius:8px;
+ padding:8px;
+ flex-shrink:0;
+ text-align:center;
+}
+
+.scroll-card img{
+ width:100%;
+ height:100px;
+ object-fit:cover;
+ border-radius:6px;
+}
+
+/* GRID */
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+ padding:10px;
+}
+.card{
+ background:#fff;
+ padding:10px;
+ border-radius:6px;
+}
+.card img{width:100%}
+</style>
+</head>
+
+<body>
+
+<!-- SEARCH + CART -->
+ <div class="topbar">
+  <span onclick="history.back()" style="font-size:22px;cursor:pointer;">←</span>
+
+  <h3 class="title">Continue Your Shopping</h3>
+
+  <span style="font-size:20px;cursor:pointer;" onclick="location.href='search.html'">🔍</span>
+  <span class="cart" onclick="location.href='cart.html'">🛒</span>
+</div>
+
+ <!-- THIS PRODUCT -->
+<h3 class="section-title">This Product</h3>
+<div id="thisProduct" class="two-grid"></div>
+
+<!-- SIMILAR PRODUCTS -->
+<h3 class="section-title">Similar Products</h3>
+<div id="similar" class="scroll-row"></div>
+
+<!-- EXPLORE SIMILAR TRENDS -->
+<h3 class="section-title">Explore Similar Trends</h3>
+<div id="trending" class="scroll-row"></div>
+
+<script>
+const speakers = [
+ {id:102,name:"Sukari 1kg",price:30,img:"https://i.postimg.cc/WbBkpG8D/1kg.jpg",type:"sukari"},
+ {id:103,name:"Chumvi",price:30,img:"https://i.imgur.com/e4CXmHr.jpeg/200",type:"sukari",desc:"chumvi bora"},
+ {id:104,name:"Tomato sauce",price:20,img:"https://i.imgur.com/IqhRkL7.jpeg/200",type:"extra",desc:"Tomato sauce tamu"},
+ {id:105,name:"Soy sauce",price:10,img:"https://i.imgur.com/CqraWiO.jpeg/200",type:"masala",desc:"Jipatie soy sauce"},
+ {id:106,name:"Splash",price:12,img:"https://i.imgur.com/4ifKGQC.jpeg/200",type:"cream",desc:"Splash sweet flavour"},
+ {id:107,name:"Bubble gum",price:15,img:"https://i.imgur.com/jJyMg1u.jpeg/200",type:"cream",desc:"Bubble gum flavoured ice lolly"},
+ {id:108,name:"Ballcone",price:13,img:"https://i.imgur.com/YU7yVMc.jpeg/200",type:"cream",desc:"Ballcone flavoured ice cream"},
+ {id:109,name:"Cherry",price:13,img:"https://i.imgur.com/Ax4J2uH.jpeg/200",type:"cream",desc:"Cherry flavoured ice lolly"},
+ {id:110,name:"Cherry Bar",price:13,img:"https://i.imgur.com/QZ8B1VC.jpeg/200",type:"cream",desc:"Cherry flavoured ice bar"},
+ {id:111,name:"Caramello",price:13,img:"https://i.imgur.com/HgeHJvR.jpeg/200",type:"cream",desc:"Caramello flavoured ice cream"},
+ {id:112,name:"Coca Cola",price:23,img:"https://i.imgur.com/UYZ1dIH.jpeg/200",type:"drinks",desc:"Coca Cola"},
+ {id:200,name:"Doffi",price:12,img:"https://i.imgur.com/wpJjs0L.jpeg",type:"sabuni"},
+ {id:201,name:"OMO",price:18,img:"https://i.imgur.com/v0eeorr.jpeg",type:"sabuni",desc:"Ondoa madoa sugu"},
+ {id:202,name:"Doffi",price:17,img:"https://i.imgur.com/hD9g7L2.jpeg/200",desc:"Washing powder"},
+ {id:203,name:"Niceone",price:18,img:"https://i.imgur.com/7nmPGbq.jpeg/200",type:"sabuni",desc:"Ondoa madoa sugu"},
+ {id:204,name:"Jet",price:19,img:"https://i.imgur.com/OoGiHtj.jpeg",type:"sabuni",desc:"Dish washing liquid soap"},
+ {id:205,name:"Jet",price:18,img:"https://i.imgur.com/q36RjQ2.jpeg",type:"sabuni",desc:"Dish washing liquid soap"},
+ {id:206,name:"Freedom Counter Book",price:14,img:"https://i.postimg.cc/50JG0SpM/free1.jpg",type:"book",desc:"Freedom Counter Book-2 Quire"},
+ {id:207,name:"Vaseline",price:25,img:"https://i.postimg.cc/TY2znxmq/a21.jpg",type:"oil",desc:"Vaseline Petroleum Jelly"},
+ {id:208,name:"Exercise Book",price:19,img:"https://i.imgur.com/AQrSAGW.jpeg/200",type:"book",desc:"Daftari mistali mikubwa na midogo"},
+ {id:209,name:"Exercise Book",price:19,img:"https://i.imgur.com/ihIcg3h.jpeg/200",type:"book",desc:"Daftari la kuandikia page 100"},
+ {id:210,name:"Exercise Book",price:17,img:"https://i.imgur.com/Hg8Aeea.jpeg/200",type:"book",desc:"Daftari la kuandikia page 32"}
+];
+
+// FORMAT PRICE (TZS + comma)
+function formatPrice(price){
+ return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+// LOAD EXISTING PRODUCTS
+let all = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+// MERGE WITHOUT DUPLICATES
+speakers.forEach(sp => {
+ if (!all.some(p => p.id === sp.id)) {
+  all.push(sp);
+ }
+});
+
+localStorage.setItem("allProducts", JSON.stringify(all));
+
+ function drawThisProduct(){
+ let selected = speakers.slice(0,2);
+
+ document.getElementById("thisProduct").innerHTML =
+  selected.map(p=>`
+   <div class="card" onclick="openProduct(${p.id})">
+    <img src="${p.img}">
+    <p>${p.name}</p>
+    <b>${formatPrice(p.price)}</b>
+   </div>
+  `).join("");
+}
+
+ let similarIds = []; // store IDs used in Similar
+
+function drawSimilar(){
+
+  // shuffle all products
+  let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+
+  // pick 7
+  let selected = shuffled.slice(0,7);
+
+  // store their IDs
+  similarIds = selected.map(p => p.id);
+
+  document.getElementById("similar").innerHTML =
+    selected.map(p=>`
+      <div class="scroll-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
+}
+
+
+function drawTrending(){
+
+  // ❌ REMOVE products already used in Similar
+  let remaining = speakers.filter(p => !similarIds.includes(p.id));
+
+  // shuffle remaining only
+  let shuffled = [...remaining].sort(()=>0.5 - Math.random());
+
+  // pick 6
+  let selected = shuffled.slice(0,6);
+
+  document.getElementById("trending").innerHTML =
+    selected.map(p=>`
+      <div class="scroll-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
+}
+
+// SEARCH FUNCTION
+function search(value){
+ const filtered = speakers.filter(p =>
+  p.name.toLowerCase().includes(value.toLowerCase())
+ );
+ draw(filtered);
+}
+
+// OPEN PRODUCT
+function openProduct(id){
+ localStorage.setItem("pid", id);
+ location.href = "product.html";
+}
+
+drawThisProduct();
+drawSimilar();
+drawTrending();
+
+/* AUTO UPDATE */
+ setInterval(()=>{
+ drawSimilar();   // must run first
+ drawTrending();  // uses filtered data
+},60000);
+</script>
+
+</body>
+</html>
