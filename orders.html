@@ -55,14 +55,72 @@
       margin-top:40px;
       color:#777;
     }
+
+ .title{
+ flex:1;
+ font-size:16px;
+ font-weight:bold;
+}
+
+/* SMALL GAP */
+.section-title{
+ padding:6px 10px;
+ margin:0;
+ font-size:18px;
+}
+
+/* HORIZONTAL SCROLL ROW */
+.scroll-row{
+ display:flex;
+ overflow-x:auto;
+ gap:12px;
+ padding:10px;
+}
+.scroll-row::-webkit-scrollbar{
+ display:none;
+}
+
+.scroll-card{
+ min-width:130px;
+ max-width:130px;
+ background:#fff;
+ border-radius:8px;
+ padding:8px;
+ flex-shrink:0;
+ text-align:center;
+}
+
+.scroll-card img{
+ width:100%;
+ height:100px;
+ object-fit:cover;
+ border-radius:6px;
+} 
   </style>
 </head>
 
 <body>
 
+  <div class="topbar">
+  <span onclick="history.back()" style="font-size:22px;cursor:pointer;">←</span>
+
+  <h3 class="title">Continue Your Shopping</h3>
+
+  <span style="font-size:20px;cursor:pointer;">🔍</span>
+  <span class="cart" onclick="location.href='cart.html'">🛒</span>
+</div>
+
 <header>My Orders</header>
 
 <div class="orders" id="ordersBox"></div>
+
+<!-- SIMILAR PRODUCTS -->
+<h3 class="section-title">Similar Products</h3>
+<div id="similar" class="scroll-row"></div>
+
+<!-- EXPLORE SIMILAR TRENDS -->
+<h3 class="section-title">Explore Similar Trends</h3>
+<div id="trending" class="scroll-row"></div>
 
 <script>
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -89,6 +147,43 @@ function rebuy(id){
   localStorage.setItem("pid", id);
   location.href = "product.html";
 }
+
+function drawSimilar(){
+
+ let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+
+ document.getElementById("similar").innerHTML =
+  shuffled.slice(0,7).map(p=>`
+   <div class="scroll-card" onclick="openProduct(${p.id})">
+    <img src="${p.img}">
+    <p>${p.name}</p>
+    <b>${formatPrice(p.price)}</b>
+   </div>
+  `).join("");
+}
+
+function drawTrending(){
+
+ let shuffled = [...speakers].sort(()=>0.5 - Math.random());
+
+ document.getElementById("trending").innerHTML =
+  shuffled.slice(0,6).map(p=>`
+   <div class="scroll-card" onclick="openProduct(${p.id})">
+    <img src="${p.img}">
+    <p>${p.name}</p>
+    <b>${formatPrice(p.price)}</b>
+   </div>
+  `).join("");
+}
+
+drawSimilar();
+drawTrending();
+
+/* AUTO UPDATE */
+setInterval(()=>{
+ drawSimilar();
+ drawTrending();
+},5000);
 </script>
 
 </body>
