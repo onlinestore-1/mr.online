@@ -56,26 +56,46 @@
       color:#777;
     }
 
-  .mini{
-  min-width:140px; /* controls card size */
-  background:#fff;
-  padding:10px;
-  border-radius:6px;
-  cursor:pointer;
-  flex-shrink:0; /* prevents shrinking */
+  .title{
+ flex:1;
+ font-size:16px;
+ font-weight:bold;
 }
 
- .grid{
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  padding-bottom:10px;
-  scroll-behavior:smooth;
+/* SMALL GAP */
+.section-title{
+ padding:6px 10px;
+ margin:0;
+ font-size:18px;
 }
 
-.grid::-webkit-scrollbar{
-  display:none; /* hide scrollbar */
-} 
+/* HORIZONTAL SCROLL ROW */
+.scroll-row{
+ display:flex;
+ overflow-x:auto;
+ gap:12px;
+ padding:10px;
+}
+.scroll-row::-webkit-scrollbar{
+ display:none;
+}
+
+.scroll-card{
+ min-width:130px;
+ max-width:130px;
+ background:#fff;
+ border-radius:8px;
+ padding:8px;
+ flex-shrink:0;
+ text-align:center;
+}
+
+.scroll-card img{
+ width:100%;
+ height:100px;
+ object-fit:cover;
+ border-radius:6px;
+}
   </style>
 </head>
 
