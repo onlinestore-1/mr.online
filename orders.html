@@ -1,105 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>My Orders</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>My Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 
-<style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#f4f4f4;
-  padding:10px;
-}
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:#f4f4f4;
+      padding:10px;
+    }
 
-header{
-  background:#2874f0;
-  color:white;
-  padding:12px;
-  text-align:center;
-  font-size:18px;
-}
+    header{
+      background:#2874f0;
+      color:white;
+      padding:12px;
+      text-align:center;
+      font-size:18px;
+    }
 
-.orders{
-  max-width:600px;
-  margin:auto;
-}
+    .orders{
+      max-width:600px;
+      margin:auto;
+    }
 
-.order{
-  background:#fff;
-  padding:10px;
-  margin:10px 0;
-  border-radius:8px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  cursor:pointer;
-}
+    .order{
+      background:#fff;
+      padding:10px;
+      margin:10px 0;
+      border-radius:8px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      cursor:pointer;
+    }
 
-.order img{
-  width:80px;
-  height:80px;
-  object-fit:cover;
-  border-radius:6px;
-}
+    .order img{
+      width:80px;
+      height:80px;
+      object-fit:cover;
+      border-radius:6px;
+    }
 
-.order-name{
-  font-size:16px;
-  font-weight:bold;
-}
+    .order-name{
+      font-size:16px;
+      font-weight:bold;
+    }
 
-.empty{
-  text-align:center;
-  margin-top:40px;
-  color:#777;
-}
-
-/* ===== PRODUCT SECTIONS ===== */
-.section{
-  margin-top:20px;
-}
-
-.section h3{
-  margin:10px 0;
-  font-size:16px;
-}
-
-/* horizontal scroll */
-.products{
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  padding-bottom:10px;
-}
-
-.products::-webkit-scrollbar{
-  display:none;
-}
-
-/* product card */
-.product{
-  min-width:120px;
-  background:#fff;
-  border-radius:8px;
-  padding:8px;
-  flex-shrink:0;
-  cursor:pointer;
-}
-
-.product img{
-  width:100%;
-  height:100px;
-  object-fit:cover;
-  border-radius:6px;
-}
-
-.product-name{
-  font-size:13px;
-  margin-top:5px;
-}
-
-</style>
+    .empty{
+      text-align:center;
+      margin-top:40px;
+      color:#777;
+    }
+  </style>
 </head>
 
 <body>
@@ -107,18 +63,6 @@ header{
 <header>My Orders</header>
 
 <div class="orders" id="ordersBox"></div>
-
-<!-- YOU MAY ALSO LIKE -->
-<div class="section">
-  <h3>You May Also Like</h3>
-  <div class="products" id="likeBox"></div>
-</div>
-
-<!-- IMPORTANT TO CONSIDER -->
-<div class="section">
-  <h3>Important To Consider</h3>
-  <div class="products" id="importantBox"></div>
-</div>
 
 <script>
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -142,53 +86,6 @@ orders.forEach(o => {
 });
 
 function rebuy(id){
-  localStorage.setItem("pid", id);
-  location.href = "product.html";
-}
-
-/* ===== SAMPLE PRODUCTS (8 each) ===== */
-
-let youMayLike = [
-  {id:101,name:"Watch",img:"https://via.placeholder.com/150"},
-  {id:102,name:"Shoes",img:"https://via.placeholder.com/150"},
-  {id:103,name:"Bag",img:"https://via.placeholder.com/150"},
-  {id:104,name:"Headphones",img:"https://via.placeholder.com/150"},
-  {id:105,name:"T-Shirt",img:"https://via.placeholder.com/150"},
-  {id:106,name:"Phone",img:"https://via.placeholder.com/150"},
-  {id:107,name:"Glasses",img:"https://via.placeholder.com/150"},
-  {id:108,name:"Jacket",img:"https://via.placeholder.com/150"}
-];
-
-let important = [
-  {id:201,name:"Power Bank",img:"https://via.placeholder.com/150"},
-  {id:202,name:"Charger",img:"https://via.placeholder.com/150"},
-  {id:203,name:"Mouse",img:"https://via.placeholder.com/150"},
-  {id:204,name:"Keyboard",img:"https://via.placeholder.com/150"},
-  {id:205,name:"Speaker",img:"https://via.placeholder.com/150"},
-  {id:206,name:"Camera",img:"https://via.placeholder.com/150"},
-  {id:207,name:"Tripod",img:"https://via.placeholder.com/150"},
-  {id:208,name:"USB Cable",img:"https://via.placeholder.com/150"}
-];
-
-const likeBox = document.getElementById("likeBox");
-const importantBox = document.getElementById("importantBox");
-
-/* render function */
-function renderProducts(arr, container){
-  arr.forEach(p=>{
-    container.innerHTML += `
-      <div class="product" onclick="openProduct(${p.id})">
-        <img src="${p.img}">
-        <div class="product-name">${p.name}</div>
-      </div>
-    `;
-  });
-}
-
-renderProducts(youMayLike, likeBox);
-renderProducts(important, importantBox);
-
-function openProduct(id){
   localStorage.setItem("pid", id);
   location.href = "product.html";
 }
