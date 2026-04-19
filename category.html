@@ -1,1 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Categories</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
+}
+
+/* TOP BAR */
+.top-bar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:60px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 15px;
+  border-bottom:1px solid #ddd;
+  z-index:1000;
+}
+
+.top-bar .left{
+  display:flex;
+  align-items:center;
+}
+
+.top-bar a{
+  text-decoration:none;
+  color:black;
+  font-size:18px;
+  margin-right:10px;
+}
+
+.top-bar h3{
+  margin:0;
+  font-size:18px;
+}
+
+/* MAIN LAYOUT */
+.container{
+  display:flex;
+  margin-top:60px;
+  height:calc(100vh - 60px);
+}
+
+/* LEFT SIDE */
+.sidebar{
+  width:28%;
+  background:#fff;
+  border-right:1px solid #ddd;
+  overflow-y:auto;
+}
+
+.category{
+  padding:15px 10px;
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+  border-bottom:1px solid #eee;
+  font-size:14px;
+  color:#555;
+}
+
+.category.active{
+  font-weight:bold;
+  color:#000;
+  background:#f9f9f9;
+  position:relative;
+}
+
+/* DOT INDICATOR */
+.category.active::before{
+  content:"";
+  width:5px;
+  height:5px;
+  background:#007bff;
+  border-radius:50%;
+  position:absolute;
+  left:5px;
+}
+
+/* RIGHT SIDE */
+.content{
+  width:72%;
+  padding:15px;
+  overflow-y:auto;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+
+.card{
+  background:#fff;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  height:100px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.card p{
+  margin:8px 0 0;
+  font-size:13px;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .card img{
+    height:90px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="left">
+    <a href="index.html">&#8592;</a>
+    <h3>All Categories</h3>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- LEFT SIDE -->
+  <div class="sidebar">
+    <div class="category active" onclick="loadCategory('foryou', this)">For You</div>
+    <div class="category" onclick="loadCategory('fashion', this)">Fashion</div>
+    <div class="category" onclick="loadCategory('appliances', this)">Appliances</div>
+    <div class="category" onclick="loadCategory('mobiles', this)">Mobiles</div>
+    <div class="category" onclick="loadCategory('electronics', this)">Electronics</div>
+    <div class="category" onclick="loadCategory('gadgets', this)">Smart Gadgets</div>
+    <div class="category" onclick="loadCategory('home', this)">Home</div>
+    <div class="category" onclick="loadCategory('beauty', this)">Beauty & Personal Care</div>
+    <div class="category" onclick="loadCategory('toys', this)">Toys & Baby Care</div>
+    <div class="category" onclick="loadCategory('food', this)">Food & Health Care</div>
+    <div class="category" onclick="loadCategory('furniture', this)">Furniture</div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="content" id="contentArea"></div>
+
+</div>
+
+<script>
+
+/* CATEGORY DATA */
+const data = {
+  foryou: [
+    {img:"https://via.placeholder.com/150", name:"Recommended 1", link:"product.html"},
+    {img:"https://via.placeholder.com/150", name:"Recommended 2", link:"product.html"}
+  ],
+  fashion: [
+    {img:"https://via.placeholder.com/150", name:"Men Wear", link:"fashion.html"},
+    {img:"https://via.placeholder.com/150", name:"Women Wear", link:"fashion.html"}
+  ],
+  appliances: [
+    {img:"https://via.placeholder.com/150", name:"Washing Machine", link:"appliances.html"},
+    {img:"https://via.placeholder.com/150", name:"Fridge", link:"appliances.html"}
+  ],
+  mobiles: [
+    {img:"https://via.placeholder.com/150", name:"Smartphones", link:"mobiles.html"},
+    {img:"https://via.placeholder.com/150", name:"Accessories", link:"mobiles.html"}
+  ],
+  electronics: [
+    {img:"https://via.placeholder.com/150", name:"TV", link:"electronics.html"},
+    {img:"https://via.placeholder.com/150", name:"Laptop", link:"electronics.html"}
+  ],
+  gadgets: [
+    {img:"https://via.placeholder.com/150", name:"Smart Watch", link:"gadgets.html"},
+    {img:"https://via.placeholder.com/150", name:"Earbuds", link:"gadgets.html"}
+  ],
+  home: [
+    {img:"https://via.placeholder.com/150", name:"Kitchen", link:"home.html"},
+    {img:"https://via.placeholder.com/150", name:"Decor", link:"home.html"}
+  ],
+  beauty: [
+    {img:"https://via.placeholder.com/150", name:"Makeup", link:"beauty.html"},
+    {img:"https://via.placeholder.com/150", name:"Skincare", link:"beauty.html"}
+  ],
+  toys: [
+    {img:"https://via.placeholder.com/150", name:"Kids Toys", link:"toys.html"},
+    {img:"https://via.placeholder.com/150", name:"Baby Care", link:"toys.html"}
+  ],
+  food: [
+    {img:"https://via.placeholder.com/150", name:"Groceries", link:"food.html"},
+    {img:"https://via.placeholder.com/150", name:"Health Products", link:"food.html"}
+  ],
+  furniture: [
+    {img:"https://via.placeholder.com/150", name:"Sofa", link:"furniture.html"},
+    {img:"https://via.placeholder.com/150", name:"Bed", link:"furniture.html"}
+  ]
+};
+
+/* LOAD CATEGORY */
+function loadCategory(cat, el){
+
+  // remove active
+  document.querySelectorAll('.category').forEach(c=>c.classList.remove('active'));
+
+  // set active
+  el.classList.add('active');
+
+  const content = document.getElementById("contentArea");
+  content.innerHTML = "";
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  data[cat].forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = ()=> window.location.href = item.link;
+
+    card.innerHTML = `
+      <img src="${item.img}">
+      <p>${item.name}</p>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  content.appendChild(grid);
+}
+
+/* DEFAULT LOAD */
+window.onload = ()=>{
+  loadCategory('foryou', document.querySelector('.category'));
+};
+
+</script>
+
+</body>
+</html>
