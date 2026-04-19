@@ -103,6 +103,17 @@
 <div id="trending" class="scroll-row"></div>
 
 <script>
+const speakers = [ 
+ {id:409,name:"Small Speaker",price:25,img:"https://i.postimg.cc/DwMMYkjL/aa86.jpg",type:"power",desc:"Small Bluetooth Speaker"},
+ {id:407,name:"Small Speaker",price:25,img:"https://i.postimg.cc/j2H3TfLz/aa85.jpg",type:"power",desc:"Small Bluetooth Speaker"},
+ {id:408,name:"ZEBRONICS Astra",price:25,img:"https://i.postimg.cc/rFyNs3Hv/aa81.jpg",type:"power",desc:"Portable Bluetooth Speaker"},
+ {id:410,name:"ZEBRONICS Sound",price:25,img:"https://i.postimg.cc/FsQsxQm4/aa83.jpg",type:"power",desc:"Zebronics Sound Feast50"},
+ {id:411,name:"Motorola Moto",price:40,img:"https://i.postimg.cc/nL965CYk/a37.jpg",type:"charger",desc:"Buds Loop TWS"},
+ {id:110,name:"Cherry Bar",price:13,img:"https://i.imgur.com/QZ8B1VC.jpeg/200",type:"cream",desc:"Cherry flavoured ice bar"},
+ {id:111,name:"Caramello",price:13,img:"https://i.imgur.com/HgeHJvR.jpeg/200",type:"cream",desc:"Caramello flavoured ice cream"},
+ {id:112,name:"Coca Cola",price:23,img:"https://i.imgur.com/UYZ1dIH.jpeg/200",type:"drinks",desc:"Coca Cola"},
+ {id:200,name:"Doffi",price:12,img:"https://i.imgur.com/wpJjs0L.jpeg",type:"sabuni"}
+]
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
 const box = document.getElementById("ordersBox");
 
