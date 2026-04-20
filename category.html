@@ -145,6 +145,50 @@ body{
   }
 }
 
+/* RECENTLY VIEWED (RIGHT SIDE) */
+.recent-section{
+  margin-top:15px;
+}
+
+.recent-title{
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.recent-row{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+}
+
+.recent-row::-webkit-scrollbar{
+  display:none;
+}
+
+.recent-card{
+  min-width:100px;
+  max-width:100px;
+  background:#fff;
+  border-radius:10px;
+  padding:6px;
+  text-align:center;
+  flex-shrink:0;
+  cursor:pointer;
+}
+
+.recent-card img{
+  width:100%;
+  height:80px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.recent-card p{
+  font-size:11px;
+  margin:4px 0;
+}
+
 /* BOTTOM NAVBAR */
 .bottom-nav{
  position:fixed;
@@ -259,7 +303,16 @@ body{
 </div>
 
   <!-- RIGHT SIDE -->
-  <div class="content" id="contentArea"></div>
+  <div class="content">
+  <div id="contentArea"></div>
+
+  <!-- RECENTLY VIEWED -->
+  <div class="recent-section">
+    <div class="recent-title">Recently Viewed</div>
+    <div id="recentViewed" class="recent-row"></div>
+  </div>
+
+</div>
 
 </div>
 
@@ -369,6 +422,63 @@ function setActiveNav(){
 }
 
 window.addEventListener("load", setActiveNav);
+
+  function openProduct(id){
+
+  localStorage.setItem("pid", id);
+
+  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
+  viewed = viewed.filter(p => p != id);
+  viewed.unshift(id);
+  viewed = viewed.slice(0,10);
+
+  localStorage.setItem("lastViewed", JSON.stringify(viewed));
+
+  // refresh UI instantly
+  showRecentlyViewed();
+
+  location.href = "product.html";
+}
+
+  function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+function showRecentlyViewed(){
+
+  let products = JSON.parse(localStorage.getItem("allProducts")) || [];
+  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
+  let result = [];
+
+  viewed.forEach(id=>{
+    let p = products.find(x=>x.id == id);
+    if(p){
+      result.push(p);
+    }
+  });
+
+  // limit to 7
+  result = result.slice(0,7);
+
+  document.getElementById("recentViewed").innerHTML =
+    result.map(p=>`
+      <div class="recent-card" onclick="openProduct(${p.id})">
+        <img src="${p.img}">
+        <p>${p.name}</p>
+        <b>${formatPrice(p.price)}</b>
+      </div>
+    `).join("");
+}
+
+function autoUpdateRecent(){
+  showRecentlyViewed();
+}
+
+window.addEventListener("load", autoUpdateRecent);
+window.addEventListener("pageshow", autoUpdateRecent);
+window.addEventListener("storage", autoUpdateRecent);
 
 </script>
 
