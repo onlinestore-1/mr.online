@@ -145,6 +145,39 @@ body{
   }
 }
 
+.section-title{
+  font-size:18px;
+  font-weight:bold;
+  margin:15px 0 10px;
+}
+
+/* 3x3 GRID */
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.grid-3 .card img{
+  height:80px;
+}
+
+/* HORIZONTAL SCROLL */
+.scroll-row{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+}
+
+.scroll-row .card{
+  min-width:100px;
+  flex-shrink:0;
+}
+
+.scroll-row img{
+  height:80px;
+}
+
 /* BOTTOM NAVBAR */
 .bottom-nav{
  position:fixed;
@@ -313,25 +346,43 @@ const data = {
   ]
 };
 
+/* NEW UPCOMING LAUNCHES (9 items) */
+const upcoming = [
+  {img:"https://i.postimg.cc/8CG5MGtg/xia3.jpg/150", name:"vivo T5 Pro 5G"},
+  {img:"https://i.postimg.cc/c6qZW7zr/inf1.jpg/150", name:"Infinix Note 60"},
+  {img:"https://i.postimg.cc/XqptpZ58/aa85.jpg/150", name:"AI+ Nova 2"},
+  {img:"https://i.postimg.cc/65DLs75P/b10.jpg/150", name:"OPPO F33 5G"},
+  {img:"https://i.postimg.cc/x1vmWtZd/aa69.jpg/150", name:"Asus ExpertBook"},
+  {img:"https://i.postimg.cc/3Rc0g6kB/aa70.jpg/150", name:"Realme T500"},
+  {img:"https://i.postimg.cc/NjztG4TD/Chumvi2.jpg/150", name:"Xiaomi TV"},
+  {img:"https://i.postimg.cc/MTmqwjSt/muh6.jpg/150", name:"Smart Watch"},
+  {img:"https://i.postimg.cc/SRy3f2Cq/a3.jpg/150", name:"Wireless Buds"}
+];
+
+/* RECENTLY VIEWED (auto updated using localStorage) */
+let recentlyViewed = JSON.parse(localStorage.getItem("recentProducts")) || [];
+
 /* LOAD CATEGORY */
-function loadCategory(cat, el){
+ function loadCategory(cat, el){
 
-  // remove active
   document.querySelectorAll('.category').forEach(c=>c.classList.remove('active'));
-
-  // set active
   el.classList.add('active');
 
   const content = document.getElementById("contentArea");
   content.innerHTML = "";
 
+  /* NORMAL CATEGORY GRID */
   const grid = document.createElement("div");
   grid.className = "grid";
 
   data[cat].forEach(item=>{
     const card = document.createElement("div");
     card.className = "card";
-    card.onclick = ()=> window.location.href = item.link;
+
+    card.onclick = ()=>{
+      saveRecent(item);
+      window.location.href = "product.html";
+    };
 
     card.innerHTML = `
       <img src="${item.img}">
@@ -342,6 +393,63 @@ function loadCategory(cat, el){
   });
 
   content.appendChild(grid);
+
+  /* ONLY SHOW EXTRA SECTIONS ON FOR YOU */
+  if(cat === "foryou"){
+
+    /* UPCOMING LAUNCHES */
+    const title1 = document.createElement("div");
+    title1.className = "section-title";
+    title1.innerText = "New & Upcoming Launches";
+
+    const grid3 = document.createElement("div");
+    grid3.className = "grid-3";
+
+    upcoming.forEach(item=>{
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.onclick = ()=>{
+        saveRecent(item);
+        window.location.href = "product.html";
+      };
+
+      card.innerHTML = `
+        <img src="${item.img}">
+        <p>${item.name}</p>
+      `;
+
+      grid3.appendChild(card);
+    });
+
+    content.appendChild(title1);
+    content.appendChild(grid3);
+
+    /* RECENTLY VIEWED */
+    const title2 = document.createElement("div");
+    title2.className = "section-title";
+    title2.innerText = "Recently Viewed Stores";
+
+    const scroll = document.createElement("div");
+    scroll.className = "scroll-row";
+
+    recentlyViewed.slice(0,7).forEach(item=>{
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.onclick = ()=> window.location.href = "product.html";
+
+      card.innerHTML = `
+        <img src="${item.img}">
+        <p>${item.name}</p>
+      `;
+
+      scroll.appendChild(card);
+    });
+
+    content.appendChild(title2);
+    content.appendChild(scroll);
+  }
 }
 
 /* DEFAULT LOAD */
@@ -369,6 +477,21 @@ function setActiveNav(){
 }
 
 window.addEventListener("load", setActiveNav);
+
+  function saveRecent(product){
+  let recents = JSON.parse(localStorage.getItem("recentProducts")) || [];
+
+  // remove duplicate
+  recents = recents.filter(p => p.name !== product.name);
+
+  // add new at top
+  recents.unshift(product);
+
+  // keep only 10 max
+  if(recents.length > 10) recents.pop();
+
+  localStorage.setItem("recentProducts", JSON.stringify(recents));
+}
 
 </script>
 
