@@ -46,6 +46,19 @@ body{
   font-size:18px;
 }
 
+/* RIGHT ICONS */
+.right-icons{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.right-icons i{
+  font-size:20px;
+  cursor:pointer;
+  color:#333;
+}
+
 /* MAIN LAYOUT */
 .container{
   display:flex;
@@ -269,12 +282,21 @@ body{
 
 <body>
 
-<!-- TOP BAR -->
+ <!-- TOP BAR -->
 <div class="top-bar">
+
+  <!-- LEFT SIDE -->
   <div class="left">
     <a href="index.html">&#8592;</a>
     <h3>All Categories</h3>
   </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="right-icons">
+    <i class="fa fa-search" onclick="location.href='search.html'"></i>
+    <i class="fa fa-shopping-cart" onclick="location.href='cart.html'"></i>
+  </div>
+
 </div>
 
 <div class="container">
