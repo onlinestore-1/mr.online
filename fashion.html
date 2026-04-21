@@ -138,6 +138,90 @@
 .bottom-nav .active{
  color:#2874f0;
 }
+
+ /* MODAL BACKGROUND */
+.size-modal{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ height:100%;
+ background:rgba(0,0,0,0.5);
+ display:none;
+ justify-content:flex-end;
+ align-items:flex-end;
+ z-index:2000;
+}
+
+/* BOX */
+.size-box{
+ background:#fff;
+ width:100%;
+ border-radius:15px 15px 0 0;
+ padding:15px;
+ animation:slideUp 0.3s ease;
+}
+
+@keyframes slideUp{
+ from{transform:translateY(100%)}
+ to{transform:translateY(0)}
+}
+
+.size-header{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+
+.size-product{
+ display:flex;
+ gap:10px;
+ margin:10px 0;
+}
+
+.size-product img{
+ width:60px;
+ height:60px;
+ object-fit:cover;
+ border-radius:6px;
+}
+
+/* SIZE BUTTONS */
+.sizes{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin:10px 0;
+}
+
+.sizes div{
+ padding:10px 15px;
+ border:1px solid #ccc;
+ border-radius:8px;
+ cursor:pointer;
+}
+
+/* SELECTED SIZE (BLACK LIKE IMAGE) */
+.sizes .active{
+ background:black;
+ color:white;
+ font-weight:bold;
+}
+
+/* CONTINUE BUTTON */
+#continueBtn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:8px;
+ background:#ccc;
+ color:white;
+ font-size:16px;
+}
+
+#continueBtn.active{
+ background:#2874f0;
+}
 </style>
 </head>
 
@@ -339,6 +423,50 @@ function setActiveNav(){
 }
 
 window.addEventListener("load", setActiveNav);
+
+ let selectedSize = "";
+let currentProduct = null;
+
+/* BUY NOW CLICK */
+function buyNow(product){
+ currentProduct = product;
+
+ // fill modal
+ document.getElementById("modalImg").src = product.img;
+ document.getElementById("modalName").innerText = product.name;
+ document.getElementById("modalPrice").innerText = formatPrice(product.price);
+
+ document.getElementById("sizeModal").style.display = "flex";
+}
+
+/* CLOSE MODAL */
+function closeSize(){
+ document.getElementById("sizeModal").style.display = "none";
+}
+
+/* SELECT SIZE */
+function selectSize(el){
+ document.querySelectorAll(".sizes div").forEach(d=>d.classList.remove("active"));
+
+ el.classList.add("active");
+ selectedSize = el.innerText;
+
+ let btn = document.getElementById("continueBtn");
+ btn.disabled = false;
+ btn.classList.add("active");
+}
+
+/* CONTINUE AFTER SIZE */
+function continueBuy(){
+ if(!selectedSize) return;
+
+ // store selection
+ localStorage.setItem("selectedSize", selectedSize);
+ localStorage.setItem("buyProduct", JSON.stringify(currentProduct));
+
+ // go to normal buy/cart page
+ location.href = "cart.html";
+}
 </script>
 
  <div class="bottom-nav">
@@ -363,6 +491,37 @@ window.addEventListener("load", setActiveNav);
     Cart
   </div>
 
+</div>
+
+ <!-- SIZE SELECT MODAL -->
+<div id="sizeModal" class="size-modal">
+  <div class="size-box">
+
+    <div class="size-header">
+      <h3>Select variant</h3>
+      <span onclick="closeSize()">✕</span>
+    </div>
+
+    <div class="size-product">
+      <img id="modalImg">
+      <div>
+        <p id="modalName"></p>
+        <b id="modalPrice"></b>
+      </div>
+    </div>
+
+    <div class="sizes">
+      <div onclick="selectSize(this)">S</div>
+      <div onclick="selectSize(this)">M</div>
+      <div onclick="selectSize(this)">L</div>
+      <div onclick="selectSize(this)">XL</div>
+      <div onclick="selectSize(this)">XXL</div>
+      <div onclick="selectSize(this)">3XL</div>
+    </div>
+
+    <button id="continueBtn" disabled onclick="continueBuy()">Continue</button>
+
+  </div>
 </div>
 </body>
 </html>
