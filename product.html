@@ -262,6 +262,10 @@ body{
 <div class="explore-grid" id="exploreBox"></div>
 
 <script>
+
+const fashionTypes = ["tshirt","jeans","jezi"];
+const isFashion = fashionTypes.includes(p.type);
+  
 const products = JSON.parse(localStorage.getItem("allProducts")) || [
  {id:1,name:"Blue T-Shirt",price:12,img:"https://i.imgur.com/M7lVvkH.jpeg",type:"tshirt",desc:"Men Washed Relaxed Fit Crew" },
  {id:2,name:"NEONOMAD",price:14,img:"https://i.imgur.com/QlgHGCQ.jpeg",type:"tshirt",desc:"Men Embroidered Regular Fit"},
@@ -389,10 +393,11 @@ document.getElementById("productBox").innerHTML = `
   </div>
 </div>
   <h2>${p.name}</h2>
-  <p>${p.desc}</p>
+  <p>${p.desc}</p> 
  <b>${formatPrice(p.price)}</b><br><br>
 
-  <!-- SIZE CHART -->
+${isFashion ? `
+  <!-- SIZE CHART ONLY FOR FASHION -->
   <div class="size-box">
     <div class="size" onclick="selectSize(this,'S')">S</div>
     <div class="size" onclick="selectSize(this,'M')">M</div>
@@ -401,6 +406,7 @@ document.getElementById("productBox").innerHTML = `
   </div>
 
   <p id="selectedSizeText" style="font-size:14px;color:green;"></p>
+` : ``}
 
   Qty:
   <input id="qty" type="number" value="1" min="1"><br><br>
@@ -476,10 +482,27 @@ exploreBox.innerHTML = exploreProducts.map(p2 => `
   window.location.href = "product.html"; // open again like new page
 }
 
-function buy(){
+ function buy(){
   const qty = document.getElementById("qty").value;
-  localStorage.setItem("buy", JSON.stringify({...p, qty}));
-  location.href = "checkout.html";
+
+  // IF FASHION → REQUIRE SIZE
+  if(isFashion){
+    if(!selectedSize){
+      openSizePopup();
+      return;
+    }
+
+    proceedBuy(selectedSize);
+  } 
+  // IF NOT FASHION → NORMAL BUY
+  else{
+    localStorage.setItem("buy", JSON.stringify({
+      ...p,
+      qty
+    }));
+
+    location.href = "checkout.html";
+  }
 }
 
 function addCart(){
@@ -567,6 +590,8 @@ function buy(){
 
 /* OPEN POPUP */
 function openSizePopup(){
+  if(!isFashion) return; // ❌ block for non-fashion
+
   document.getElementById("sizePopup").style.display = "block";
   document.getElementById("popupImg").src = p.img;
   document.getElementById("popupName").innerText = p.name;
