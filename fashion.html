@@ -306,8 +306,12 @@ function openType(t){
 }
 
 function openProduct(id){
- localStorage.setItem("pid",id);
- location.href="product.html";
+  localStorage.setItem("pid", id);
+
+  // 🔥 IMPORTANT: mark source page
+  localStorage.setItem("fromFashion", "true");
+
+  location.href = "product.html";
 }
 
 function search(v){
