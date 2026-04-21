@@ -187,6 +187,49 @@ body{
   font-size:14px;
   margin:5px 0;
 }
+
+/* SIZE CHART */
+.size-box{
+  display:flex;
+  gap:10px;
+  margin:10px 0;
+}
+
+.size{
+  padding:8px 12px;
+  border:1px solid #ccc;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.size.active{
+  border:2px solid #000;
+  font-weight:bold;
+}
+
+/* POPUP */
+.size-popup{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  padding:15px;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.2);
+  display:none;
+  z-index:2000;
+}
+
+.size-popup img{
+  width:80px;
+  border-radius:5px;
+}
+
+.popup-header{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
   </style>
 </head>
 
@@ -347,7 +390,17 @@ document.getElementById("productBox").innerHTML = `
 </div>
   <h2>${p.name}</h2>
   <p>${p.desc}</p>
-  <b>${formatPrice(p.price)}</b><br><br>
+ <b>${formatPrice(p.price)}</b><br><br>
+
+  <!-- SIZE CHART -->
+  <div class="size-box">
+    <div class="size" onclick="selectSize(this,'S')">S</div>
+    <div class="size" onclick="selectSize(this,'M')">M</div>
+    <div class="size" onclick="selectSize(this,'L')">L</div>
+    <div class="size" onclick="selectSize(this,'XL')">XL</div>
+  </div>
+
+  <p id="selectedSizeText" style="font-size:14px;color:green;"></p>
 
   Qty:
   <input id="qty" type="number" value="1" min="1"><br><br>
@@ -488,7 +541,92 @@ function goSearch(){
 function goCart(){
   window.location.href = "cart.html";
 }
+
+let selectedSize = null;
+let popupSelectedSize = null;
+
+/* SELECT SIZE (MAIN PAGE) */
+function selectSize(el,size){
+  document.querySelectorAll(".size").forEach(s=>s.classList.remove("active"));
+  el.classList.add("active");
+  selectedSize = size;
+
+  document.getElementById("selectedSizeText").innerText =
+    "Size selected: " + size;
+}
+
+/* BUY BUTTON */
+function buy(){
+  if(!selectedSize){
+    openSizePopup();
+    return;
+  }
+
+  proceedBuy(selectedSize);
+}
+
+/* OPEN POPUP */
+function openSizePopup(){
+  document.getElementById("sizePopup").style.display = "block";
+  document.getElementById("popupImg").src = p.img;
+  document.getElementById("popupName").innerText = p.name;
+  document.getElementById("popupPrice").innerText = formatPrice(p.price);
+}
+
+/* SELECT SIZE IN POPUP */
+function selectPopupSize(el,size){
+  document.querySelectorAll("#sizePopup .size").forEach(s=>s.classList.remove("active"));
+  el.classList.add("active");
+  popupSelectedSize = size;
+}
+
+/* CONFIRM SIZE */
+function confirmSize(){
+  if(!popupSelectedSize){
+    alert("Please select size");
+    return;
+  }
+
+  selectedSize = popupSelectedSize;
+  document.getElementById("sizePopup").style.display = "none";
+
+  proceedBuy(selectedSize);
+}
+
+/* FINAL BUY */
+function proceedBuy(size){
+  const qty = document.getElementById("qty").value;
+
+  localStorage.setItem("buy", JSON.stringify({
+    ...p,
+    qty,
+    size
+  }));
+
+  location.href = "checkout.html";
+}
 </script>
+
+  <div class="size-popup" id="sizePopup">
+  <div class="popup-header">
+    <img id="popupImg">
+    <div>
+      <h4 id="popupName"></h4>
+      <p id="popupPrice"></p>
+    </div>
+  </div>
+
+  <h4>Select Size</h4>
+
+  <div class="size-box">
+    <div class="size" onclick="selectPopupSize(this,'S')">S</div>
+    <div class="size" onclick="selectPopupSize(this,'M')">M</div>
+    <div class="size" onclick="selectPopupSize(this,'L')">L</div>
+    <div class="size" onclick="selectPopupSize(this,'XL')">XL</div>
+  </div>
+
+  <button class="buy" onclick="confirmSize()">Continue</button>
+</div>
 
 </body>
 </html>
