@@ -577,16 +577,6 @@ function selectSize(el,size){
     "Size selected: " + size;
 }
 
-/* BUY BUTTON */
-function buy(){
-  if(!selectedSize){
-    openSizePopup();
-    return;
-  }
-
-  proceedBuy(selectedSize);
-}
-
 /* OPEN POPUP */
 function openSizePopup(){
   if(!isFashion) return; // ❌ block for non-fashion
