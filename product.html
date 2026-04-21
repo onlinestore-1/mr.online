@@ -187,6 +187,63 @@ body{
   font-size:14px;
   margin:5px 0;
 }
+
+.size-section{
+  margin-top:10px;
+}
+
+.sizes{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+
+.sizes div{
+  padding:10px 15px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+/* 🔥 SELECTED SIZE */
+.sizes .active{
+  background:black;
+  color:white;
+  font-weight:bold;
+}
+
+.size-modal{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ height:100%;
+ background:rgba(0,0,0,0.5);
+ display:none;
+ align-items:flex-end;
+ z-index:2000;
+}
+
+.size-box{
+ background:#fff;
+ width:100%;
+ padding:15px;
+ border-radius:15px 15px 0 0;
+}
+
+#continueBtn{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:8px;
+ background:#ccc;
+ color:white;
+}
+
+#continueBtn.active{
+ background:#2874f0;
+}
   </style>
 </head>
 
@@ -327,28 +384,34 @@ const products = JSON.parse(localStorage.getItem("allProducts")) || [
  {id:310,name:"Sony Xperia",price:40,img:"https://i.imgur.com/xdWEj8z.jpeg",type:"sony",desc:"Sony Xperia 10 iii ROM 128GB RAM 6GB"}
 ];
 
-const pid = localStorage.getItem("pid");
-const p = products.find(x => x.id == pid) || products[0];
-  if(!p){
-  document.getElementById("productBox").innerHTML = `
-    <p style="color:red">Product not found ❌</p>
-  `;
-  throw new Error("Product not found");
-}
+const fromFashion = localStorage.getItem("fromFashion") === "true";
 
-// MAIN PRODUCT
 document.getElementById("productBox").innerHTML = `
   <div class="slider" id="slider">
-  <div class="slides" id="slides">
-    ${(p.imgs || [p.img]).map(img=>`
-      <img src="${img}">
-    `).join("")}
+    <div class="slides" id="slides">
+      ${(p.imgs || [p.img]).map(img=>`<img src="${img}">`).join("")}
+    </div>
   </div>
-</div>
+
   <h2>${p.name}</h2>
-  <p>${p.desc}</p>
+  <p>${p.desc || ""}</p>
   <b>${formatPrice(p.price)}</b><br><br>
 
+  ${fromFashion ? `
+    <div class="size-section">
+      <b>Select Size <span style="color:#2874f0;font-size:14px">Size Chart</span></b>
+      <div class="sizes">
+        <div onclick="selectSize(this)">S</div>
+        <div onclick="selectSize(this)">M</div>
+        <div onclick="selectSize(this)">L</div>
+        <div onclick="selectSize(this)">XL</div>
+        <div onclick="selectSize(this)">XXL</div>
+        <div onclick="selectSize(this)">3XL</div>
+      </div>
+    </div>
+  ` : ""}
+
+  <br>
   Qty:
   <input id="qty" type="number" value="1" min="1"><br><br>
 
@@ -488,7 +551,94 @@ function goSearch(){
 function goCart(){
   window.location.href = "cart.html";
 }
+
+let selectedSize = "";
+
+/* SELECT SIZE ON PAGE */
+function selectSize(el){
+  document.querySelectorAll(".sizes div").forEach(d=>d.classList.remove("active"));
+  el.classList.add("active");
+  selectedSize = el.innerText;
+}
+
+/* BUY NOW */
+function buy(){
+  const qty = document.getElementById("qty").value;
+  const fromFashion = localStorage.getItem("fromFashion") === "true";
+
+  if(fromFashion && !selectedSize){
+    openSizeModal();
+    return;
+  }
+
+  localStorage.setItem("buy", JSON.stringify({...p, qty, size:selectedSize}));
+  location.href = "checkout.html";
+}
+
+/* OPEN MODAL */
+function openSizeModal(){
+  document.getElementById("sizeModal").style.display="flex";
+
+  document.getElementById("mImg").src = p.img;
+  document.getElementById("mName").innerText = p.name;
+  document.getElementById("mPrice").innerText = formatPrice(p.price);
+}
+
+/* CLOSE */
+function closeSize(){
+  document.getElementById("sizeModal").style.display="none";
+}
+
+/* SELECT IN MODAL */
+function selectModalSize(el){
+  document.querySelectorAll("#sizeModal .sizes div").forEach(d=>d.classList.remove("active"));
+  el.classList.add("active");
+
+  selectedSize = el.innerText;
+
+  let btn = document.getElementById("continueBtn");
+  btn.disabled = false;
+  btn.classList.add("active");
+}
+
+/* CONTINUE */
+function continueBuy(){
+  const qty = document.getElementById("qty").value;
+
+  localStorage.setItem("buy", JSON.stringify({...p, qty, size:selectedSize}));
+  location.href = "checkout.html";
+}
 </script>
+
+<div id="sizeModal" class="size-modal">
+  <div class="size-box">
+
+    <div style="display:flex;justify-content:space-between">
+      <h3>Select variant</h3>
+      <span onclick="closeSize()">✕</span>
+    </div>
+
+    <div style="display:flex;gap:10px;margin:10px 0">
+      <img id="mImg" style="width:60px;height:60px;border-radius:6px">
+      <div>
+        <p id="mName"></p>
+        <b id="mPrice"></b>
+      </div>
+    </div>
+
+    <div class="sizes">
+      <div onclick="selectModalSize(this)">S</div>
+      <div onclick="selectModalSize(this)">M</div>
+      <div onclick="selectModalSize(this)">L</div>
+      <div onclick="selectModalSize(this)">XL</div>
+      <div onclick="selectModalSize(this)">XXL</div>
+      <div onclick="selectModalSize(this)">3XL</div>
+    </div>
+
+    <button id="continueBtn" disabled onclick="continueBuy()">Continue</button>
+
+  </div>
+</div>
 
 </body>
 </html>
