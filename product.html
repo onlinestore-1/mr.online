@@ -262,10 +262,6 @@ body{
 <div class="explore-grid" id="exploreBox"></div>
 
 <script>
-
-const fashionTypes = ["tshirt","jeans","jezi"];
-const isFashion = fashionTypes.includes(p.type);
-  
 const products = JSON.parse(localStorage.getItem("allProducts")) || [
  {id:1,name:"Blue T-Shirt",price:12,img:"https://i.imgur.com/M7lVvkH.jpeg",type:"tshirt",desc:"Men Washed Relaxed Fit Crew" },
  {id:2,name:"NEONOMAD",price:14,img:"https://i.imgur.com/QlgHGCQ.jpeg",type:"tshirt",desc:"Men Embroidered Regular Fit"},
@@ -376,6 +372,9 @@ const products = JSON.parse(localStorage.getItem("allProducts")) || [
 
 const pid = localStorage.getItem("pid");
 const p = products.find(x => x.id == pid) || products[0];
+
+const fashionTypes = ["tshirt","jeans","jezi"];
+const isFashion = fashionTypes.includes(p.type);
   if(!p){
   document.getElementById("productBox").innerHTML = `
     <p style="color:red">Product not found ❌</p>
