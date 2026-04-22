@@ -38,7 +38,7 @@ button{background:#2874f0;color:#fff;border:none}
 
 </div>
 
-<script>
+ <script>
 const buy = JSON.parse(localStorage.getItem("buy"));
 
 function formatPrice(price){
@@ -48,11 +48,19 @@ function formatPrice(price){
 // CALCULATE TOTAL
 const total = buy.price * buy.qty;
 
-// BUILD ORDER PREVIEW (VISIBLE TO USER)
+// BUILD ORDER PREVIEW (WITH IMAGE)
 let previewHTML = `
   <h3>Order Summary</h3>
-  <p><b>Product:</b> ${buy.name}</p>
-  <p><b>Price:</b> ${formatPrice(buy.price)}</p>
+
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+    <img src="${buy.img}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+    
+    <div>
+      <p><b>${buy.name}</b></p>
+      <p>${formatPrice(buy.price)}</p>
+    </div>
+  </div>
+
   <p><b>Quantity:</b> ${buy.qty}</p>
 `;
 
@@ -64,10 +72,10 @@ if(buy.size){
 // TOTAL
 previewHTML += `<p><b>Total:</b> ${formatPrice(total)}</p>`;
 
-// DISPLAY TO USER
+// DISPLAY
 document.getElementById("orderPreview").innerHTML = previewHTML;
 
-// BUILD TEXT FOR EMAIL
+// EMAIL TEXT
 let orderText = `
 Product: ${buy.name}
 Price: ${formatPrice(buy.price)}
@@ -80,7 +88,6 @@ if(buy.size){
 
 orderText += `Total: ${formatPrice(total)}`;
 
-// PUT IN HIDDEN TEXTAREA (FOR FORM SUBMIT)
 document.getElementById("order").value = orderText;
 </script>
 
