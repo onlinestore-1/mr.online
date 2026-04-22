@@ -5,16 +5,55 @@
 <title>Checkout</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{font-family:Arial;background:#f4f4f4;padding:15px}
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f4f4f4;
+  padding:10px;
+
+  padding-top:70px; /* 🔥 IMPORTANT FIX */
+}
+ 
 .card{background:#fff;padding:15px;border-radius:6px}
 input,button{width:100%;padding:10px;margin-bottom:10px}
 button{background:#2874f0;color:#fff;border:none}
+
+ .top-bar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:60px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+  border-bottom:1px solid #ddd;
+  z-index:1000;
+}
+
+/* arrow */
+.top-bar span{
+  font-size:22px;
+  cursor:pointer;
+  margin-right:10px;
+}
+
+/* title */
+.top-bar h3{
+  margin:0;
+  font-size:18px;
+}
 </style>
 </head>
 
 <body>
 
-<h2>Checkout</h2>
+ <div class="top-bar">
+  <span onclick="goHome()">&#8592;</span>
+  <h3>Checkout</h3>
+</div>
+
  <div class="card">
 
   <!-- ORDER PREVIEW -->
@@ -92,6 +131,10 @@ if(buy.size){
 orderText += `Total: ${formatPrice(total)}`;
 
 document.getElementById("order").value = orderText;
+
+ function goHome(){
+  location.href = "index.html";
+}
 </script>
 
 </body>
