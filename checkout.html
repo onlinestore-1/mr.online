@@ -50,7 +50,7 @@ button{background:#2874f0;color:#fff;border:none}
 <body>
 
  <div class="top-bar">
-  <span onclick="goHome()">&#8592;</span>
+  <i class="fa fa-arrow-left"onclick="goBack()"></i>
   <h3>Checkout</h3>
 </div>
 
@@ -132,8 +132,8 @@ orderText += `Total: ${formatPrice(total)}`;
 
 document.getElementById("order").value = orderText;
 
- function goHome(){
-  location.href = "index.html";
+ function goBack(){
+   window.history.back();
 }
 </script>
 
