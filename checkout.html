@@ -32,18 +32,30 @@ button{background:#2874f0;color:#fff;border:none}
 </form>
 </div>
 
-<script>
+ <script>
 const buy = JSON.parse(localStorage.getItem("buy"));
 
 function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
 }
 
-document.getElementById("order").value =
-`${buy.name}
+// BUILD ORDER TEXT
+let orderText = `
+${buy.name}
 Price: ${formatPrice(buy.price)}
 Qty: ${buy.qty}
-Total: ${formatPrice(buy.price * buy.qty)}`;
+`;
+
+// ✅ ADD SIZE ONLY IF IT EXISTS
+if(buy.size){
+  orderText += `Size: ${buy.size}\n`;
+}
+
+// TOTAL
+orderText += `Total: ${formatPrice(buy.price * buy.qty)}`;
+
+// SHOW IN TEXTAREA
+document.getElementById("order").value = orderText;
 </script>
 
 </body>
