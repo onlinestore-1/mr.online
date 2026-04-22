@@ -15,46 +15,72 @@ button{background:#2874f0;color:#fff;border:none}
 <body>
 
 <h2>Checkout</h2>
-<div class="card">
-<form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+ <div class="card">
 
-<input type="hidden" name="_subject" value="New Order">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_template" value="table">
+  <!-- ORDER PREVIEW -->
+  <div id="orderPreview" style="margin-bottom:15px;"></div>
 
-<input name="name" placeholder="Full Name" required>
-<input name="phone" placeholder="Phone Number" required>
-<input name="address" placeholder="Delivery Address" required>
+  <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
 
-<textarea name="order" readonly id="order"></textarea>
+    <input type="hidden" name="_subject" value="New Order">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
 
-<button type="submit">Place Order</button>
-</form>
+    <input name="name" placeholder="Full Name" required>
+    <input name="phone" placeholder="Phone Number" required>
+    <input name="address" placeholder="Delivery Address" required>
+
+    <!-- hidden textarea for sending data -->
+    <textarea name="order" id="order" hidden></textarea>
+
+    <button type="submit">Place Order</button>
+  </form>
+
 </div>
 
- <script>
+<script>
 const buy = JSON.parse(localStorage.getItem("buy"));
 
 function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
 }
 
-// BUILD ORDER TEXT
-let orderText = `
-${buy.name}
-Price: ${formatPrice(buy.price)}
-Qty: ${buy.qty}
+// CALCULATE TOTAL
+const total = buy.price * buy.qty;
+
+// BUILD ORDER PREVIEW (VISIBLE TO USER)
+let previewHTML = `
+  <h3>Order Summary</h3>
+  <p><b>Product:</b> ${buy.name}</p>
+  <p><b>Price:</b> ${formatPrice(buy.price)}</p>
+  <p><b>Quantity:</b> ${buy.qty}</p>
 `;
 
-// ✅ ADD SIZE ONLY IF IT EXISTS
+// ✅ SHOW SIZE ONLY IF EXISTS
+if(buy.size){
+  previewHTML += `<p><b>Size:</b> ${buy.size}</p>`;
+}
+
+// TOTAL
+previewHTML += `<p><b>Total:</b> ${formatPrice(total)}</p>`;
+
+// DISPLAY TO USER
+document.getElementById("orderPreview").innerHTML = previewHTML;
+
+// BUILD TEXT FOR EMAIL
+let orderText = `
+Product: ${buy.name}
+Price: ${formatPrice(buy.price)}
+Quantity: ${buy.qty}
+`;
+
 if(buy.size){
   orderText += `Size: ${buy.size}\n`;
 }
 
-// TOTAL
-orderText += `Total: ${formatPrice(buy.price * buy.qty)}`;
+orderText += `Total: ${formatPrice(total)}`;
 
-// SHOW IN TEXTAREA
+// PUT IN HIDDEN TEXTAREA (FOR FORM SUBMIT)
 document.getElementById("order").value = orderText;
 </script>
 
