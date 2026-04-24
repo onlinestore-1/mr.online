@@ -230,6 +230,13 @@ body{
   gap:10px;
   align-items:center;
 }
+
+.size.disabled{
+  opacity:0.4;
+  text-decoration:line-through;
+  border:1px dashed #aaa;
+  cursor:not-allowed;
+}
   </style>
 </head>
 
@@ -372,9 +379,16 @@ const products = JSON.parse(localStorage.getItem("allProducts")) || [
 
 const pid = localStorage.getItem("pid");
 const p = products.find(x => x.id == pid) || products[0];
+// 🚫 DEFINE UNAVAILABLE SIZES PER PRODUCT
+const unavailableSizes = {
+  5: ["7","11"],   // shoes example
+  28: ["6","10"],  // another shoe
+  1: ["M"],        // tshirt example
+};
 
 const fashionTypes = ["tshirt","jeans","jezi"];
 const isFashion = fashionTypes.includes(p.type);
+const isShoe = ["sports","sneakers"].includes(p.type);
   if(!p){
   document.getElementById("productBox").innerHTML = `
     <p style="color:red">Product not found ❌</p>
@@ -395,16 +409,24 @@ document.getElementById("productBox").innerHTML = `
   <p>${p.desc}</p> 
  <b>${formatPrice(p.price)}</b><br><br>
 
-${isFashion ? `
-  <!-- SIZE CHART ONLY FOR FASHION -->
+ ${isFashion ? `
   <div class="size-box">
-    <div class="size" onclick="selectSize(this,'S')">S</div>
-    <div class="size" onclick="selectSize(this,'M')">M</div>
-    <div class="size" onclick="selectSize(this,'L')">L</div>
-    <div class="size" onclick="selectSize(this,'XL')">XL</div>
+    ${
+      (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
+      .map(size => {
+        const disabled = (unavailableSizes[p.id] || []).includes(size);
+        return `
+          <div 
+            class="size ${disabled ? "disabled" : ""}" 
+            ${disabled ? "" : `onclick="selectSize(this,'${size}')"`}>
+            ${size}
+          </div>
+        `;
+      }).join("")
+    }
   </div>
 
-  <p id="selectedSizeText" style="font-size:14px;color:green;"></p>
+  <p id="selectedSizeText" style="color:green;"></p>
 ` : ``}
 
   Qty:
@@ -587,6 +609,20 @@ function openSizePopup(){
   document.getElementById("popupPrice").innerText = formatPrice(p.price);
 }
 
+const sizesHTML = (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
+  .map(size => {
+    const disabled = (unavailableSizes[p.id] || []).includes(size);
+    return `
+      <div 
+        class="size ${disabled ? "disabled" : ""}" 
+        ${disabled ? "" : `onclick="selectPopupSize(this,'${size}')"`}>
+        ${size}
+      </div>
+    `;
+  }).join("");
+
+document.getElementById("popupSizes").innerHTML = sizesHTML;
+
 /* SELECT SIZE IN POPUP */
 function selectPopupSize(el,size){
   document.querySelectorAll("#sizePopup .size").forEach(s=>s.classList.remove("active"));
@@ -632,12 +668,7 @@ function proceedBuy(size){
 
   <h4>Select Size</h4>
 
-  <div class="size-box">
-    <div class="size" onclick="selectPopupSize(this,'S')">S</div>
-    <div class="size" onclick="selectPopupSize(this,'M')">M</div>
-    <div class="size" onclick="selectPopupSize(this,'L')">L</div>
-    <div class="size" onclick="selectPopupSize(this,'XL')">XL</div>
-  </div>
+  <div class="size-box" id="popupSizes"></div>
 
   <button class="buy" onclick="confirmSize()">Continue</button>
 </div>
