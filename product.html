@@ -409,22 +409,21 @@ document.getElementById("productBox").innerHTML = `
   <p>${p.desc}</p> 
  <b>${formatPrice(p.price)}</b><br><br>
 
- ${isFashion ? `
-  <div class="size-box">
-    ${
-      (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
-      .map(size => {
-        const disabled = (unavailableSizes[p.id] || []).includes(size);
-        return `
-          <div 
-            class="size ${disabled ? "disabled" : ""}" 
-            ${disabled ? "" : `onclick="selectSize(this,'${size}')"`}>
-            ${size}
-          </div>
-        `;
-      }).join("")
-    }
-  </div>
+ <div class="size-box">
+  ${
+    (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
+    .map(size => {
+      const disabled = (unavailableSizes[p.id] || []).includes(size);
+      return `
+        <div 
+          class="size ${disabled ? "disabled" : ""}" 
+          ${disabled ? "" : `onclick="selectSize(this,'${size}')"`}>
+          ${size}
+        </div>
+      `;
+    }).join("")
+  }
+</div>
 
   <p id="selectedSizeText" style="color:green;"></p>
 ` : ``}
@@ -609,7 +608,7 @@ function openSizePopup(){
   document.getElementById("popupPrice").innerText = formatPrice(p.price);
 }
 
-const sizesHTML = (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
+ const sizesHTML = (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
   .map(size => {
     const disabled = (unavailableSizes[p.id] || []).includes(size);
     return `
