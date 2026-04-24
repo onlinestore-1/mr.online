@@ -638,10 +638,13 @@ function renderPopupSizes(){
 }
 
 /* SELECT SIZE IN POPUP */
-function selectPopupSize(el,size){
+ function selectPopupSize(el,size){
   document.querySelectorAll("#sizePopup .size").forEach(s=>s.classList.remove("active"));
   el.classList.add("active");
   popupSelectedSize = size;
+
+  // ✅ ENABLE BUTTON AFTER SELECT
+  document.getElementById("continueBtn").disabled = false;
 }
 
 /* CONFIRM SIZE */
@@ -684,7 +687,7 @@ function proceedBuy(size){
 
   <div class="size-box" id="popupSizes"></div>
 
-  <button class="buy" onclick="confirmSize()">Continue</button>
+  <button class="buy" id="continueBtn" onclick="confirmSize()" disabled>Continue</button>
 </div>
 
 </body>
