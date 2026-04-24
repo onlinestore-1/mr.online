@@ -601,29 +601,38 @@ function selectSize(el,size){
 
 /* OPEN POPUP */
 function openSizePopup(){
-  if(!isFashion) return; // ❌ block for non-fashion
+  if(!isFashion && !isShoe) return;
 
   document.getElementById("sizePopup").style.display = "block";
   document.getElementById("popupImg").src = p.img;
   document.getElementById("popupName").innerText = p.name;
   document.getElementById("popupPrice").innerText = formatPrice(p.price);
+
+  // 🔥 ADD THIS LINE
+  renderPopupSizes();
 }
 
-<div class="size-box">
-  ${
-    (isShoe ? ["6","7","8","9","10","11"] : ["S","M","L","XL"])
-    .map(size => {
-      const disabled = (unavailableSizes[p.id] || []).includes(size);
-      return `
-        <div 
-          class="size ${disabled ? "disabled" : ""}" 
-          ${disabled ? "" : `onclick="selectPopupSize(this,'${size}')"`}>
-          ${size}
-        </div>
-      `;
-    }).join("")
-  }
-</div>  
+function renderPopupSizes(){
+
+  const sizes = isShoe 
+    ? ["6","7","8","9","10","11"] 
+    : ["S","M","L","XL"];
+
+  const html = sizes.map(size => {
+
+    const disabled = (unavailableSizes[p.id] || []).includes(size);
+
+    return `
+      <div 
+        class="size ${disabled ? "disabled" : ""}" 
+        ${disabled ? "" : `onclick="selectPopupSize(this,'${size}')"`}>
+        ${size}
+      </div>
+    `;
+  }).join("");
+
+  document.getElementById("popupSizes").innerHTML = html;
+}
 
 /* SELECT SIZE IN POPUP */
 function selectPopupSize(el,size){
@@ -669,6 +678,8 @@ function proceedBuy(size){
   </div>
 
   <h4>Select Size</h4>
+
+  <div class="size-box" id="popupSizes"></div>
 
   <button class="buy" onclick="confirmSize()">Continue</button>
 </div>
