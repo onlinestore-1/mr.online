@@ -506,17 +506,20 @@ exploreBox.innerHTML = exploreProducts.map(p2 => `
  function buy(){
   const qty = document.getElementById("qty").value;
 
-  // IF FASHION → REQUIRE SIZE
-  if(isFashion){
+  // ✅ REQUIRE SIZE FOR BOTH FASHION + SHOES
+  if(isFashion || isShoe){
+
+    // ❌ IF SIZE NOT SELECTED → OPEN POPUP
     if(!selectedSize){
       openSizePopup();
       return;
     }
 
+    // ✅ IF SIZE SELECTED → CONTINUE
     proceedBuy(selectedSize);
   } 
-  // IF NOT FASHION → NORMAL BUY
   else{
+    // NORMAL PRODUCTS (NO SIZE)
     localStorage.setItem("buy", JSON.stringify({
       ...p,
       qty
