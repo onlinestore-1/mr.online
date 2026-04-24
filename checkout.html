@@ -42,6 +42,45 @@ button{background:#2874f0;color:#fff;border:none}
   text-align:center;
 }
 
+/* BOTTOM NAVBAR */
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ height:60px;
+ background:#fff;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ border-top:1px solid #ddd;
+ z-index:1000;
+}
+
+.bottom-nav a{
+ text-decoration:none;
+ text-align:center;
+ font-size:12px;
+ color:#777;
+}
+
+.bottom-nav i{
+ display:block;
+ font-size:20px;
+ margin-bottom:3px;
+}
+
+/* ACTIVE PAGE (BLUE) */
+.bottom-nav .active{
+ color:#2874f0;
+ font-weight:bold;
+}
+
+/* PREVENT CONTENT HIDING */
+body{
+ padding-bottom:70px;
+}
+
 </style>
 </head>
 
@@ -57,7 +96,7 @@ button{background:#2874f0;color:#fff;border:none}
   <!-- ORDER PREVIEW -->
   <div id="orderPreview" style="margin-bottom:15px;"></div>
 
-  <form action="https://formsubmit.co/jafarotto0@gmail.com" method="POST">
+   <form onsubmit="saveOrder()" action="https://formsubmit.co/damasrphl2001@gmail.com" method="POST">
 
     <input type="hidden" name="_subject" value="New Order">
     <input type="hidden" name="_captcha" value="false">
@@ -133,7 +172,75 @@ document.getElementById("order").value = orderText;
  function goBack(){
    window.history.back();
 }
+
+function saveOrder(){
+
+  let item = JSON.parse(localStorage.getItem("buy"));
+
+  if(!item) return;
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.push({
+    id: item.id,
+    name: item.name,
+    img: item.img,
+    qty: item.qty,
+    size: item.size || ""
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  // OPTIONAL: clear current buy
+  localStorage.removeItem("buy");
+}
+
+/* AUTO ACTIVE NAV */
+function setActiveNav(){
+
+  let path = window.location.pathname;
+
+  if(path.includes("index.html") || path === "/" ){
+    document.getElementById("nav-home").classList.add("active");
+  }
+  else if(path.includes("category") || path.includes("fashion")){
+    document.getElementById("nav-category").classList.add("active");
+  }
+  else if(path.includes("account")){
+    document.getElementById("nav-account").classList.add("active");
+  }
+  else if(path.includes("cart")){
+    document.getElementById("nav-cart").classList.add("active");
+  }
+}
+
+window.addEventListener("load", setActiveNav);
 </script>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+
+  <a href="index.html" id="nav-home">
+    <i class="fa fa-home"></i>
+    Home
+  </a>
+
+  <a href="category.html" id="nav-category">
+    <i class="fa fa-th-large"></i>
+    Categories
+  </a>
+
+  <a href="account.html" id="nav-account">
+    <i class="fa fa-user"></i>
+    Account
+  </a>
+
+  <a href="cart.html" id="nav-cart">
+    <i class="fa fa-shopping-cart"></i>
+    Cart
+  </a>
+
+</div>
 
 </body>
 </html>
