@@ -238,6 +238,38 @@ body{
   cursor:not-allowed;
   pointer-events:none; /* 🔥 disables click */
 }
+
+    .cart-toast{
+  position:fixed;
+  bottom:80px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  background:#222;
+  color:#fff;
+  padding:12px;
+  border-radius:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:3000;
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s;
+}
+
+.cart-toast.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.cart-toast button{
+  background:none;
+  border:none;
+  color:#ff9800;
+  font-weight:bold;
+  cursor:pointer;
+}
   </style>
 </head>
 
@@ -529,18 +561,31 @@ exploreBox.innerHTML = exploreProducts.map(p2 => `
   }
 }
 
-function addCart(){
+ function addCart(){
+
   const qty = document.getElementById("qty").value;
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  cart.push({...p, qty});
+  // ✅ REQUIRE SIZE FOR SHOES + FASHION
+  if(isFashion || isShoe){
 
-  if(cart.length >= 10){
-    cart = [];
+    if(!selectedSize){
+      openSizePopup();
+      return;
+    }
   }
 
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cart.push({
+    ...p,
+    qty,
+    size: selectedSize || ""
+  });
+
   localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Added to cart ✅");
+
+  // ✅ SHOW TOAST MESSAGE
+  showCartToast();
 }
 
   let currentIndex = 0;
@@ -657,7 +702,8 @@ function confirmSize(){
   selectedSize = popupSelectedSize;
   document.getElementById("sizePopup").style.display = "none";
 
-  proceedBuy(selectedSize);
+  // ✅ AFTER SELECT → ADD TO CART (NOT BUY)
+  addCart();
 }
 
 /* FINAL BUY */
@@ -671,6 +717,17 @@ function proceedBuy(size){
   }));
 
   location.href = "checkout.html";
+}
+
+  function showCartToast(){
+  const toast = document.getElementById("cartToast");
+
+  toast.classList.add("show");
+
+  // auto hide after 3 seconds
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },3000);
 }
 </script>
 
@@ -688,6 +745,11 @@ function proceedBuy(size){
   <div class="size-box" id="popupSizes"></div>
 
   <button class="buy" id="continueBtn" onclick="confirmSize()" disabled>Continue</button>
+</div>
+
+  <div id="cartToast" class="cart-toast">
+  <span>Item added to cart</span>
+  <button onclick="goCart()">GO TO CART</button>
 </div>
 
 </body>
