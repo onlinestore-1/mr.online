@@ -168,6 +168,119 @@
 body{
  padding-bottom:70px;
 }
+
+    /* ITEM LAYOUT */
+.item{
+  background:#fff;
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+
+/* LEFT SIDE */
+.left{
+  width:90px;
+}
+
+.left img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+/* QTY */
+.qty-box{
+  margin-top:6px;
+}
+
+.qty-box select{
+  width:100%;
+  padding:5px;
+  border-radius:5px;
+}
+
+/* RIGHT SIDE */
+.info{
+  flex:1;
+}
+
+.price{
+  font-weight:bold;
+  margin:5px 0;
+}
+
+/* ACTION BUTTONS */
+.action-row{
+  display:flex;
+  border-top:1px solid #eee;
+  margin-top:10px;
+}
+
+.action-btn{
+  flex:1;
+  text-align:center;
+  padding:10px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.remove{
+  color:#555;
+  border-right:1px solid #eee;
+}
+
+.buy-now{
+  color:#ff9f00;
+  font-weight:bold;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:6px;
+  display:none;
+  z-index:5000;
+}
+
+/* PRICE DETAILS */
+.price-box{
+  background:#fff;
+  padding:15px;
+  border-radius:8px;
+  margin-top:10px;
+}
+
+/* STICKY FOOTER */
+.bottom-checkout{
+  position:fixed;
+  bottom:60px;
+  left:0;
+  width:100%;
+  background:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 15px;
+  border-top:1px solid #ddd;
+}
+
+.place-btn{
+  background:#ffcc00;
+  border:none;
+  padding:10px 20px;
+  border-radius:5px;
+  font-weight:bold;
+}
   </style>
 </head>
 
@@ -240,26 +353,70 @@ let products = JSON.parse(localStorage.getItem("allProducts")) || [
 let recent = JSON.parse(localStorage.getItem("recent")) || [];
 
 /* CART */
+ cartBox.innerHTML = "";
+let total = 0;
+
 if(cart.length === 0){
-  cartBox.innerHTML = `
-    <div class="empty">
-      <p>Your cart is empty</p>
-    </div>
-  `;
+  cartBox.innerHTML = `<p class="empty">Your cart is empty</p>`;
 }else{
-  cart.forEach((c, i) => {
+
+  cart.forEach((c,i)=>{
+
+    total += c.price * c.qty;
+
     cartBox.innerHTML += `
       <div class="item">
-        <img src="${c.img}">
+
+        <!-- LEFT -->
+        <div class="left">
+          <img src="${c.img}">
+
+          <div class="qty-box">
+            <select onchange="changeQty(${i},this.value)">
+              ${[1,2,3,4,5].map(q=>`
+                <option ${c.qty==q?"selected":""}>${q}</option>
+              `).join("")}
+            </select>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
         <div class="info">
           <b>${c.name}</b>
-          Price: ${formatPrice(c.price)}<br>
-          Qty: ${c.qty}
-          <button class="buy" onclick="buyNow(${i})">Buy Now</button>
+
+          ${c.desc ? `<p>${c.desc}</p>` : ""}
+
+          ${c.size ? `<p>Size: ${c.size}</p>` : ""}
+
+          <div class="price">${formatPrice(c.price)}</div>
+
+          <!-- ACTION -->
+          <div class="action-row">
+            <div class="action-btn remove" onclick="removeItem(${i})">
+              <i class="fa fa-trash"></i> Remove
+            </div>
+
+            <div class="action-btn buy-now" onclick="buyNow(${i})">
+              Buy Now
+            </div>
+          </div>
+
         </div>
       </div>
     `;
   });
+
+  /* PRICE DETAILS */
+  cartBox.innerHTML += `
+    <div class="price-box">
+      <h3>Price Details</h3>
+      <p>Price (${cart.length} items): ${formatPrice(total)}</p>
+      <p>Discount: TZS 0/=</p>
+      <p>Protect Promise Fee: TZS 0/=</p>
+      <hr>
+      <b>Total Amount: ${formatPrice(total)}</b>
+    </div>
+  `;
 }
 
  /* SHUFFLE FUNCTION */
@@ -296,8 +453,27 @@ nextDeals.forEach(p=>{
   `;
 });
 
+ function changeQty(index, qty){
+  cart[index].qty = Number(qty);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  location.reload();
+}
+
+function removeItem(index){
+  cart.splice(index,1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast("Item removed from cart");
+  setTimeout(()=>location.reload(),500);
+}
+
 function buyNow(index){
   localStorage.setItem("buy", JSON.stringify(cart[index]));
+  location.href = "checkout.html";
+}
+
+/* BUY ALL */
+function placeOrder(){
+  localStorage.setItem("buy", JSON.stringify(cart));
   location.href = "checkout.html";
 }
 
@@ -330,6 +506,18 @@ window.addEventListener("load", setActiveNav);
 function goHome(){
   location.href = "index.html";
 }
+
+  document.getElementById("totalPrice").innerText = formatPrice(total);
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.style.display = "block";
+
+  setTimeout(()=>{
+    t.style.display = "none";
+  },2000);
+}
 </script>
 
   <!-- BOTTOM NAV -->
@@ -356,6 +544,13 @@ function goHome(){
   </a>
 
 </div>
+
+  <div class="bottom-checkout">
+  <b id="totalPrice"></b>
+  <button class="place-btn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<div class="toast" id="toast"></div>
 
 </body>
 </html>
