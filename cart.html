@@ -356,24 +356,13 @@ let recent = JSON.parse(localStorage.getItem("recent")) || [];
  cartBox.innerHTML = "";
 let total = 0;
 
- const checkoutBar = document.getElementById("checkoutBar");
-
 if(cart.length === 0){
   cartBox.innerHTML = `<p class="empty">Your cart is empty</p>`;
-
-  // ❌ HIDE STICKY FOOTER
-  checkoutBar.style.display = "none";
-
 }else{
-
-  // ✅ SHOW STICKY FOOTER
-  checkoutBar.style.display = "flex";
 
   cart.forEach((c,i)=>{
 
     total += c.price * c.qty;
-    // AFTER cart.forEach loop
-document.getElementById("totalPrice").innerText = formatPrice(total);
 
     cartBox.innerHTML += `
       <div class="item">
@@ -518,6 +507,8 @@ function goHome(){
   location.href = "index.html";
 }
 
+  document.getElementById("totalPrice").innerText = formatPrice(total);
+
 function showToast(msg){
   const t = document.getElementById("toast");
   t.innerText = msg;
@@ -554,7 +545,7 @@ function showToast(msg){
 
 </div>
 
-  <div class="bottom-checkout" id="checkoutBar">
+  <div class="bottom-checkout">
   <b id="totalPrice"></b>
   <button class="place-btn" onclick="placeOrder()">Place Order</button>
 </div>
