@@ -272,6 +272,7 @@ body{
   align-items:center;
   padding:10px 15px;
   border-top:1px solid #ddd;
+  z-index:2000;
 }
 
 .place-btn{
@@ -358,6 +359,8 @@ let total = 0;
 
 if(cart.length === 0){
   cartBox.innerHTML = `<p class="empty">Your cart is empty</p>`;
+
+document.getElementById("totalPrice").innerText = "TZS 0/=";
 }else{
 
   cart.forEach((c,i)=>{
@@ -405,6 +408,9 @@ if(cart.length === 0){
       </div>
     `;
   });
+
+document.getElementById("totalPrice").innerText = formatPrice(total);
+}
 
   /* PRICE DETAILS */
   cartBox.innerHTML += `
@@ -507,8 +513,6 @@ function goHome(){
   location.href = "index.html";
 }
 
-  document.getElementById("totalPrice").innerText = formatPrice(total);
-
 function showToast(msg){
   const t = document.getElementById("toast");
   t.innerText = msg;
@@ -545,8 +549,8 @@ function showToast(msg){
 
 </div>
 
-  <div class="bottom-checkout">
-  <b id="totalPrice"></b>
+<div class="bottom-checkout">
+  <div id="totalPrice" style="font-size:16px;font-weight:bold;"></div>
   <button class="place-btn" onclick="placeOrder()">Place Order</button>
 </div>
 
