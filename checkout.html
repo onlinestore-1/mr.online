@@ -117,82 +117,104 @@ body{
 
 </div>
 
- <script>
-const buy = JSON.parse(localStorage.getItem("buy"));
+<script>
+let buy = JSON.parse(localStorage.getItem("buy"));
 
 function formatPrice(price){
   return "TZS " + Number(price).toLocaleString() + "/=";
 }
 
-// CALCULATE TOTAL
-const total = buy.price * buy.qty;
+let total = 0;
+let previewHTML = `<h3>Order Summary</h3>`;
+let orderText = "";
 
-// BUILD ORDER PREVIEW (WITH IMAGE)
-let previewHTML = `
-  <h3>Order Summary</h3>
+/* ✅ HANDLE MULTIPLE OR SINGLE PRODUCT */
+if(Array.isArray(buy)){
 
-  <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
-    <img src="${buy.img}" style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
-    
-    <div>
-      <p><b>${buy.name}</b></p>
-      <p>${formatPrice(buy.price)}</p>
+  buy.forEach(item => {
+
+    let itemTotal = item.price * item.qty;
+    total += itemTotal;
+
+    previewHTML += `
+      <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center;">
+        <img src="${item.img}" style="width:80px;height:80px;border-radius:6px;object-fit:cover;">
+        
+        <div>
+          <b>${item.name}</b>
+          <p>${formatPrice(item.price)}</p>
+          <p>Qty: ${item.qty}</p>
+          ${item.size ? `<p>Size: ${item.size}</p>` : ""}
+        </div>
+      </div>
+      <hr>
+    `;
+
+    orderText += `
+Product: ${item.name}
+Price: ${formatPrice(item.price)}
+Quantity: ${item.qty}
+${item.size ? "Size: " + item.size : ""}
+-------------------
+    `;
+  });
+
+}else{
+  /* SINGLE PRODUCT (BUY NOW) */
+
+  total = buy.price * buy.qty;
+
+  previewHTML += `
+    <div style="display:flex;gap:10px;margin-bottom:10px;align-items:center;">
+      <img src="${buy.img}" style="width:80px;height:80px;border-radius:6px;object-fit:cover;">
+      
+      <div>
+        <b>${buy.name}</b>
+        <p>${formatPrice(buy.price)}</p>
+        <p>Qty: ${buy.qty}</p>
+        ${buy.size ? `<p>Size: ${buy.size}</p>` : ""}
+      </div>
     </div>
-  </div>
+    <hr>
+  `;
 
-  <p><b>Quantity:</b> ${buy.qty}</p>
-`;
-
-// ✅ SHOW SIZE ONLY IF EXISTS
-if(buy.size){
-  previewHTML += `<p><b>Size:</b> ${buy.size}</p>`;
-}
-
-// TOTAL
-previewHTML += `<p><b>Total:</b> ${formatPrice(total)}</p>`;
-
-// DISPLAY
-document.getElementById("orderPreview").innerHTML = previewHTML;
-
-// EMAIL TEXT
-let orderText = `
+  orderText += `
 Product: ${buy.name}
 Price: ${formatPrice(buy.price)}
 Quantity: ${buy.qty}
-`;
-
-if(buy.size){
-  orderText += `Size: ${buy.size}\n`;
+${buy.size ? "Size: " + buy.size : ""}
+-------------------
+  `;
 }
 
-orderText += `Total: ${formatPrice(total)}`;
+/* ✅ FINAL TOTAL */
+previewHTML += `<h3>Total: ${formatPrice(total)}</h3>`;
+orderText += `\nTOTAL AMOUNT: ${formatPrice(total)}`;
 
+/* DISPLAY */
+document.getElementById("orderPreview").innerHTML = previewHTML;
 document.getElementById("order").value = orderText;
 
- function goBack(){
-   window.history.back();
-}
-
+/* SAVE ORDER */
 function saveOrder(){
-
-  let item = JSON.parse(localStorage.getItem("buy"));
-
-  if(!item) return;
 
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
-  orders.push({
-    id: item.id,
-    name: item.name,
-    img: item.img,
-    qty: item.qty,
-    size: item.size || ""
-  });
+  if(Array.isArray(buy)){
+    buy.forEach(item=>{
+      orders.push(item);
+    });
+  }else{
+    orders.push(buy);
+  }
 
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  // OPTIONAL: clear current buy
   localStorage.removeItem("buy");
+}
+
+function goBack(){
+  window.history.back();
 }
 
 /* AUTO ACTIVE NAV */
