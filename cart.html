@@ -563,11 +563,20 @@ function showToast(msg){
   },2000);
 }
 
+ const placeBtn = document.querySelector(".place-btn");
+
 if(cart.length > 0){
   document.getElementById("totalPrice").innerText = formatPrice(total);
   document.querySelector(".bottom-checkout").style.display = "flex";
+
+  placeBtn.disabled = false;
+  placeBtn.style.opacity = "1";
+
 }else{
   document.querySelector(".bottom-checkout").style.display = "none";
+
+  placeBtn.disabled = true;
+  placeBtn.style.opacity = "0.5";
 }
 </script>
 
