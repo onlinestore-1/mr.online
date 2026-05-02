@@ -389,37 +389,32 @@ let recent = JSON.parse(localStorage.getItem("recent")) || [];
  cartBox.innerHTML = "";
 let total = 0;
 
- if(cart.length === 0){
+if(cart.length === 0){
 
   cartBox.innerHTML = `
     <div class="empty-cart">
-
       <i class="fa fa-shopping-cart empty-icon"></i>
-
       <h2>Missing Cart items?</h2>
-
       <button class="login-btn">Login</button>
-
       <p class="continue" onclick="goHome()">Continue Shopping</p>
-
     </div>
   `;
 
-  // ❌ Hide sticky footer when cart is empty
-  document.querySelector(".bottom-checkout").style.display = "none";
-
-}
+}else{
 
   cart.forEach((c,i)=>{
+
+    // ✅ FIX: ensure image exists
+    let product = products.find(p => p.id == c.id);
+    let img = c.img || (product ? product.img : "");
 
     total += c.price * c.qty;
 
     cartBox.innerHTML += `
       <div class="item">
 
-        <!-- LEFT -->
         <div class="left">
-          <img src="${c.img}">
+          <img src="${img}">
 
           <div class="qty-box">
             <select onchange="changeQty(${i},this.value)">
@@ -430,17 +425,14 @@ let total = 0;
           </div>
         </div>
 
-        <!-- RIGHT -->
         <div class="info">
           <b>${c.name}</b>
 
           ${c.desc ? `<p>${c.desc}</p>` : ""}
-
           ${c.size ? `<p>Size: ${c.size}</p>` : ""}
 
           <div class="price">${formatPrice(c.price)}</div>
 
-          <!-- ACTION -->
           <div class="action-row">
             <div class="action-btn remove" onclick="removeItem(${i})">
               <i class="fa fa-trash"></i> Remove
@@ -456,13 +448,11 @@ let total = 0;
     `;
   });
 
-  /* PRICE DETAILS */
+  // ✅ PRICE BOX only when items exist
   cartBox.innerHTML += `
     <div class="price-box">
       <h3>Price Details</h3>
       <p>Price (${cart.length} items): ${formatPrice(total)}</p>
-      <p>Discount: TZS 0/=</p>
-      <p>Protect Promise Fee: TZS 0/=</p>
       <hr>
       <b>Total Amount: ${formatPrice(total)}</b>
     </div>
@@ -557,8 +547,6 @@ function goHome(){
   location.href = "index.html";
 }
 
-  document.getElementById("totalPrice").innerText = formatPrice(total);
-
 function showToast(msg){
   const t = document.getElementById("toast");
   t.innerText = msg;
@@ -569,7 +557,8 @@ function showToast(msg){
   },2000);
 }
 
-  if(cart.length > 0){
+if(cart.length > 0){
+  document.getElementById("totalPrice").innerText = formatPrice(total);
   document.querySelector(".bottom-checkout").style.display = "flex";
 }else{
   document.querySelector(".bottom-checkout").style.display = "none";
