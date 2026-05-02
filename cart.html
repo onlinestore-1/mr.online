@@ -512,7 +512,13 @@ function buyNow(index){
 }
 
 /* BUY ALL */
-function placeOrder(){
+ function placeOrder(){
+
+  if(cart.length === 0){
+    showToast("Your cart is empty");
+    return; // ❌ STOP here (no redirect)
+  }
+
   localStorage.setItem("buy", JSON.stringify(cart));
   location.href = "checkout.html";
 }
