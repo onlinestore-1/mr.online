@@ -281,6 +281,39 @@ body{
   border-radius:5px;
   font-weight:bold;
 }
+
+    .empty-cart{
+  text-align:center;
+  margin-top:60px;
+  padding:40px 10px;
+}
+
+.empty-icon{
+  font-size:80px;
+  color:#ccc;
+  margin-bottom:20px;
+}
+
+.empty-cart h2{
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.login-btn{
+  background:#2874f0;
+  color:#fff;
+  border:none;
+  padding:10px 40px;
+  border-radius:6px;
+  font-size:16px;
+  margin-bottom:15px;
+}
+
+.continue{
+  color:#2874f0;
+  font-size:16px;
+  cursor:pointer;
+}
   </style>
 </head>
 
@@ -356,9 +389,26 @@ let recent = JSON.parse(localStorage.getItem("recent")) || [];
  cartBox.innerHTML = "";
 let total = 0;
 
-if(cart.length === 0){
-  cartBox.innerHTML = `<p class="empty">Your cart is empty</p>`;
-}else{
+ if(cart.length === 0){
+
+  cartBox.innerHTML = `
+    <div class="empty-cart">
+
+      <i class="fa fa-shopping-cart empty-icon"></i>
+
+      <h2>Missing Cart items?</h2>
+
+      <button class="login-btn">Login</button>
+
+      <p class="continue" onclick="goHome()">Continue Shopping</p>
+
+    </div>
+  `;
+
+  // ❌ Hide sticky footer when cart is empty
+  document.querySelector(".bottom-checkout").style.display = "none";
+
+}
 
   cart.forEach((c,i)=>{
 
@@ -517,6 +567,12 @@ function showToast(msg){
   setTimeout(()=>{
     t.style.display = "none";
   },2000);
+}
+
+  if(cart.length > 0){
+  document.querySelector(".bottom-checkout").style.display = "flex";
+}else{
+  document.querySelector(".bottom-checkout").style.display = "none";
 }
 </script>
 
