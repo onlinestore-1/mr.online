@@ -693,7 +693,7 @@ function renderPopupSizes(){
 }
 
 /* CONFIRM SIZE */
- function confirmSize(){
+function confirmSize(){
   if(!popupSelectedSize){
     alert("Please select size");
     return;
@@ -702,8 +702,8 @@ function renderPopupSizes(){
   selectedSize = popupSelectedSize;
   document.getElementById("sizePopup").style.display = "none";
 
-  // ✅ AFTER SELECT → ADD TO CART (NOT BUY)
-  addCart();
+  // ✅ ADD THIS
+  proceedBuy(selectedSize);
 }
 
 /* FINAL BUY */
