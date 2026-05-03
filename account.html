@@ -195,19 +195,67 @@ if(orders.length === 0){
   `;
 }
 
-orders.forEach(o => {
-  box.innerHTML += `
-    <div class="order" onclick="rebuy(${o.id})">
-      <img src="${o.img}">
-      <div class="order-name">${o.name}</div>
-    </div>
-  `;
-});
+ function renderOrders(){
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  box.innerHTML = "";
 
-function rebuy(id){
-  localStorage.setItem("pid", id);
-  location.href = "product.html";
+  if(orders.length === 0){
+    box.innerHTML = `<div class="empty"><p>No orders yet</p></div>`;
+    return;
+  }
+
+  orders.forEach((o, index) => {
+
+    box.innerHTML += `
+      <div class="order">
+
+        <!-- LEFT IMAGE + QTY -->
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <img src="${o.img}">
+
+          <div style="margin-top:5px;">
+            <button onclick="changeQty(${index},-1)">-</button>
+            <span>${o.qty || 1}</span>
+            <button onclick="changeQty(${index},1)">+</button>
+          </div>
+        </div>
+
+        <!-- RIGHT DETAILS -->
+        <div style="flex:1;">
+
+          <div class="order-name">${o.name}</div>
+
+          ${o.size ? `<p>Size: ${o.size}</p>` : ""}
+
+          <p>${formatPrice(o.price)}</p>
+
+          <!-- ACTION ROW -->
+          <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:13px;">
+
+            <!-- SAVE (NO FUNCTION) -->
+            <div style="color:#555;">
+              <i class="fa fa-bookmark"></i> Save
+            </div>
+
+            <!-- REMOVE -->
+            <div onclick="removeOrder(${index})" style="color:red;cursor:pointer;">
+              <i class="fa fa-trash"></i> Remove
+            </div>
+
+            <!-- BUY AGAIN -->
+            <div onclick="buyAgain(${index})" style="color:#2874f0;cursor:pointer;">
+              Buy Again
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    `;
+  });
 }
+
+renderOrders();
 
 function openProduct(id){
 
@@ -283,6 +331,38 @@ function setActiveNav(){
 }
 
 window.addEventListener("load", setActiveNav);
+
+function changeQty(index, change){
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  let qty = orders[index].qty || 1;
+  qty += change;
+
+  if(qty < 1) qty = 1;
+  if(qty > 5) qty = 5;
+
+  orders[index].qty = qty;
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  renderOrders();
+}
+
+function removeOrder(index){
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.splice(index,1);
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  renderOrders();
+}
+
+function buyAgain(index){
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  localStorage.setItem("buy", JSON.stringify(orders[index]));
+
+  location.href = "checkout.html";
+}
 </script>
 
 <!-- BOTTOM NAV -->
