@@ -96,7 +96,7 @@ body{
   <!-- ORDER PREVIEW -->
   <div id="orderPreview" style="margin-bottom:15px;"></div>
 
-   <form onsubmit="saveOrder()" action="https://formsubmit.co/damasrphl2001@gmail.com" method="POST">
+   <form onsubmit="return handleSubmit(event)" action="https://formsubmit.co/..." method="POST">
 
     <input type="hidden" name="_subject" value="New Order">
     <input type="hidden" name="_captcha" value="false">
@@ -196,7 +196,10 @@ document.getElementById("orderPreview").innerHTML = previewHTML;
 document.getElementById("order").value = orderText;
 
 /* SAVE ORDER */
-function saveOrder(){
+ function saveOrder(){
+
+  let buy = JSON.parse(localStorage.getItem("buy"));
+  if(!buy) return; // ⛔ prevent empty save
 
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
@@ -237,6 +240,15 @@ function setActiveNav(){
 }
 
 window.addEventListener("load", setActiveNav);
+
+  function handleSubmit(e){
+  e.preventDefault(); // ⛔ STOP immediate submit
+
+  saveOrder(); // ✅ Save to localStorage FIRST
+
+  // ✅ Now submit form after saving
+  e.target.submit();
+}
 </script>
 
 <!-- BOTTOM NAV -->
