@@ -497,22 +497,22 @@ body{
     <p>Fashion</p>
   </div>
 
-  <div onclick="openCategory('chakula', this)">
+  <div onclick="openCategory('chakula', 'chakula.html')">
     <img src="https://i.postimg.cc/xCjXcgBj/safi5.jpg">
     <p>Chakula & afya</p>
   </div>
 
-  <div onclick="openCategory('muhimu', this)">
+  <div onclick="openCategory('muhimu','muhimu.html')">
     <img src="https://i.postimg.cc/rpMGBtqB/a11.png">
     <p>Muhimu</p>
   </div>
 
-  <div onclick="openCategory('mobile','mobile.html')">
+  <div onclick="openCategory('mobile', this)">
     <img src="https://i.postimg.cc/1RrZWsn9/cm3.png">
     <p>Mobile</p>
   </div>
 
-  <div onclick="openCategory('electronics','electronics.html')">
+  <div onclick="openCategory('electronics',this)">
     <img src="https://i.postimg.cc/xjz5hmm5/a12.png">
     <p>Electronics</p>
   </div>
@@ -749,6 +749,62 @@ body{
 ];
 
 localStorage.setItem("allProducts", JSON.stringify(products));
+
+ const categoryTemplates = {
+
+  foryou: document.getElementById("dynamicContent").innerHTML,
+
+  fashion: `
+    <div class="ads-container">
+      <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg" style="width:100%;border-radius:16px;">
+    </div>
+
+    <h3>Fashion Deals</h3>
+    <div class="grid">
+      ${products
+        .filter(p => p.type === "tshirt" || p.type === "jezi")
+        .map(p => `
+          <div class="card">
+            <img src="${p.img}">
+            <p>${p.name}</p>
+            <b>${formatPrice(p.price)}</b>
+          </div>
+        `).join("")}
+    </div>
+  `,
+
+  mobile: `
+    <div class="ads-container">
+      <img src="https://i.postimg.cc/1RrZWsn9/cm3.png" style="width:100%;border-radius:16px;">
+    </div>
+
+    <h3>Mobile Phones</h3>
+    <div class="grid">
+      ${products
+        .filter(p => p.type === "google" || p.type === "laptop")
+        .map(p => `
+          <div class="card">
+            <img src="${p.img}">
+            <p>${p.name}</p>
+            <b>${formatPrice(p.price)}</b>
+          </div>
+        `).join("")}
+    </div>
+  `,
+
+  electronics: `
+    <h3>Electronics</h3>
+    <div class="grid">
+      ${products.map(p => `
+        <div class="card">
+          <img src="${p.img}">
+          <p>${p.name}</p>
+          <b>${formatPrice(p.price)}</b>
+        </div>
+      `).join("")}
+    </div>
+  `
+};
 
  function showStillProducts(){
 
