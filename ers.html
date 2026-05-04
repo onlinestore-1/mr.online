@@ -1,137 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <meta charset="UTF-8">
-  <title>My Orders</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Orders</title>
 
-  <style>
-    body{
-      margin:0;
-      font-family: Arial, sans-serif;
-      background:white;
-      padding:10px;
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-      padding-top:70px;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f4f4f4;
+  padding-top:60px;
+  padding-bottom:70px;
+}
 
-    header{
-      background:white;
-      color:black;
-      padding:12px;
-      text-align:center;
-      font-size:18px;
-    }
-
-    .orders{
-      max-width:600px;
-      margin:auto;
-    }
-
-    .order{
-      background:#fff;
-      padding:10px;
-      margin:10px 0;
-      border-radius:8px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      cursor:pointer;
-    }
-
-    .order img{
-      width:80px;
-      height:80px;
-      object-fit:cover;
-      border-radius:6px;
-    }
-
-    .order-name{
-      font-size:16px;
-      font-weight:bold;
-    }
-
-    .empty{
-      text-align:center;
-      margin-top:40px;
-      color:#777;
-    }
-
-    /* TOP BAR (LIKE IMAGE) */
+/* TOP BAR */
 .top-bar{
   position:fixed;
   top:0;
-  left:0;
   width:100%;
   height:60px;
-  background:#fff;
+  background:#e6f2fb;
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:0 15px;
-  border-bottom:1px solid #ddd;
+  padding:0 10px;
   z-index:1000;
 }
 
-.top-bar span{
-  font-size:22px;
-  cursor:pointer;
+/* CARD */
+.order-card{
+  background:#fff;
+  margin:10px;
+  padding:10px;
+  border-radius:6px;
 }
 
-.top-bar h3{
-  margin:0;
-  font-size:18px;
-}
-
-/* PUSH CONTENT DOWN */
-body{
-  padding-top:70px;
-}
-
-/* YOU MAY ALSO LIKE */
-.like-section{
-  margin-top:20px;
-}
-
-.like-title{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.like-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+/* FLEX */
+.row{
+  display:flex;
   gap:10px;
 }
 
-.like-card{
-  background:#fff;
-  border-radius:8px;
-  padding:6px;
-  text-align:center;
-  cursor:pointer;
-}
-
-.like-card img{
-  width:100%;
+/* IMAGE */
+.order-img{
+  width:90px;
   height:90px;
   object-fit:cover;
   border-radius:6px;
 }
 
-.like-card p{
-  font-size:12px;
-  margin:4px 0;
+/* QTY */
+.qty-box{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:5px;
 }
 
-/* BOTTOM NAVBAR */
+.qty-box button{
+  padding:5px 10px;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  justify-content:space-between;
+  border-top:1px solid #eee;
+  margin-top:10px;
+  padding-top:10px;
+  font-size:14px;
+}
+
+.actions div{
+  cursor:pointer;
+}
+
+.actions i{
+  margin-right:5px;
+}
+
+/* NAV */
 .bottom-nav{
  position:fixed;
  bottom:0;
- left:0;
  width:100%;
  height:60px;
  background:#fff;
@@ -139,7 +92,6 @@ body{
  justify-content:space-around;
  align-items:center;
  border-top:1px solid #ddd;
- z-index:1000;
 }
 
 .bottom-nav a{
@@ -152,158 +104,149 @@ body{
 .bottom-nav i{
  display:block;
  font-size:20px;
- margin-bottom:3px;
 }
-
-/* ACTIVE PAGE (BLUE) */
-.bottom-nav .active{
- color:#2874f0;
- font-weight:bold;
-}
-
-/* PREVENT CONTENT HIDING */
-body{
- padding-bottom:70px;
-}
-  </style>
+</style>
 </head>
 
 <body>
 
 <div class="top-bar">
-  <span onclick="goHome()">&#8592;</span>
-  <h3>Account</h3>
+  <i class="fa fa-arrow-left" onclick="history.back()"></i>
+  <h3 style="margin-left:10px;">My Orders</h3>
 </div>
 
-<div class="orders" id="ordersBox"></div>
-
-<!-- YOU MAY ALSO LIKE -->
-<div class="like-section">
-  <div class="like-title">You May Also Like</div>
-  <div id="likeBox" class="like-grid"></div>
-</div>
+<div id="ordersContainer"></div>
 
 <script>
 let orders = JSON.parse(localStorage.getItem("orders")) || [];
-const box = document.getElementById("ordersBox");
 
-if(orders.length === 0){
-  box.innerHTML = `
-    <div class="empty">
-      <p>No orders yet</p>
-    </div>
-  `;
+function formatPrice(p){
+  return "TZS " + Number(p).toLocaleString() + "/=";
 }
 
-orders.forEach(o => {
-  box.innerHTML += `
-    <div class="order" onclick="rebuy(${o.id})">
-      <img src="${o.img}">
-      <div class="order-name">${o.name}</div>
-    </div>
-  `;
-});
+function displayOrders(){
 
-function rebuy(id){
-  localStorage.setItem("pid", id);
-  location.href = "product.html";
-}
+  let container = document.getElementById("ordersContainer");
 
-function openProduct(id){
+  if(orders.length === 0){
+    container.innerHTML = "<p style='text-align:center'>No orders yet</p>";
+    return;
+  }
 
-  localStorage.setItem("pid", id);
+  container.innerHTML = "";
 
-  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+  orders.forEach((item,index)=>{
 
-  viewed = viewed.filter(p => p != id);
-  viewed.unshift(id);
-  viewed = viewed.slice(0,10);
+    container.innerHTML += `
+    <div class="order-card">
 
-  localStorage.setItem("lastViewed", JSON.stringify(viewed));
+      <div class="row">
 
-  location.href = "product.html";
-}
+        <!-- LEFT -->
+        <div>
+          <img src="${item.img}" class="order-img">
 
-function formatPrice(price){
-  return "TZS " + Number(price).toLocaleString() + "/=";
-}
+          <div class="qty-box">
+            <button onclick="changeQty(${index},-1)">-</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${index},1)">+</button>
+          </div>
+        </div>
 
-function showYouMayAlsoLike(){
+        <!-- RIGHT -->
+        <div style="flex:1;">
+          <b>${item.name}</b>
+          
+          ${item.size ? `<p>Size: ${item.size}</p>` : ""}
 
-  let products = JSON.parse(localStorage.getItem("allProducts")) || [];
+          <p>${formatPrice(item.price)}</p>
+        </div>
 
-  // shuffle like index
-  let shuffled = [...products].sort(()=>0.5 - Math.random());
-
-  // take ONLY 6
-  let selected = shuffled.slice(0,6);
-
-  document.getElementById("likeBox").innerHTML =
-    selected.map(p=>`
-      <div class="like-card" onclick="openProduct(${p.id})">
-        <img src="${p.img}">
-        <p>${p.name}</p>
-        <b>${formatPrice(p.price)}</b>
       </div>
-    `).join("");
+
+      <!-- ACTIONS -->
+      <div class="actions">
+
+        <div onclick="saveForLater(${index})">
+          <i class="fa fa-bookmark"></i> Save
+        </div>
+
+        <div onclick="removeItem(${index})">
+          <i class="fa fa-trash"></i> Remove
+        </div>
+
+        <div onclick="buyAgain(${index})">
+          <i class="fa fa-bolt"></i> Buy again
+        </div>
+
+      </div>
+
+    </div>
+    `;
+  });
 }
 
-function autoUpdateLike(){
-  showYouMayAlsoLike();
+/* CHANGE QTY */
+function changeQty(i,change){
+  orders[i].qty += change;
+
+  if(orders[i].qty < 1){
+    orders[i].qty = 1;
+  }
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  displayOrders();
 }
 
-window.addEventListener("load", autoUpdateLike);
-window.addEventListener("pageshow", autoUpdateLike);
-window.addEventListener("storage", autoUpdateLike);
-
-/* optional refresh like homepage */
-setInterval(showYouMayAlsoLike, 60000);
-
-function goHome(){
-  location.href = "index.html";
+/* REMOVE */
+function removeItem(i){
+  orders.splice(i,1);
+  localStorage.setItem("orders", JSON.stringify(orders));
+  displayOrders();
 }
 
-/* AUTO ACTIVE NAV */
-function setActiveNav(){
+/* SAVE FOR LATER */
+function saveForLater(i){
+  let saved = JSON.parse(localStorage.getItem("saved")) || [];
+  saved.push(orders[i]);
 
-  let path = window.location.pathname;
+  orders.splice(i,1);
 
-  if(path.includes("index.html") || path === "/" ){
-    document.getElementById("nav-home").classList.add("active");
-  }
-  else if(path.includes("category") || path.includes("fashion")){
-    document.getElementById("nav-category").classList.add("active");
-  }
-  else if(path.includes("account")){
-    document.getElementById("nav-account").classList.add("active");
-  }
-  else if(path.includes("cart")){
-    document.getElementById("nav-cart").classList.add("active");
-  }
+  localStorage.setItem("saved", JSON.stringify(saved));
+  localStorage.setItem("orders", JSON.stringify(orders));
+
+  displayOrders();
 }
 
-window.addEventListener("load", setActiveNav);
+/* BUY AGAIN */
+function buyAgain(i){
+  localStorage.setItem("buy", JSON.stringify(orders[i]));
+  window.location.href = "checkout.html";
+}
+
+/* INIT */
+displayOrders();
 </script>
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
 
-  <a href="index.html" id="nav-home">
+  <a href="index.html">
     <i class="fa fa-home"></i>
     Home
   </a>
 
-  <a href="category.html" id="nav-category">
+  <a href="category.html">
     <i class="fa fa-th-large"></i>
     Categories
   </a>
 
-  <a href="account.html" id="nav-account">
+  <a href="account.html">
     <i class="fa fa-user"></i>
     Account
   </a>
 
-  <a href="cart.html" id="nav-cart">
+  <a href="cart.html">
     <i class="fa fa-shopping-cart"></i>
     Cart
   </a>
