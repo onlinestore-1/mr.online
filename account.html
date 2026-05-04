@@ -3,7 +3,7 @@
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <meta charset="UTF-8">
-  <title>My Orders</title>
+  <title>My Cart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
@@ -11,8 +11,10 @@
     body{
       margin:0;
       font-family: Arial, sans-serif;
-      background:white;
+      background:#f4f4f4;
       padding:10px;
+
+      padding-top:70px;
     }
 
     header{
@@ -23,12 +25,12 @@
       font-size:18px;
     }
 
-    .orders{
+    .cart{
       max-width:600px;
       margin:auto;
     }
 
-    .order{
+    .item{
       background:#fff;
       padding:10px;
       margin:10px 0;
@@ -36,19 +38,26 @@
       display:flex;
       gap:10px;
       align-items:center;
-      cursor:pointer;
     }
 
-    .order img{
+    .item img{
       width:80px;
       height:80px;
       object-fit:cover;
       border-radius:6px;
     }
 
-    .order-name{
-      font-size:16px;
-      font-weight:bold;
+    .info{flex:1;}
+    .info b{display:block;margin-bottom:4px;}
+
+    .buy{
+      background:#ff9f00;
+      border:none;
+      padding:6px 10px;
+      border-radius:5px;
+      cursor:pointer;
+      width:100%;
+      margin-top:6px;
     }
 
     .empty{
@@ -57,7 +66,7 @@
       color:#777;
     }
 
-    /* TOP BAR (LIKE IMAGE) */
+        /* TOP BAR (LIKE IMAGE) */
 .top-bar{
   position:fixed;
   top:0;
@@ -67,7 +76,6 @@
   background:#fff;
   display:flex;
   align-items:center;
-  gap:10px;
   padding:0 15px;
   border-bottom:1px solid #ddd;
   z-index:1000;
@@ -76,6 +84,7 @@
 .top-bar span{
   font-size:22px;
   cursor:pointer;
+  margin-right:10px;
 }
 
 .top-bar h3{
@@ -83,49 +92,45 @@
   font-size:18px;
 }
 
-/* PUSH CONTENT DOWN */
-body{
-  padding-top:70px;
-}
+    /* SUGGESTED / RECENT */
+    h3{
+      margin:20px 0 10px;
+    }
 
-/* YOU MAY ALSO LIKE */
-.like-section{
-  margin-top:20px;
-}
-
-.like-title{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.like-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+     .grid{
+  display:flex;
+  overflow-x:auto;
   gap:10px;
+  padding-bottom:10px;
+  scroll-behavior:smooth;
 }
 
-.like-card{
+.grid::-webkit-scrollbar{
+  display:none; /* hide scrollbar */
+}
+
+    .mini{
+  min-width:140px; /* controls card size */
   background:#fff;
-  border-radius:8px;
-  padding:6px;
-  text-align:center;
-  cursor:pointer;
-}
-
-.like-card img{
-  width:100%;
-  height:90px;
-  object-fit:cover;
+  padding:10px;
   border-radius:6px;
+  cursor:pointer;
+  flex-shrink:0; /* prevents shrinking */
 }
 
-.like-card p{
-  font-size:12px;
-  margin:4px 0;
-}
+    .mini img{
+      width:100%;
+      height:120px;
+      object-fit:cover;
+      border-radius:5px;
+    }
 
-/* BOTTOM NAVBAR */
+    .mini p{
+      margin:5px 0;
+      font-size:14px;
+    }
+
+    /* BOTTOM NAVBAR */
 .bottom-nav{
  position:fixed;
  bottom:0;
@@ -163,6 +168,152 @@ body{
 body{
  padding-bottom:70px;
 }
+
+    /* ITEM LAYOUT */
+.item{
+  background:#fff;
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+
+/* LEFT SIDE */
+.left{
+  width:90px;
+}
+
+.left img{
+  width:100%;
+  height:90px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+/* QTY */
+.qty-box{
+  margin-top:6px;
+}
+
+.qty-box select{
+  width:100%;
+  padding:5px;
+  border-radius:5px;
+}
+
+/* RIGHT SIDE */
+.info{
+  flex:1;
+}
+
+.price{
+  font-weight:bold;
+  margin:5px 0;
+}
+
+/* ACTION BUTTONS */
+.action-row{
+  display:flex;
+  border-top:1px solid #eee;
+  margin-top:10px;
+}
+
+.action-btn{
+  flex:1;
+  text-align:center;
+  padding:10px;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.remove{
+  color:#555;
+  border-right:1px solid #eee;
+}
+
+.buy-now{
+  color:#ff9f00;
+  font-weight:bold;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:90px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:6px;
+  display:none;
+  z-index:5000;
+}
+
+/* PRICE DETAILS */
+.price-box{
+  background:#fff;
+  padding:15px;
+  border-radius:8px;
+  margin-top:10px;
+}
+
+/* STICKY FOOTER */
+.bottom-checkout{
+  position:fixed;
+  bottom:60px;
+  left:0;
+  width:100%;
+  background:#fff;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 15px;
+  border-top:1px solid #ddd;
+}
+
+.place-btn{
+  background:#ffcc00;
+  border:none;
+  padding:10px 20px;
+  border-radius:5px;
+  font-weight:bold;
+}
+
+    .empty-cart{
+  text-align:center;
+  margin-top:60px;
+  padding:40px 10px;
+}
+
+.empty-icon{
+  font-size:80px;
+  color:#ccc;
+  margin-bottom:20px;
+}
+
+.empty-cart h2{
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.login-btn{
+  background:#2874f0;
+  color:#fff;
+  border:none;
+  padding:10px 40px;
+  border-radius:6px;
+  font-size:16px;
+  margin-bottom:15px;
+}
+
+.continue{
+  color:#2874f0;
+  font-size:16px;
+  cursor:pointer;
+}
   </style>
 </head>
 
@@ -170,98 +321,214 @@ body{
 
 <div class="top-bar">
   <span onclick="goHome()">&#8592;</span>
-  <h3>Account</h3>
+  <h3>My Cart</h3>
 </div>
 
-<div class="orders" id="ordersBox"></div>
+<div class="cart" id="cartBox"></div>
 
-<!-- YOU MAY ALSO LIKE -->
-<div class="like-section">
-  <div class="like-title">You May Also Like</div>
-  <div id="likeBox" class="like-grid"></div>
-</div>
+<h3>Suggested For You</h3>
+<div class="grid" id="suggestedBox"></div>
+
+<h3>Next Deal For You</h3>
+<div class="grid" id="recentBox"></div>
 
 <script>
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
-const box = document.getElementById("ordersBox");
+const cartBox = document.getElementById("cartBox");
 
-if(orders.length === 0){
-  box.innerHTML = `
-    <div class="empty">
-      <p>No orders yet</p>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let products = JSON.parse(localStorage.getItem("allProducts")) || [
+  {id:1,name:"Men T-shirt",price:12,img:"https://i.imgur.com/b4T6KVn.jpeg/200"},
+  {id:2,name:"Dress",price:22,img:"https://i.imgur.com/F9T6D7U.jpeg/200"},
+  {id:3,name:"Sukari 1kg",price:30,img:"https://i.imgur.com/1EFgnRl.jpeg/200"},
+  {id:4,name:"Mafuta ya kupikia",price:45,img:"https://i.imgur.com/4B7cTjc.jpeg/200"},
+  {id:5,name:"Chumvi",price:30,img:"https://i.imgur.com/e4CXmHr.jpeg/200"},
+  {id:6,name:"Blue Band",price:30,img:"https://i.imgur.com/PnEvGZN.jpeg/200"},
+  {id:7,name:"Tomato sauce",price:20,img:"https://i.imgur.com/IqhRkL7.jpeg/200"},
+  {id:8,name:"Soy sauce",price:10,img:"https://i.imgur.com/CqraWiO.jpeg/200"},
+  {id:9,name:"Baking powder",price:10,img:"https://i.imgur.com/WlfRjNu.jpeg/200"},
+  {id:10,name:"Royco",price:14,img:"https://i.imgur.com/rmXvXwO.jpeg/200"},
+  {id:11,name:"Coca Cola",price:23,img:"https://i.imgur.com/UYZ1dIH.jpeg/200"},
+  {id:12,name:"pepsi",price:23,img:"https://i.imgur.com/cGRn5OZ.jpeg/200"},
+  {id:13,name:"Splash",price:12,img:"https://i.imgur.com/4ifKGQC.jpeg/200"},
+  {id:14,name:"Bubble gum",price:15,img:"https://i.imgur.com/jJyMg1u.jpeg/200"},
+  {id:15,name:"Ballcone",price:13,img:"https://i.imgur.com/YU7yVMc.jpeg/200"},
+  {id:16,name:"Cherry",price:13,img:"https://i.imgur.com/Ax4J2uH.jpeg/200"},
+  {id:17,name:"Cherry Bar",price:13,img:"https://i.imgur.com/QZ8B1VC.jpeg/200"},
+  {id:18,name:"Caramello",price:13,img:"https://i.imgur.com/HgeHJvR.jpeg/200"},
+  {id:19,name:"Doffi",price:17,img:"https://i.imgur.com/hD9g7L2.jpeg/200"},
+  {id:20,name:"Jet",price:19,img:"https://i.imgur.com/OoGiHtj.jpeg/200"},
+  {id:21,name:"Jet",price:18,img:"https://i.imgur.com/q36RjQ2.jpeg/200"},
+  {id:22,name:"Vaseline Jelly",price:14,img:"https://i.imgur.com/iFw39jh.jpeg/200"},
+  {id:23,name:"Rungu",price:14,img:"https://i.imgur.com/KIi9LUL.jpeg/200"},
+  {id:24,name:"Professor",price:15,img:"https://i.imgur.com/okplIfF.jpeg/200"},
+  {id:25,name:"Vaseline",price:16,img:"https://i.imgur.com/2V7rzh7.jpeg/200"},
+  {id:26,name:"Rexa",price:17,img:"https://i.imgur.com/3EPfv80.jpeg/200"},
+  {id:27,name:"Msomi",price:15,img:"https://i.imgur.com/zU2mjIE.jpeg/200"},
+  {id:28,name:"OMO",price:18,img:"https://i.imgur.com/v0eeorr.jpeg/200"},
+  {id:29,name:"Niceone",price:18,img:"https://i.imgur.com/7nmPGbq.jpeg/200"},
+  {id:30,name:"Hiper razor",price:19,img:"https://i.imgur.com/zIJlaP3.jpeg/200"},
+  {id:31,name:"Afya Maji",price:23,img:"https://i.imgur.com/u9dkajs.jpeg/200"},
+  {id:32,name:"u-fresh orange",price:23,img:"https://i.imgur.com/k42X2gl.jpeg/200"},
+  {id:33,name:"u-fresh power",price:23,img:"https://i.imgur.com/y1qJelw.jpeg/200"},
+  {id:34,name:"u-fresh pineapple",price:23,img:"https://i.imgur.com/GcVEME3.jpeg/200"},
+  {id:35,name:"Exercise Book",price:19,img:"https://i.imgur.com/AQrSAGW.jpeg/200"},
+  {id:36,name:"Exercise Book",price:19,img:"https://i.imgur.com/ihIcg3h.jpeg/200"},
+  {id:37,name:"Exercise Book",price:17,img:"https://i.imgur.com/Hg8Aeea.jpeg/200"},
+  {id:38,name:"Hand soap",price:17,img:"https://i.imgur.com/Mi3AaMB.jpeg/200"},
+  {id:39,name:"u-fresh passion",price:20,img:"https://i.imgur.com/9uhn4hj.jpeg/200"},
+  {id:40,name:"u-fresh cola",price:21,img:"https://i.imgur.com/FvMtoAL.jpeg/200"}
+];
+
+ function formatPrice(price){
+  return "TZS " + Number(price).toLocaleString() + "/=";
+}
+
+let recent = JSON.parse(localStorage.getItem("recent")) || [];
+
+/* CART */
+ cartBox.innerHTML = "";
+let total = 0;
+
+if(cart.length === 0){
+
+  cartBox.innerHTML = `
+    <div class="empty-cart">
+      <i class="fa fa-shopping-cart empty-icon"></i>
+      <h2>Missing Cart items?</h2>
+      <button class="login-btn">Login</button>
+      <p class="continue" onclick="goHome()">Continue Shopping</p>
+    </div>
+  `;
+
+}else{
+
+  cart.forEach((c,i)=>{
+
+    // ✅ FIX: ensure image exists
+    let product = products.find(p => p.id == c.id);
+    let img = c.img || (product ? product.img : "");
+
+    total += c.price * c.qty;
+
+    cartBox.innerHTML += `
+      <div class="item">
+
+        <div class="left">
+          <img src="${img}">
+
+          <div class="qty-box">
+            <select onchange="changeQty(${i},this.value)">
+              ${[1,2,3,4,5].map(q=>`
+                <option ${c.qty==q?"selected":""}>${q}</option>
+              `).join("")}
+            </select>
+          </div>
+        </div>
+
+        <div class="info">
+          <b>${c.name}</b>
+
+          ${c.desc ? `<p>${c.desc}</p>` : ""}
+          ${c.size ? `<p>Size: ${c.size}</p>` : ""}
+
+          <div class="price">${formatPrice(c.price)}</div>
+
+          <div class="action-row">
+            <div class="action-btn remove" onclick="removeItem(${i})">
+              <i class="fa fa-trash"></i> Remove
+            </div>
+
+            <div class="action-btn buy-now" onclick="buyNow(${i})">
+              Buy Now
+            </div>
+          </div>
+
+        </div>
+      </div>
+    `;
+  });
+
+  // ✅ PRICE BOX only when items exist
+  cartBox.innerHTML += `
+    <div class="price-box">
+      <h3>Price Details</h3>
+      <p>Price (${cart.length} items): ${formatPrice(total)}</p>
+      <hr>
+      <b>Total Amount: ${formatPrice(total)}</b>
     </div>
   `;
 }
 
-orders.forEach(o => {
-  box.innerHTML += `
-    <div class="order" onclick="rebuy(${o.id})">
-      <img src="${o.img}">
-      <div class="order-name">${o.name}</div>
+ /* SHUFFLE FUNCTION */
+function shuffle(array){
+  return array.sort(() => 0.5 - Math.random());
+}
+
+/* SHUFFLED PRODUCTS */
+let shuffled = shuffle([...products]);
+
+/* SUGGESTED FOR YOU (8 PRODUCTS) */
+let suggestedProducts = shuffled.slice(0,8);
+
+suggestedProducts.forEach(p=>{
+  suggestedBox.innerHTML += `
+    <div class="mini" onclick="openProduct(${p.id})">
+      <img src="${p.img}">
+      <p>${p.name}</p>
+      <b>${formatPrice(p.price)}</b>
     </div>
   `;
 });
 
-function rebuy(id){
-  localStorage.setItem("pid", id);
-  location.href = "product.html";
+/* NEXT DEAL FOR YOU (7 DIFFERENT PRODUCTS) */
+let nextDeals = shuffled.slice(8,15);
+
+nextDeals.forEach(p=>{
+  recentBox.innerHTML += `
+    <div class="mini" onclick="openProduct(${p.id})">
+      <img src="${p.img}">
+      <p>${p.name}</p>
+      <b>${formatPrice(p.price)}</b>
+    </div>
+  `;
+});
+
+ function changeQty(index, qty){
+  cart[index].qty = Number(qty);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  location.reload();
+}
+
+function removeItem(index){
+  cart.splice(index,1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast("Item removed from cart");
+  setTimeout(()=>location.reload(),500);
+}
+
+function buyNow(index){
+  localStorage.setItem("buy", JSON.stringify(cart[index]));
+  location.href = "checkout.html";
+}
+
+/* BUY ALL */
+ function placeOrder(){
+
+  if(cart.length === 0){
+    showToast("Your cart is empty");
+    return; // ❌ STOP here (no redirect)
+  }
+
+  localStorage.setItem("buy", JSON.stringify(cart));
+  location.href = "checkout.html";
 }
 
 function openProduct(id){
-
   localStorage.setItem("pid", id);
-
-  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
-
-  viewed = viewed.filter(p => p != id);
-  viewed.unshift(id);
-  viewed = viewed.slice(0,10);
-
-  localStorage.setItem("lastViewed", JSON.stringify(viewed));
-
   location.href = "product.html";
 }
 
-function formatPrice(price){
-  return "TZS " + Number(price).toLocaleString() + "/=";
-}
-
-function showYouMayAlsoLike(){
-
-  let products = JSON.parse(localStorage.getItem("allProducts")) || [];
-
-  // shuffle like index
-  let shuffled = [...products].sort(()=>0.5 - Math.random());
-
-  // take ONLY 6
-  let selected = shuffled.slice(0,6);
-
-  document.getElementById("likeBox").innerHTML =
-    selected.map(p=>`
-      <div class="like-card" onclick="openProduct(${p.id})">
-        <img src="${p.img}">
-        <p>${p.name}</p>
-        <b>${formatPrice(p.price)}</b>
-      </div>
-    `).join("");
-}
-
-function autoUpdateLike(){
-  showYouMayAlsoLike();
-}
-
-window.addEventListener("load", autoUpdateLike);
-window.addEventListener("pageshow", autoUpdateLike);
-window.addEventListener("storage", autoUpdateLike);
-
-/* optional refresh like homepage */
-setInterval(showYouMayAlsoLike, 60000);
-
-function goHome(){
-  location.href = "index.html";
-}
-
-/* AUTO ACTIVE NAV */
+  /* AUTO ACTIVE NAV */
 function setActiveNav(){
 
   let path = window.location.pathname;
@@ -281,9 +548,39 @@ function setActiveNav(){
 }
 
 window.addEventListener("load", setActiveNav);
+
+function goHome(){
+  location.href = "index.html";
+}
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.innerText = msg;
+  t.style.display = "block";
+
+  setTimeout(()=>{
+    t.style.display = "none";
+  },2000);
+}
+
+ const placeBtn = document.querySelector(".place-btn");
+
+if(cart.length > 0){
+  document.getElementById("totalPrice").innerText = formatPrice(total);
+  document.querySelector(".bottom-checkout").style.display = "flex";
+
+  placeBtn.disabled = false;
+  placeBtn.style.opacity = "1";
+
+}else{
+  document.querySelector(".bottom-checkout").style.display = "none";
+
+  placeBtn.disabled = true;
+  placeBtn.style.opacity = "0.5";
+}
 </script>
 
-<!-- BOTTOM NAV -->
+  <!-- BOTTOM NAV -->
 <div class="bottom-nav">
 
   <a href="index.html" id="nav-home">
@@ -307,6 +604,13 @@ window.addEventListener("load", setActiveNav);
   </a>
 
 </div>
+
+  <div class="bottom-checkout">
+  <b id="totalPrice"></b>
+  <button class="place-btn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<div class="toast" id="toast"></div>
 
 </body>
 </html>
