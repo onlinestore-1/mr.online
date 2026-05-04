@@ -52,20 +52,6 @@ body{
 
  background:white;
 
- .categories div.active p{
-  color:#2874f0;
-  font-weight:bold;
-}
-
-.categories div.active::after{
-  content:"";
-  display:block;
-  height:3px;
-  background:#2874f0;
-  margin-top:4px;
-  border-radius:3px;
-}
-
  /* IMPORTANT: no gap effect */
  border-top-left-radius:20px;
  border-top-right-radius:20px;
@@ -506,32 +492,27 @@ body{
   <!-- CATEGORIES -->
  <div class="categories">
 
-  <div onclick="openCategory('foryou', this)">
-    <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg">
-    <p>Foryou</p>
-  </div>
-
-  <div onclick="openCategory('fashion', this)">
+  <div onclick="openCategory('fashion','fashion.html')">
     <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg">
     <p>Fashion</p>
   </div>
 
-  <div onclick="openCategory('chakula', this)">
+  <div onclick="openCategory('chakula','chakula.html')">
     <img src="https://i.postimg.cc/xCjXcgBj/safi5.jpg">
     <p>Chakula & afya</p>
   </div>
 
-  <div onclick="openCategory('muhimu', this)">
+  <div onclick="openCategory('muhimu','muhimu.html')">
     <img src="https://i.postimg.cc/rpMGBtqB/a11.png">
     <p>Muhimu</p>
   </div>
 
-  <div onclick="openCategory('mobile', this)">
+  <div onclick="openCategory('mobile','mobile.html')">
     <img src="https://i.postimg.cc/1RrZWsn9/cm3.png">
     <p>Mobile</p>
   </div>
 
-  <div onclick="openCategory('electronics',this)">
+  <div onclick="openCategory('electronics','electronics.html')">
     <img src="https://i.postimg.cc/xjz5hmm5/a12.png">
     <p>Electronics</p>
   </div>
@@ -544,7 +525,7 @@ body{
  <div class="drawer-header">Login & Signup</div>
  <a href="#">SuperCoin Zone</a>
  <a href="#">All Categories</a>
- <a href="ers.html">My Orders</a>
+ <a href="orders.html">My Orders</a>
  <a href="cart.html">My Cart</a>
  <a href="#">My Wishlist</a>
  <a href="#">My Account</a>
@@ -552,8 +533,7 @@ body{
  <a href="#">Legal</a>
 </div>
 <div class="overlay" onclick="closeMenu()"></div>
- 
-<div id="dynamicContent">
+
  <!-- ADS -->
 <div class="ads-container">
   
@@ -759,7 +739,6 @@ body{
 
  <h3>Products</h3>
 <div id="products" class="grid"></div>
-</div>
 
 <script>
  const products = JSON.parse(localStorage.getItem("allProducts")) || [
@@ -770,62 +749,6 @@ body{
 ];
 
 localStorage.setItem("allProducts", JSON.stringify(products));
-
- const categoryTemplates = {
-
-  foryou: document.getElementById("dynamicContent").innerHTML,
-
-  fashion: `
-    <div class="ads-container">
-      <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg" style="width:100%;border-radius:16px;">
-    </div>
-
-    <h3>Fashion Deals</h3>
-    <div class="grid">
-      ${products
-        .filter(p => p.type === "tshirt" || p.type === "jezi")
-        .map(p => `
-          <div class="card">
-            <img src="${p.img}">
-            <p>${p.name}</p>
-            <b>${formatPrice(p.price)}</b>
-          </div>
-        `).join("")}
-    </div>
-  `,
-
-  mobile: `
-    <div class="ads-container">
-      <img src="https://i.postimg.cc/1RrZWsn9/cm3.png" style="width:100%;border-radius:16px;">
-    </div>
-
-    <h3>Mobile Phones</h3>
-    <div class="grid">
-      ${products
-        .filter(p => p.type === "google" || p.type === "laptop")
-        .map(p => `
-          <div class="card">
-            <img src="${p.img}">
-            <p>${p.name}</p>
-            <b>${formatPrice(p.price)}</b>
-          </div>
-        `).join("")}
-    </div>
-  `,
-
-  electronics: `
-    <h3>Electronics</h3>
-    <div class="grid">
-      ${products.map(p => `
-        <div class="card">
-          <img src="${p.img}">
-          <p>${p.name}</p>
-          <b>${formatPrice(p.price)}</b>
-        </div>
-      `).join("")}
-    </div>
-  `
-};
 
  function showStillProducts(){
 
@@ -959,21 +882,9 @@ draw(products.slice(0,2),"suggested");
   location.href = "search.html";
 }
 
- function openCategory(type, el){
-
-  // save current category
-  localStorage.setItem("activeCategory", type);
-
-  // remove active class
-  document.querySelectorAll(".categories div")
-    .forEach(d => d.classList.remove("active"));
-
-  // add active to clicked
-  el.classList.add("active");
-
-  // change content
-  document.getElementById("dynamicContent").innerHTML =
-    categoryTemplates[type] || categoryTemplates["foryou"];
+ function openCategory(type,page){
+  localStorage.setItem("lastType", type);
+  location.href = page;
 }
 
  function openProduct(id){
@@ -1108,22 +1019,6 @@ window.addEventListener("load", showSuggested);
 
 // auto update every 5 seconds
 setInterval(showSuggested, 60000);
-
- window.addEventListener("load", () => {
-
-  let saved = localStorage.getItem("activeCategory") || "foryou";
-
-  let cats = document.querySelectorAll(".categories div");
-
-  cats.forEach(c => {
-    if(c.getAttribute("onclick").includes(saved)){
-      c.classList.add("active");
-    }
-  });
-
-  document.getElementById("dynamicContent").innerHTML =
-    categoryTemplates[saved];
-});
 </script>
 
  <!-- BOTTOM NAVIGATION -->
@@ -1139,7 +1034,7 @@ setInterval(showSuggested, 60000);
     Categories
   </div>
 
-  <div id="nav-account" onclick="goPage('tiny.html')">
+  <div id="nav-account" onclick="goPage('account.html')">
     <i class="fa fa-user"></i>
     Account
   </div>
