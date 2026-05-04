@@ -492,6 +492,11 @@ body{
   <!-- CATEGORIES -->
  <div class="categories">
 
+  <div onclick="openCategory('foryou', this)">
+    <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg">
+    <p>Foryou</p>
+  </div>
+
   <div onclick="openCategory('fashion', this)">
     <img src="https://i.postimg.cc/9QQD1LLR/fasn1.jpg">
     <p>Fashion</p>
@@ -1087,6 +1092,22 @@ window.addEventListener("load", showSuggested);
 
 // auto update every 5 seconds
 setInterval(showSuggested, 60000);
+
+ window.addEventListener("load", () => {
+
+  let saved = localStorage.getItem("activeCategory") || "foryou";
+
+  let cats = document.querySelectorAll(".categories div");
+
+  cats.forEach(c => {
+    if(c.getAttribute("onclick").includes(saved)){
+      c.classList.add("active");
+    }
+  });
+
+  document.getElementById("dynamicContent").innerHTML =
+    categoryTemplates[saved];
+});
 </script>
 
  <!-- BOTTOM NAVIGATION -->
