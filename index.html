@@ -938,9 +938,21 @@ draw(products.slice(0,2),"suggested");
   location.href = "search.html";
 }
 
- function openCategory(type,page){
-  localStorage.setItem("lastType", type);
-  location.href = page;
+ function openCategory(type, el){
+
+  // save current category
+  localStorage.setItem("activeCategory", type);
+
+  // remove active class
+  document.querySelectorAll(".categories div")
+    .forEach(d => d.classList.remove("active"));
+
+  // add active to clicked
+  el.classList.add("active");
+
+  // change content
+  document.getElementById("dynamicContent").innerHTML =
+    categoryTemplates[type] || categoryTemplates["foryou"];
 }
 
  function openProduct(id){
