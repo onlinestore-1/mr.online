@@ -1,616 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <meta charset="UTF-8">
-  <title>My Cart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account</title>
 
-  <style>
-    body{
-      margin:0;
-      font-family: Arial, sans-serif;
-      background:#f4f4f4;
-      padding:10px;
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-      padding-top:70px;
-    }
-
-    header{
-      background:white;
-      color:black;
-      padding:12px;
-      text-align:center;
-      font-size:18px;
-    }
-
-    .cart{
-      max-width:600px;
-      margin:auto;
-    }
-
-    .item{
-      background:#fff;
-      padding:10px;
-      margin:10px 0;
-      border-radius:8px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-
-    .item img{
-      width:80px;
-      height:80px;
-      object-fit:cover;
-      border-radius:6px;
-    }
-
-    .info{flex:1;}
-    .info b{display:block;margin-bottom:4px;}
-
-    .buy{
-      background:#ff9f00;
-      border:none;
-      padding:6px 10px;
-      border-radius:5px;
-      cursor:pointer;
-      width:100%;
-      margin-top:6px;
-    }
-
-    .empty{
-      text-align:center;
-      margin-top:40px;
-      color:#777;
-    }
-
-        /* TOP BAR (LIKE IMAGE) */
-.top-bar{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:60px;
-  background:#fff;
-  display:flex;
-  align-items:center;
-  padding:0 15px;
-  border-bottom:1px solid #ddd;
-  z-index:1000;
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f1f3f6;
 }
 
-.top-bar span{
-  font-size:22px;
-  cursor:pointer;
-  margin-right:10px;
+/* HEADER */
+.header {
+  background: #fff;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
-.top-bar h3{
-  margin:0;
-  font-size:18px;
+/* SECTION */
+.section {
+  background: #fff;
+  margin-top: 10px;
+  padding: 15px;
 }
 
-    /* SUGGESTED / RECENT */
-    h3{
-      margin:20px 0 10px;
-    }
-
-     .grid{
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  padding-bottom:10px;
-  scroll-behavior:smooth;
+/* PRODUCTS ROW */
+.products {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
 }
 
-.grid::-webkit-scrollbar{
-  display:none; /* hide scrollbar */
+.product {
+  min-width: 100px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
 }
 
-    .mini{
-  min-width:140px; /* controls card size */
-  background:#fff;
-  padding:10px;
-  border-radius:6px;
-  cursor:pointer;
-  flex-shrink:0; /* prevents shrinking */
+.product img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
 
-    .mini img{
-      width:100%;
-      height:120px;
-      object-fit:cover;
-      border-radius:5px;
-    }
-
-    .mini p{
-      margin:5px 0;
-      font-size:14px;
-    }
-
-    /* BOTTOM NAVBAR */
-.bottom-nav{
- position:fixed;
- bottom:0;
- left:0;
- width:100%;
- height:60px;
- background:#fff;
- display:flex;
- justify-content:space-around;
- align-items:center;
- border-top:1px solid #ddd;
- z-index:1000;
+/* LANGUAGE BUTTONS */
+.lang-btn {
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
-.bottom-nav a{
- text-decoration:none;
- text-align:center;
- font-size:12px;
- color:#777;
+/* LIST ITEMS */
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
 
-.bottom-nav i{
- display:block;
- font-size:20px;
- margin-bottom:3px;
+.list-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* ACTIVE PAGE (BLUE) */
-.bottom-nav .active{
- color:#2874f0;
- font-weight:bold;
+.footer {
+  background: #fff;
+  margin-top: 10px;
+  padding: 15px;
 }
 
-/* PREVENT CONTENT HIDING */
-body{
- padding-bottom:70px;
+.footer div {
+  padding: 8px 0;
+  cursor: pointer;
 }
+</style>
 
-    /* ITEM LAYOUT */
-.item{
-  background:#fff;
-  padding:10px;
-  margin:10px 0;
-  border-radius:8px;
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-}
-
-/* LEFT SIDE */
-.left{
-  width:90px;
-}
-
-.left img{
-  width:100%;
-  height:90px;
-  object-fit:cover;
-  border-radius:6px;
-}
-
-/* QTY */
-.qty-box{
-  margin-top:6px;
-}
-
-.qty-box select{
-  width:100%;
-  padding:5px;
-  border-radius:5px;
-}
-
-/* RIGHT SIDE */
-.info{
-  flex:1;
-}
-
-.price{
-  font-weight:bold;
-  margin:5px 0;
-}
-
-/* ACTION BUTTONS */
-.action-row{
-  display:flex;
-  border-top:1px solid #eee;
-  margin-top:10px;
-}
-
-.action-btn{
-  flex:1;
-  text-align:center;
-  padding:10px;
-  font-size:14px;
-  cursor:pointer;
-}
-
-.remove{
-  color:#555;
-  border-right:1px solid #eee;
-}
-
-.buy-now{
-  color:#ff9f00;
-  font-weight:bold;
-}
-
-/* TOAST */
-.toast{
-  position:fixed;
-  bottom:90px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#000;
-  color:#fff;
-  padding:10px 20px;
-  border-radius:6px;
-  display:none;
-  z-index:5000;
-}
-
-/* PRICE DETAILS */
-.price-box{
-  background:#fff;
-  padding:15px;
-  border-radius:8px;
-  margin-top:10px;
-}
-
-/* STICKY FOOTER */
-.bottom-checkout{
-  position:fixed;
-  bottom:60px;
-  left:0;
-  width:100%;
-  background:#fff;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 15px;
-  border-top:1px solid #ddd;
-}
-
-.place-btn{
-  background:#ffcc00;
-  border:none;
-  padding:10px 20px;
-  border-radius:5px;
-  font-weight:bold;
-}
-
-    .empty-cart{
-  text-align:center;
-  margin-top:60px;
-  padding:40px 10px;
-}
-
-.empty-icon{
-  font-size:80px;
-  color:#ccc;
-  margin-bottom:20px;
-}
-
-.empty-cart h2{
-  font-size:22px;
-  margin-bottom:20px;
-}
-
-.login-btn{
-  background:#2874f0;
-  color:#fff;
-  border:none;
-  padding:10px 40px;
-  border-radius:6px;
-  font-size:16px;
-  margin-bottom:15px;
-}
-
-.continue{
-  color:#2874f0;
-  font-size:16px;
-  cursor:pointer;
-}
-  </style>
 </head>
-
 <body>
 
-<div class="top-bar">
-  <span onclick="goHome()">&#8592;</span>
-  <h3>My Cart</h3>
+<!-- HEADER -->
+<div class="header">
+  <i class="fa fa-arrow-left"></i>&nbsp; <span id="accountText">Account</span>
 </div>
 
-<div class="cart" id="cartBox"></div>
+<!-- RECENTLY VIEWED -->
+<div class="section">
+  <h3 id="recentText">Recently Viewed Stores</h3>
 
-<h3>Suggested For You</h3>
-<div class="grid" id="suggestedBox"></div>
+  <div class="products" id="recentProducts"></div>
+</div>
 
-<h3>Next Deal For You</h3>
-<div class="grid" id="recentBox"></div>
+<!-- LANGUAGE -->
+<div class="section">
+  <h3 id="langTitle">Try Plus+ Online in your language</h3>
+
+  <span class="lang-btn" onclick="setLanguage('sw')">Swahili</span>
+  <span class="lang-btn" onclick="setLanguage('en')">English</span>
+</div>
+
+<!-- ACCOUNT SETTINGS -->
+<div class="section">
+  <h3 id="settingsText">Account Settings</h3>
+
+  <div class="list-item" onclick="location.href='language.html'">
+    <div class="list-left">
+      <i class="fa fa-language"></i>
+      <span id="selectLang">Select Language</span>
+    </div>
+    <i class="fa fa-chevron-right"></i>
+  </div>
+
+  <div class="list-item" onclick="location.href='notifications.html'">
+    <div class="list-left">
+      <i class="fa fa-bell"></i>
+      <span id="notifyText">Notification Settings</span>
+    </div>
+    <i class="fa fa-chevron-right"></i>
+  </div>
+
+  <div class="list-item" onclick="location.href='help.html'">
+    <div class="list-left">
+      <i class="fa fa-headset"></i>
+      <span id="helpText">Help Center</span>
+    </div>
+    <i class="fa fa-chevron-right"></i>
+  </div>
+</div>
+
+<!-- EARN -->
+<div class="section">
+  <h3 id="earnText">Earn with Plus+ Online</h3>
+
+  <div class="list-item" onclick="location.href='sell.html'">
+    <div class="list-left">
+      <i class="fa fa-store"></i>
+      <span id="sellText">Sell on Plus+ Online</span>
+    </div>
+    <i class="fa fa-chevron-right"></i>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div onclick="location.href='terms.html'" id="termsText">Terms</div>
+  <div onclick="location.href='policies.html'" id="policyText">Policies</div>
+  <div onclick="location.href='faq.html'" id="faqText">Browse FAQs</div>
+</div>
 
 <script>
-const cartBox = document.getElementById("cartBox");
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let products = JSON.parse(localStorage.getItem("allProducts")) || [
-  {id:1,name:"Men T-shirt",price:12,img:"https://i.imgur.com/b4T6KVn.jpeg/200"},
-  {id:2,name:"Dress",price:22,img:"https://i.imgur.com/F9T6D7U.jpeg/200"},
-  {id:3,name:"Sukari 1kg",price:30,img:"https://i.imgur.com/1EFgnRl.jpeg/200"},
-  {id:4,name:"Mafuta ya kupikia",price:45,img:"https://i.imgur.com/4B7cTjc.jpeg/200"},
-  {id:5,name:"Chumvi",price:30,img:"https://i.imgur.com/e4CXmHr.jpeg/200"},
-  {id:6,name:"Blue Band",price:30,img:"https://i.imgur.com/PnEvGZN.jpeg/200"},
-  {id:7,name:"Tomato sauce",price:20,img:"https://i.imgur.com/IqhRkL7.jpeg/200"},
-  {id:8,name:"Soy sauce",price:10,img:"https://i.imgur.com/CqraWiO.jpeg/200"},
-  {id:9,name:"Baking powder",price:10,img:"https://i.imgur.com/WlfRjNu.jpeg/200"},
-  {id:10,name:"Royco",price:14,img:"https://i.imgur.com/rmXvXwO.jpeg/200"},
-  {id:11,name:"Coca Cola",price:23,img:"https://i.imgur.com/UYZ1dIH.jpeg/200"},
-  {id:12,name:"pepsi",price:23,img:"https://i.imgur.com/cGRn5OZ.jpeg/200"},
-  {id:13,name:"Splash",price:12,img:"https://i.imgur.com/4ifKGQC.jpeg/200"},
-  {id:14,name:"Bubble gum",price:15,img:"https://i.imgur.com/jJyMg1u.jpeg/200"},
-  {id:15,name:"Ballcone",price:13,img:"https://i.imgur.com/YU7yVMc.jpeg/200"},
-  {id:16,name:"Cherry",price:13,img:"https://i.imgur.com/Ax4J2uH.jpeg/200"},
-  {id:17,name:"Cherry Bar",price:13,img:"https://i.imgur.com/QZ8B1VC.jpeg/200"},
-  {id:18,name:"Caramello",price:13,img:"https://i.imgur.com/HgeHJvR.jpeg/200"},
-  {id:19,name:"Doffi",price:17,img:"https://i.imgur.com/hD9g7L2.jpeg/200"},
-  {id:20,name:"Jet",price:19,img:"https://i.imgur.com/OoGiHtj.jpeg/200"},
-  {id:21,name:"Jet",price:18,img:"https://i.imgur.com/q36RjQ2.jpeg/200"},
-  {id:22,name:"Vaseline Jelly",price:14,img:"https://i.imgur.com/iFw39jh.jpeg/200"},
-  {id:23,name:"Rungu",price:14,img:"https://i.imgur.com/KIi9LUL.jpeg/200"},
-  {id:24,name:"Professor",price:15,img:"https://i.imgur.com/okplIfF.jpeg/200"},
-  {id:25,name:"Vaseline",price:16,img:"https://i.imgur.com/2V7rzh7.jpeg/200"},
-  {id:26,name:"Rexa",price:17,img:"https://i.imgur.com/3EPfv80.jpeg/200"},
-  {id:27,name:"Msomi",price:15,img:"https://i.imgur.com/zU2mjIE.jpeg/200"},
-  {id:28,name:"OMO",price:18,img:"https://i.imgur.com/v0eeorr.jpeg/200"},
-  {id:29,name:"Niceone",price:18,img:"https://i.imgur.com/7nmPGbq.jpeg/200"},
-  {id:30,name:"Hiper razor",price:19,img:"https://i.imgur.com/zIJlaP3.jpeg/200"},
-  {id:31,name:"Afya Maji",price:23,img:"https://i.imgur.com/u9dkajs.jpeg/200"},
-  {id:32,name:"u-fresh orange",price:23,img:"https://i.imgur.com/k42X2gl.jpeg/200"},
-  {id:33,name:"u-fresh power",price:23,img:"https://i.imgur.com/y1qJelw.jpeg/200"},
-  {id:34,name:"u-fresh pineapple",price:23,img:"https://i.imgur.com/GcVEME3.jpeg/200"},
-  {id:35,name:"Exercise Book",price:19,img:"https://i.imgur.com/AQrSAGW.jpeg/200"},
-  {id:36,name:"Exercise Book",price:19,img:"https://i.imgur.com/ihIcg3h.jpeg/200"},
-  {id:37,name:"Exercise Book",price:17,img:"https://i.imgur.com/Hg8Aeea.jpeg/200"},
-  {id:38,name:"Hand soap",price:17,img:"https://i.imgur.com/Mi3AaMB.jpeg/200"},
-  {id:39,name:"u-fresh passion",price:20,img:"https://i.imgur.com/9uhn4hj.jpeg/200"},
-  {id:40,name:"u-fresh cola",price:21,img:"https://i.imgur.com/FvMtoAL.jpeg/200"}
+/* =========================
+   RECENTLY VIEWED PRODUCTS
+========================= */
+const products = [
+  {img:"https://via.placeholder.com/80", name:"Item 1"},
+  {img:"https://via.placeholder.com/80", name:"Item 2"},
+  {img:"https://via.placeholder.com/80", name:"Item 3"},
+  {img:"https://via.placeholder.com/80", name:"Item 4"},
+  {img:"https://via.placeholder.com/80", name:"Item 5"},
+  {img:"https://via.placeholder.com/80", name:"Item 6"},
+  {img:"https://via.placeholder.com/80", name:"Item 7"},
+  {img:"https://via.placeholder.com/80", name:"Item 8"},
+  {img:"https://via.placeholder.com/80", name:"Item 9"},
+  {img:"https://via.placeholder.com/80", name:"Item 10"}
 ];
 
- function formatPrice(price){
-  return "TZS " + Number(price).toLocaleString() + "/=";
-}
+const container = document.getElementById("recentProducts");
 
-let recent = JSON.parse(localStorage.getItem("recent")) || [];
-
-/* CART */
- cartBox.innerHTML = "";
-let total = 0;
-
-if(cart.length === 0){
-
-  cartBox.innerHTML = `
-    <div class="empty-cart">
-      <i class="fa fa-shopping-cart empty-icon"></i>
-      <h2>Missing Cart items?</h2>
-      <button class="login-btn">Login</button>
-      <p class="continue" onclick="goHome()">Continue Shopping</p>
-    </div>
-  `;
-
-}else{
-
-  cart.forEach((c,i)=>{
-
-    // ✅ FIX: ensure image exists
-    let product = products.find(p => p.id == c.id);
-    let img = c.img || (product ? product.img : "");
-
-    total += c.price * c.qty;
-
-    cartBox.innerHTML += `
-      <div class="item">
-
-        <div class="left">
-          <img src="${img}">
-
-          <div class="qty-box">
-            <select onchange="changeQty(${i},this.value)">
-              ${[1,2,3,4,5].map(q=>`
-                <option ${c.qty==q?"selected":""}>${q}</option>
-              `).join("")}
-            </select>
-          </div>
-        </div>
-
-        <div class="info">
-          <b>${c.name}</b>
-
-          ${c.desc ? `<p>${c.desc}</p>` : ""}
-          ${c.size ? `<p>Size: ${c.size}</p>` : ""}
-
-          <div class="price">${formatPrice(c.price)}</div>
-
-          <div class="action-row">
-            <div class="action-btn remove" onclick="removeItem(${i})">
-              <i class="fa fa-trash"></i> Remove
-            </div>
-
-            <div class="action-btn buy-now" onclick="buyNow(${i})">
-              Buy Now
-            </div>
-          </div>
-
-        </div>
-      </div>
+function loadProducts(){
+  container.innerHTML = "";
+  products.forEach(p=>{
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `
+      <img src="${p.img}">
+      <div>${p.name}</div>
     `;
+    div.onclick = ()=>location.href="product.html";
+    container.appendChild(div);
   });
-
-  // ✅ PRICE BOX only when items exist
-  cartBox.innerHTML += `
-    <div class="price-box">
-      <h3>Price Details</h3>
-      <p>Price (${cart.length} items): ${formatPrice(total)}</p>
-      <hr>
-      <b>Total Amount: ${formatPrice(total)}</b>
-    </div>
-  `;
 }
+loadProducts();
 
- /* SHUFFLE FUNCTION */
-function shuffle(array){
-  return array.sort(() => 0.5 - Math.random());
-}
-
-/* SHUFFLED PRODUCTS */
-let shuffled = shuffle([...products]);
-
-/* SUGGESTED FOR YOU (8 PRODUCTS) */
-let suggestedProducts = shuffled.slice(0,8);
-
-suggestedProducts.forEach(p=>{
-  suggestedBox.innerHTML += `
-    <div class="mini" onclick="openProduct(${p.id})">
-      <img src="${p.img}">
-      <p>${p.name}</p>
-      <b>${formatPrice(p.price)}</b>
-    </div>
-  `;
-});
-
-/* NEXT DEAL FOR YOU (7 DIFFERENT PRODUCTS) */
-let nextDeals = shuffled.slice(8,15);
-
-nextDeals.forEach(p=>{
-  recentBox.innerHTML += `
-    <div class="mini" onclick="openProduct(${p.id})">
-      <img src="${p.img}">
-      <p>${p.name}</p>
-      <b>${formatPrice(p.price)}</b>
-    </div>
-  `;
-});
-
- function changeQty(index, qty){
-  cart[index].qty = Number(qty);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload();
-}
-
-function removeItem(index){
-  cart.splice(index,1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  showToast("Item removed from cart");
-  setTimeout(()=>location.reload(),500);
-}
-
-function buyNow(index){
-  localStorage.setItem("buy", JSON.stringify(cart[index]));
-  location.href = "checkout.html";
-}
-
-/* BUY ALL */
- function placeOrder(){
-
-  if(cart.length === 0){
-    showToast("Your cart is empty");
-    return; // ❌ STOP here (no redirect)
+/* =========================
+   LANGUAGE SWITCH
+========================= */
+function setLanguage(lang){
+  if(lang === "sw"){
+    document.getElementById("accountText").innerText = "Akaunti";
+    document.getElementById("recentText").innerText = "Uliyotazama Hivi Karibuni";
+    document.getElementById("langTitle").innerText = "Jaribu Plus+ Online kwa lugha yako";
+    document.getElementById("settingsText").innerText = "Mipangilio ya Akaunti";
+    document.getElementById("selectLang").innerText = "Chagua Lugha";
+    document.getElementById("notifyText").innerText = "Mipangilio ya Taarifa";
+    document.getElementById("helpText").innerText = "Kituo cha Msaada";
+    document.getElementById("earnText").innerText = "Pata na Plus+ Online";
+    document.getElementById("sellText").innerText = "Uza kwenye Plus+ Online";
+    document.getElementById("termsText").innerText = "Masharti";
+    document.getElementById("policyText").innerText = "Sera";
+    document.getElementById("faqText").innerText = "Maswali";
+  } else {
+    location.reload(); // reset to English
   }
-
-  localStorage.setItem("buy", JSON.stringify(cart));
-  location.href = "checkout.html";
-}
-
-function openProduct(id){
-  localStorage.setItem("pid", id);
-  location.href = "product.html";
-}
-
-  /* AUTO ACTIVE NAV */
-function setActiveNav(){
-
-  let path = window.location.pathname;
-
-  if(path.includes("index.html") || path === "/" ){
-    document.getElementById("nav-home").classList.add("active");
-  }
-  else if(path.includes("category") || path.includes("fashion")){
-    document.getElementById("nav-category").classList.add("active");
-  }
-  else if(path.includes("account")){
-    document.getElementById("nav-account").classList.add("active");
-  }
-  else if(path.includes("cart")){
-    document.getElementById("nav-cart").classList.add("active");
-  }
-}
-
-window.addEventListener("load", setActiveNav);
-
-function goHome(){
-  location.href = "index.html";
-}
-
-function showToast(msg){
-  const t = document.getElementById("toast");
-  t.innerText = msg;
-  t.style.display = "block";
-
-  setTimeout(()=>{
-    t.style.display = "none";
-  },2000);
-}
-
- const placeBtn = document.querySelector(".place-btn");
-
-if(cart.length > 0){
-  document.getElementById("totalPrice").innerText = formatPrice(total);
-  document.querySelector(".bottom-checkout").style.display = "flex";
-
-  placeBtn.disabled = false;
-  placeBtn.style.opacity = "1";
-
-}else{
-  document.querySelector(".bottom-checkout").style.display = "none";
-
-  placeBtn.disabled = true;
-  placeBtn.style.opacity = "0.5";
 }
 </script>
-
-  <!-- BOTTOM NAV -->
-<div class="bottom-nav">
-
-  <a href="index.html" id="nav-home">
-    <i class="fa fa-home"></i>
-    Home
-  </a>
-
-  <a href="category.html" id="nav-category">
-    <i class="fa fa-th-large"></i>
-    Categories
-  </a>
-
-  <a href="account.html" id="nav-account">
-    <i class="fa fa-user"></i>
-    Account
-  </a>
-
-  <a href="cart.html" id="nav-cart">
-    <i class="fa fa-shopping-cart"></i>
-    Cart
-  </a>
-
-</div>
-
-  <div class="bottom-checkout">
-  <b id="totalPrice"></b>
-  <button class="place-btn" onclick="placeOrder()">Place Order</button>
-</div>
-
-<div class="toast" id="toast"></div>
 
 </body>
 </html>
