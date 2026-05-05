@@ -96,7 +96,9 @@ body {
 
 <!-- HEADER -->
 <div class="header">
-  <i class="fa fa-arrow-left"></i>&nbsp; <span id="accountText">Account</span>
+  <i class="fa fa-arrow-left" onclick="goHome()" style="cursor:pointer"></i>
+  &nbsp;
+  <span id="accountText">Account</span>
 </div>
 
 <!-- RECENTLY VIEWED -->
@@ -167,35 +169,46 @@ body {
 /* =========================
    RECENTLY VIEWED PRODUCTS
 ========================= */
-const products = [
-  {img:"https://via.placeholder.com/80", name:"Item 1"},
-  {img:"https://via.placeholder.com/80", name:"Item 2"},
-  {img:"https://via.placeholder.com/80", name:"Item 3"},
-  {img:"https://via.placeholder.com/80", name:"Item 4"},
-  {img:"https://via.placeholder.com/80", name:"Item 5"},
-  {img:"https://via.placeholder.com/80", name:"Item 6"},
-  {img:"https://via.placeholder.com/80", name:"Item 7"},
-  {img:"https://via.placeholder.com/80", name:"Item 8"},
-  {img:"https://via.placeholder.com/80", name:"Item 9"},
-  {img:"https://via.placeholder.com/80", name:"Item 10"}
-];
+ const container = document.getElementById("recentProducts");
 
-const container = document.getElementById("recentProducts");
+function loadRecentViewed(){
 
-function loadProducts(){
-  container.innerHTML = "";
-  products.forEach(p=>{
-    const div = document.createElement("div");
-    div.className = "product";
-    div.innerHTML = `
+  // get all products (same as index.html)
+  let allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
+
+  // get viewed product IDs
+  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+
+  // convert IDs → full product objects
+  let result = [];
+
+  viewed.forEach(id=>{
+    let product = allProducts.find(p => p.id == id);
+    if(product){
+      result.push(product);
+    }
+  });
+
+  // limit to 10
+  result = result.slice(0,10);
+
+  // render
+  container.innerHTML = result.map(p=>`
+    <div class="product" onclick="openProduct(${p.id})">
       <img src="${p.img}">
       <div>${p.name}</div>
-    `;
-    div.onclick = ()=>location.href="product.html";
-    container.appendChild(div);
-  });
+    </div>
+  `).join("");
+
+  // if empty
+  if(result.length === 0){
+    container.innerHTML = "<p>No recently viewed items</p>";
+  }
 }
-loadProducts();
+
+function openProduct(id){
+  location.href = "product.html";
+}
 
 /* =========================
    LANGUAGE SWITCH
@@ -218,6 +231,13 @@ function setLanguage(lang){
     location.reload(); // reset to English
   }
 }
+
+function goHome(){
+  location.href = "index.html";
+}
+
+window.addEventListener("load", loadRecentViewed);
+window.addEventListener("pageshow", loadRecentViewed);
 </script>
 
 </body>
