@@ -32,20 +32,26 @@ body {
 }
 
 /* PRODUCTS ROW */
-.products {
+ .products {
   display: flex;
   overflow-x: auto;
   gap: 10px;
 }
 
+.products::-webkit-scrollbar{
+  display:none;
+}
+
 .product {
-  min-width: 100px;
+  min-width: 100px;   /* 10 items visible */
+  max-width: 100px;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .product img {
@@ -103,9 +109,8 @@ body {
 
 <!-- RECENTLY VIEWED -->
 <div class="section">
-  <h3 id="recentText">Recently Viewed Stores</h3>
-
-  <div class="products" id="recentProducts"></div>
+ <h3 id="recentText">Suggested For You</h3>
+<div class="products" id="suggestedProducts"></div>
 </div>
 
 <!-- LANGUAGE -->
@@ -166,47 +171,32 @@ body {
 </div>
 
 <script>
-/* =========================
-   RECENTLY VIEWED PRODUCTS
-========================= */
- const container = document.getElementById("recentProducts");
+const container = document.getElementById("suggestedProducts");
 
-function loadRecentViewed(){
+function showSuggestedProducts(){
 
-  // get all products (same as index.html)
   let allProducts = JSON.parse(localStorage.getItem("allProducts")) || [];
 
-  // get viewed product IDs
-  let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
+  // shuffle products randomly
+  let shuffled = [...allProducts].sort(() => 0.5 - Math.random());
 
-  // convert IDs → full product objects
-  let result = [];
+  // pick 10 products
+  let selected = shuffled.slice(0, 10);
 
-  viewed.forEach(id=>{
-    let product = allProducts.find(p => p.id == id);
-    if(product){
-      result.push(product);
-    }
-  });
-
-  // limit to 10
-  result = result.slice(0,10);
-
-  // render
-  container.innerHTML = result.map(p=>`
+  container.innerHTML = selected.map(p => `
     <div class="product" onclick="openProduct(${p.id})">
       <img src="${p.img}">
       <div>${p.name}</div>
     </div>
   `).join("");
 
-  // if empty
-  if(result.length === 0){
-    container.innerHTML = "<p>No recently viewed items</p>";
+  if(selected.length === 0){
+    container.innerHTML = "<p>No products available</p>";
   }
 }
 
 function openProduct(id){
+  localStorage.setItem("pid", id);
   location.href = "product.html";
 }
 
@@ -236,8 +226,12 @@ function goHome(){
   location.href = "index.html";
 }
 
-window.addEventListener("load", loadRecentViewed);
-window.addEventListener("pageshow", loadRecentViewed);
+// load on page open
+window.addEventListener("load", showSuggestedProducts);
+window.addEventListener("pageshow", showSuggestedProducts);
+
+// auto refresh every 60 seconds
+setInterval(showSuggestedProducts, 60000);
 </script>
 
 </body>
