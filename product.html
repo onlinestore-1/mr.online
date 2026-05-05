@@ -410,6 +410,8 @@ const products = JSON.parse(localStorage.getItem("allProducts")) || [
  {id:310,name:"Sony Xperia",price:40,img:"https://i.imgur.com/xdWEj8z.jpeg",type:"sony",desc:"Sony Xperia 10 iii ROM 128GB RAM 6GB"}
 ];
 
+let actionType = null; // "buy" or "cart"
+
 const pid = localStorage.getItem("pid");
 const p = products.find(x => x.id == pid) || products[0];
 // example: define unavailable sizes per product
@@ -535,23 +537,20 @@ exploreBox.innerHTML = exploreProducts.map(p2 => `
   window.location.href = "product.html"; // open again like new page
 }
 
- function buy(){
+function buy(){
   const qty = document.getElementById("qty").value;
 
-  // ✅ REQUIRE SIZE FOR BOTH FASHION + SHOES
   if(isFashion || isShoe){
 
-    // ❌ IF SIZE NOT SELECTED → OPEN POPUP
     if(!selectedSize){
+      actionType = "buy";   // ✅ track action
       openSizePopup();
       return;
     }
 
-    // ✅ IF SIZE SELECTED → CONTINUE
     proceedBuy(selectedSize);
   } 
   else{
-    // NORMAL PRODUCTS (NO SIZE)
     localStorage.setItem("buy", JSON.stringify({
       ...p,
       qty
@@ -561,31 +560,37 @@ exploreBox.innerHTML = exploreProducts.map(p2 => `
   }
 }
 
- function addCart(){
+function addCart(){
 
   const qty = document.getElementById("qty").value;
 
-  // ✅ REQUIRE SIZE FOR SHOES + FASHION
   if(isFashion || isShoe){
 
     if(!selectedSize){
+      actionType = "cart";   // ✅ track action
       openSizePopup();
       return;
     }
   }
+
+  addToCart(selectedSize);
+}
+
+function addToCart(size){
+
+  const qty = document.getElementById("qty").value;
 
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   cart.push({
     ...p,
     qty,
-    size: selectedSize || ""
+    size: size || ""
   });
 
   localStorage.setItem("cart", JSON.stringify(cart));
 
-  // ✅ SHOW TOAST MESSAGE
-  showCartToast();
+  showCartToast(); // stay on page
 }
 
   let currentIndex = 0;
@@ -694,6 +699,7 @@ function renderPopupSizes(){
 
 /* CONFIRM SIZE */
 function confirmSize(){
+
   if(!popupSelectedSize){
     alert("Please select size");
     return;
@@ -702,8 +708,15 @@ function confirmSize(){
   selectedSize = popupSelectedSize;
   document.getElementById("sizePopup").style.display = "none";
 
-  // ✅ ADD THIS
-  proceedBuy(selectedSize);
+  // ✅ DECISION BASED ON BUTTON CLICKED
+  if(actionType === "buy"){
+    proceedBuy(selectedSize);      // 👉 checkout.html
+  }
+  else if(actionType === "cart"){
+    addToCart(selectedSize);       // 👉 stay + toast
+  }
+
+  actionType = null; // reset
 }
 
 /* FINAL BUY */
