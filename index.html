@@ -206,14 +206,6 @@ body{
   margin-top:4px;
 }
 
- .still-card:active{
-  transform:scale(0.96);
-}
-
-.still-card:hover{
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
 /* 3 PRODUCTS BELOW */
 .still-3-products{
   display:grid;
@@ -793,7 +785,7 @@ localStorage.setItem("allProducts", JSON.stringify(products));
 
   document.getElementById("stillProducts").innerHTML =
     result.map(p=>`
-      <div class="still-card" onclick="openProduct(${p.id})" role="button">
+      <div class="still-card" onclick="openProduct(${p.id})">
         <img src="${p.img}">
         <p>${p.name}</p>
       </div>
@@ -897,7 +889,7 @@ draw(products.slice(0,2),"suggested");
 
  function openProduct(id){
 
-  localStorage.setItem("pid", id);
+  localStorage.setItem("pid",id);
 
   let viewed = JSON.parse(localStorage.getItem("lastViewed")) || [];
 
@@ -906,10 +898,6 @@ draw(products.slice(0,2),"suggested");
   viewed = viewed.slice(0,10);
 
   localStorage.setItem("lastViewed", JSON.stringify(viewed));
-
-  // go to product page
-  window.location.href = "product.html";
-}
 
   // 🔥 INSTANT UPDATE BEFORE PAGE CHANGE
   showStillProducts();
