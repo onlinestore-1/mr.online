@@ -96,11 +96,7 @@ body{
   <!-- ORDER PREVIEW -->
   <div id="orderPreview" style="margin-bottom:15px;"></div>
 
-   <form onsubmit="saveOrder()" action="https://formsubmit.co/damasrphl2001@gmail.com" method="POST">
-
-    <input type="hidden" name="_subject" value="New Order">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_template" value="table">
+   <form id="checkoutForm">
 
     <input name="name" placeholder="Full Name" required>
     <input name="phone" placeholder="Phone Number" required>
@@ -196,22 +192,32 @@ document.getElementById("orderPreview").innerHTML = previewHTML;
 document.getElementById("order").value = orderText;
 
 /* SAVE ORDER */
-function saveOrder(){
+document.getElementById("checkoutForm").addEventListener("submit", function(e){
+
+  e.preventDefault();
 
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
-  if(Array.isArray(buy)){
-    buy.forEach(item=>{
-      orders.push(item);
-    });
-  }else{
-    orders.push(buy);
-  }
+  let customer = {
+    name: document.querySelector('input[name="name"]').value,
+    phone: document.querySelector('input[name="phone"]').value,
+    address: document.querySelector('input[name="address"]').value,
+    items: buy,
+    total: total,
+    date: new Date().toLocaleString()
+  };
+
+  orders.push(customer);
 
   localStorage.setItem("orders", JSON.stringify(orders));
 
   localStorage.removeItem("buy");
-}
+
+  alert("Order placed successfully!");
+
+  window.location.href = "success.html";
+
+});
 
 function goBack(){
   window.history.back();
