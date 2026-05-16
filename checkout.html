@@ -192,7 +192,7 @@ document.getElementById("orderPreview").innerHTML = previewHTML;
 document.getElementById("order").value = orderText;
 
 /* SAVE ORDER */
-document.getElementById("checkoutForm").addEventListener("submit", function(e){
+document.getElementById("checkoutForm").addEventListener("submit", async function(e){
 
   e.preventDefault();
 
@@ -209,9 +209,11 @@ document.getElementById("checkoutForm").addEventListener("submit", function(e){
 
   orders.push(customer);
 
-  localStorage.setItem("orders", JSON.stringify(orders));
+ localStorage.setItem("orders", JSON.stringify(orders));
 
-  localStorage.removeItem("buy");
+await saveOrderToFirebase(customer);
+
+localStorage.removeItem("buy");
 
   alert("Order placed successfully!");
 
@@ -270,12 +272,18 @@ window.addEventListener("load", setActiveNav);
 
 </div>
 
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+<script type="module">
 
-// Your web app's Firebase configuration
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyB67ABC2zJ7Owb10ZZGEd2JbmyblRLLHfI",
   authDomain: "plus-online-stpre.firebaseapp.com",
@@ -285,8 +293,21 @@ const firebaseConfig = {
   appId: "1:228280110379:web:0e739926d6ffe8f829c96e"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+/* SAVE ORDER TO FIREBASE */
+window.saveOrderToFirebase = async function(order){
+
+  await addDoc(
+    collection(db, "orders"),
+    order
+  );
+
+}
+
+</script>
 
 </body>
 </html>
